@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MochiMaid - Customer Dashboard</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(180deg, #f4f8ff 0%, #eef8f4 100%);
+    color: #1f2937;
+  }
+
+  .topbar {
+    background: linear-gradient(90deg, #1d4ed8 0%, #0f766e 100%);
+    color: white;
+    padding: 14px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 20px rgba(29, 78, 216, 0.18);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .brand {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .brand span {
+    font-weight: 500;
+    opacity: 0.95;
+  }
+
+  .nav {
+    display: flex;
+    gap: 22px;
+    font-size: 14px;
+    align-items: center;
+  }
+
+  .nav a {
+    color: white;
+    text-decoration: none;
+    opacity: 0.95;
+  }
+
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(255,255,255,0.14);
+    padding: 6px 10px;
+    border-radius: 999px;
+  }
+
+  .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: white;
+    color: #1d4ed8;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+  }
+
+  .hero {
+    padding: 42px 6% 30px;
+    background:
+      radial-gradient(circle at top left, rgba(96,165,250,0.18), transparent 28%),
+      radial-gradient(circle at top right, rgba(45,212,191,0.18), transparent 28%),
+      linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+  }
+
+  .hero h1 {
+    margin: 0 0 8px;
+    font-size: 36px;
+    color: #0f172a;
+  }
+
+  .hero p {
+    margin: 0 0 24px;
+    color: #475569;
+    max-width: 720px;
+  }
+
+  .search-panel {
+    background: white;
+    padding: 18px;
+    border-radius: 18px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr auto;
+    gap: 12px;
+    box-shadow: 0 16px 35px rgba(31,41,55,0.08);
+    border: 1px solid #dbeafe;
+  }
+
+  .field {
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 11px 12px;
+    background: #fbfdff;
+  }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+  }
+
+  .field input,
+  .field select {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+    color: #111827;
+  }
+
+  .primary-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 0 24px;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(90deg, #2563eb 0%, #14b8a6 100%);
+    color: white;
+    box-shadow: 0 10px 20px rgba(37,99,235,0.18);
+  }
+
+  main {
+    padding: 24px 6% 60px;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin: 12px 0 16px;
+  }
+
+  .section-title h2 {
+    margin: 0;
+    font-size: 23px;
+    color: #0f172a;
+  }
+
+  .section-title small {
+    color: #64748b;
+  }
+
+  .services {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .service {
+    border-radius: 16px;
+    padding: 18px 14px;
+    text-align: center;
+    cursor: pointer;
+    color: #0f172a;
+    border: 1px solid rgba(255,255,255,0.8);
+    box-shadow: 0 10px 24px rgba(15,23,42,0.06);
+  }
+
+  .service:nth-child(1) { background: linear-gradient(180deg, #dbeafe 0%, #eff6ff 100%); }
+  .service:nth-child(2) { background: linear-gradient(180deg, #fef3c7 0%, #fffbeb 100%); }
+  .service:nth-child(3) { background: linear-gradient(180deg, #dcfce7 0%, #f0fdf4 100%); }
+  .service:nth-child(4) { background: linear-gradient(180deg, #fae8ff 0%, #fdf4ff 100%); }
+  .service:nth-child(5) { background: linear-gradient(180deg, #ffe4e6 0%, #fff1f2 100%); }
+
+  .service .icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .service strong { display: block; font-size: 15px; }
+  .service small { color: #475569; }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 330px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .toolbar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .chip {
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    padding: 8px 13px;
+    font-size: 13px;
+    cursor: pointer;
+    background: white;
+    color: #1e293b;
+  }
+
+  .chip:first-child {
+    background: #dbeafe;
+    border-color: #93c5fd;
+    color: #1d4ed8;
+    font-weight: 700;
+  }
+
+  .cleaners {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .cleaner-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 12px 26px rgba(15,23,42,0.05);
+  }
+
+  .cleaner-head {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .cleaner-photo {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 26px;
+    background: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 100%);
+  }
+
+  .cleaner-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  .verified {
+    font-size: 12px;
+    font-weight: 700;
+    color: #0f766e;
+  }
+
+  .rating {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #475569;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 14px 0;
+  }
+
+  .stat {
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .stat:nth-child(1) { background: #eff6ff; }
+  .stat:nth-child(2) { background: #ecfeff; }
+  .stat:nth-child(3) { background: #f5f3ff; }
+
+  .stat strong {
+    display: block;
+    font-size: 14px;
+    color: #0f172a;
+  }
+
+  .stat small {
+    color: #64748b;
+    font-size: 11px;
+  }
+
+  .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 10px 0 14px;
+  }
+
+  .tag {
+    padding: 6px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  .tag:nth-child(1) { background: #dbeafe; }
+  .tag:nth-child(2) { background: #dcfce7; }
+  .tag:nth-child(3) { background: #fef3c7; }
+  .tag:nth-child(4) { background: #fae8ff; }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 12px;
+  }
+
+  .price strong {
+    font-size: 18px;
+    color: #0f172a;
+  }
+
+  .price small {
+    color: #64748b;
+    display: block;
+  }
+
+  .select-btn {
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(90deg, #2563eb 0%, #14b8a6 100%);
+    color: white;
+  }
+
+  .summary {
+    background: white;
+    border: 1px solid #dbeafe;
+    border-radius: 18px;
+    padding: 18px;
+    position: sticky;
+    top: 84px;
+    box-shadow: 0 14px 28px rgba(15,23,42,0.08);
+  }
+
+  .summary h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #0f172a;
+  }
+
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .muted { color: #64748b; }
+
+  .total {
+    border-top: 1px solid #e5e7eb;
+    margin-top: 14px;
+    padding-top: 14px;
+    font-weight: 800;
+    font-size: 18px;
+    color: #0f172a;
+  }
+
+  .confirm-btn {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 13px;
+    font-weight: 800;
+    margin-top: 15px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #0f766e 0%, #14b8a6 100%);
+    color: white;
+  }
+
+  .trust-box {
+    margin-top: 15px;
+    background: linear-gradient(180deg, #f0fdfa 0%, #ecfeff 100%);
+    border: 1px solid #ccfbf1;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #134e4a;
+  }
+
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: #64748b;
+    font-size: 12px;
+  }
+
+  @media (max-width: 1000px) {
+    .search-panel { grid-template-columns: 1fr 1fr; }
+    .services { grid-template-columns: repeat(2, 1fr); }
+    .content-grid { grid-template-columns: 1fr; }
+    .cleaners { grid-template-columns: 1fr; }
+    .summary { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">Mochi<span>Maid</span></div>
+  <nav class="nav">
+    <a href="#">Find Cleaners</a>
+    <a href="#">My Bookings</a>
+    <a href="#">Saved Cleaners</a>
+    <a href="#">Help</a>
+    <div class="profile">
+      <div class="avatar">DS</div>
+      <span>Dakchhyeta</span>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Find the right cleaner near you ✨</h1>
+  <p>Compare price, distance, availability, ratings and service history before you book. Transparent pricing, trusted cleaner profiles, and a smooth booking experience all in one place.</p>
+
+  <div class="search-panel">
+    <div class="field">
+      <label>Service Location</label>
+      <input value="Pathum Thani, Thailand" />
+    </div>
+
+    <div class="field">
+      <label>Cleaning Service</label>
+      <select>
+        <option>Regular Home Cleaning</option>
+        <option>Deep Cleaning</option>
+        <option>Move-In / Move-Out</option>
+        <option>Office Cleaning</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Date & Time</label>
+      <input value="6 Sep, 10:00 AM" />
+    </div>
+
+    <button class="primary-btn">Search Cleaners</button>
+  </div>
+</section>
+
+<main>
+
+  <div class="section-title">
+    <div>
+      <h2>Choose a cleaning service</h2>
+      <small>Select the service that best matches your needs.</small>
+    </div>
+  </div>
+
+  <div class="services">
+    <div class="service">
+      <div class="icon">🏠</div>
+      <strong>Regular Cleaning</strong>
+      <small>Routine home cleaning</small>
+    </div>
+    <div class="service">
+      <div class="icon">✨</div>
+      <strong>Deep Cleaning</strong>
+      <small>Detailed intensive clean</small>
+    </div>
+    <div class="service">
+      <div class="icon">🏢</div>
+      <strong>Condo Cleaning</strong>
+      <small>Apartment & condo units</small>
+    </div>
+    <div class="service">
+      <div class="icon">📦</div>
+      <strong>Move In / Out</strong>
+      <small>Prepare a property</small>
+    </div>
+    <div class="service">
+      <div class="icon">🏬</div>
+      <strong>Office Cleaning</strong>
+      <small>Small business spaces</small>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <div>
+      <h2>Recommended cleaners near you</h2>
+      <small>Based on your location, requested time and cleaning service.</small>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div>
+      <div class="toolbar">
+        <button class="chip">Recommended</button>
+        <button class="chip">Nearest</button>
+        <button class="chip">Highest Rated</button>
+        <button class="chip">Lowest Price</button>
+        <button class="chip">Available Soonest</button>
+      </div>
+
+      <div class="cleaners">
+
+        <article class="cleaner-card">
+          <div class="cleaner-head">
+            <div class="cleaner-photo">👩🏻</div>
+            <div>
+              <div class="cleaner-name">May S. <span class="verified">✓ Verified</span></div>
+              <div class="rating">⭐ 4.9 · 186 reviews · 3 years experience</div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat"><strong>1.8 km</strong><small>Distance</small></div>
+            <div class="stat"><strong>98%</strong><small>On time</small></div>
+            <div class="stat"><strong>284</strong><small>Jobs done</small></div>
+          </div>
+
+          <div class="tags">
+            <span class="tag">Deep Cleaning</span>
+            <span class="tag">Condo</span>
+            <span class="tag">Pet Friendly</span>
+            <span class="tag">English / Thai</span>
+          </div>
+
+          <div class="price-row">
+            <div class="price">
+              <strong>฿260/hr</strong>
+              <small>Transport: ฿0 · Available 10:00 AM</small>
+            </div>
+            <button class="select-btn" onclick="selectCleaner('May S.', 520, 0)">Select</button>
+          </div>
+        </article>
+
+        <article class="cleaner-card">
+          <div class="cleaner-head">
+            <div class="cleaner-photo">👩🏽</div>
+            <div>
+              <div class="cleaner-name">Pim N. <span class="verified">✓ Verified</span></div>
+              <div class="rating">⭐ 4.8 · 142 reviews · 5 years experience</div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat"><strong>3.6 km</strong><small>Distance</small></div>
+            <div class="stat"><strong>96%</strong><small>On time</small></div>
+            <div class="stat"><strong>391</strong><small>Jobs done</small></div>
+          </div>
+
+          <div class="tags">
+            <span class="tag">Home Cleaning</span>
+            <span class="tag">Move In / Out</span>
+            <span class="tag">Office</span>
+            <span class="tag">Thai</span>
+          </div>
+
+          <div class="price-row">
+            <div class="price">
+              <strong>฿240/hr</strong>
+              <small>Transport: ฿30 · Available 10:30 AM</small>
+            </div>
+            <button class="select-btn" onclick="selectCleaner('Pim N.', 480, 30)">Select</button>
+          </div>
+        </article>
+
+        <article class="cleaner-card">
+          <div class="cleaner-head">
+            <div class="cleaner-photo">👩🏻‍🦱</div>
+            <div>
+              <div class="cleaner-name">Nok P. <span class="verified">✓ Verified</span></div>
+              <div class="rating">⭐ 4.7 · 95 reviews · 2 years experience</div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat"><strong>0.9 km</strong><small>Distance</small></div>
+            <div class="stat"><strong>97%</strong><small>On time</small></div>
+            <div class="stat"><strong>167</strong><small>Jobs done</small></div>
+          </div>
+
+          <div class="tags">
+            <span class="tag">Regular Cleaning</span>
+            <span class="tag">Condo</span>
+            <span class="tag">Available Now</span>
+          </div>
+
+          <div class="price-row">
+            <div class="price">
+              <strong>฿220/hr</strong>
+              <small>Transport: ฿0 · Available now</small>
+            </div>
+            <button class="select-btn" onclick="selectCleaner('Nok P.', 440, 0)">Select</button>
+          </div>
+        </article>
+
+        <article class="cleaner-card">
+          <div class="cleaner-head">
+            <div class="cleaner-photo">👨🏻</div>
+            <div>
+              <div class="cleaner-name">Bank T. <span class="verified">✓ Verified</span></div>
+              <div class="rating">⭐ 4.9 · 210 reviews · 4 years experience</div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat"><strong>5.4 km</strong><small>Distance</small></div>
+            <div class="stat"><strong>99%</strong><small>On time</small></div>
+            <div class="stat"><strong>326</strong><small>Jobs done</small></div>
+          </div>
+
+          <div class="tags">
+            <span class="tag">Deep Cleaning</span>
+            <span class="tag">Office</span>
+            <span class="tag">English / Thai</span>
+          </div>
+
+          <div class="price-row">
+            <div class="price">
+              <strong>฿280/hr</strong>
+              <small>Transport: ฿60 · Available 11:00 AM</small>
+            </div>
+            <button class="select-btn" onclick="selectCleaner('Bank T.', 560, 60)">Select</button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <aside class="summary">
+      <h3>Your booking</h3>
+      <div class="summary-line"><span class="muted">Service</span><strong>Regular Cleaning</strong></div>
+      <div class="summary-line"><span class="muted">Property</span><strong>2-bedroom condo</strong></div>
+      <div class="summary-line"><span class="muted">Duration</span><strong>2 hours</strong></div>
+      <div class="summary-line"><span class="muted">Date</span><strong>6 Sep, 10:00 AM</strong></div>
+      <div class="summary-line"><span class="muted">Cleaner</span><strong id="cleanerName">Not selected</strong></div>
+
+      <div class="summary-line" style="margin-top:18px;"><span>Cleaning fee</span><span id="cleaningFee">฿0</span></div>
+      <div class="summary-line"><span>Transportation</span><span id="transportFee">฿0</span></div>
+      <div class="summary-line"><span>Add-ons</span><span>฿100</span></div>
+
+      <div class="summary-line total">
+        <span>Total</span>
+        <span id="totalPrice">฿100</span>
+      </div>
+
+      <button class="confirm-btn">Continue to Booking</button>
+
+      <div class="trust-box">
+        ✓ Verified cleaner profiles<br>
+        ✓ Transportation shown separately<br>
+        ✓ Before & after photo verification<br>
+        ✓ Ratings from completed bookings
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  MochiMaid concept prototype · Front-end demonstration only
+</footer>
+
+<script>
+function selectCleaner(name, cleaningFee, transportFee) {
+  document.getElementById('cleanerName').textContent = name;
+  document.getElementById('cleaningFee').textContent = '฿' + cleaningFee;
+  document.getElementById('transportFee').textContent = '฿' + transportFee;
+  document.getElementById('totalPrice').textContent = '฿' + (cleaningFee + transportFee + 100);
+}
+</script>
+
+</body>
+</html>

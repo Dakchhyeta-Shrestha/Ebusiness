@@ -1,0 +1,10 @@
+MochiMaid image filenames
+
+Keep these files in the SAME folder as index.html and login.html:
+
+1. about-mochimaid.png      -> About MochiMaid section on homepage
+2. how-it-works.png         -> How It Works section on homepage
+3. login-background.png     -> Full-page background on login page
+4. mochimaid_loyalty_stamp_card.png -> Loyalty reward popup (already included)
+
+Do not rename index.html or login.html unless you also update their links.

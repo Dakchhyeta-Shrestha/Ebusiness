@@ -1,0 +1,4495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MochiMaid — Customer Website</title>
+<style>
+:root{--p:#6f3cc3;--pink:#e95a9d;--mint:#17b79f;--ink:#1f2937;--muted:#6b7280;--line:#e5e7eb;--bg:#fafafa}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}.hide{display:none!important}
+nav{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:20}
+.logo{font-size:27px;font-weight:900;color:var(--p)}.logo span{color:var(--pink)}.navlinks{display:flex;gap:22px;align-items:center;font-size:14px}.navlinks a{text-decoration:none;color:#374151}
+.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#eee7ff;color:var(--p);font-weight:800}
+.hero{padding:58px 7%;background:radial-gradient(circle at 85% 15%,#d6fff7 0,transparent 24%),radial-gradient(circle at 15% 15%,#fce7f3 0,transparent 22%),#fff}
+.hero-inner{max-width:1120px;margin:auto;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-size:50px;line-height:1.03;letter-spacing:-2px;margin:0 0 14px}.hero h1 span{color:var(--p)}.hero p{color:var(--muted);font-size:17px;line-height:1.65}
+.hero-card{background:#fff;border:1px solid #eadfff;border-radius:20px;padding:18px;box-shadow:0 18px 45px rgba(93,45,150,.12)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:10px}.field{border:1px solid #d1d5db;border-radius:11px;padding:9px 11px}.field label{display:block;font-size:10px;color:#8b95a5;font-weight:800;text-transform:uppercase;margin-bottom:5px}.field input,.field select{border:0;outline:0;width:100%;background:transparent}
+.hero-art{height:340px;border-radius:26px;background:linear-gradient(135deg,var(--p),var(--pink));position:relative;display:grid;place-items:center;font-size:120px;box-shadow:0 20px 50px rgba(111,60,195,.18)}
+.float{position:absolute;background:#fff;border-radius:14px;padding:11px 13px;font-size:12px;box-shadow:0 10px 25px rgba(0,0,0,.13)}.f1{top:36px;left:24px}.f2{right:22px;top:130px}.f3{bottom:30px;left:48px}
+.primary{border:0;border-radius:11px;padding:11px 16px;background:linear-gradient(90deg,var(--p),var(--pink));color:#fff;font-weight:800;cursor:pointer}.secondary{border:1px solid #d1d5db;border-radius:11px;padding:10px 15px;background:#fff;font-weight:700;cursor:pointer}
+.section{max-width:1120px;margin:auto;padding:36px 5%}.section h2{margin:0 0 4px}.sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+.services{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.service{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;cursor:pointer;transition:.2s}.service:hover{transform:translateY(-3px);box-shadow:0 12px 25px rgba(0,0,0,.07)}.ico{font-size:27px;margin-bottom:9px}.service small{color:var(--muted)}
+.note{max-width:1120px;margin:auto;padding:0 5% 18px;color:var(--muted);font-size:12px}
+#app{max-width:1120px;margin:auto;padding:28px 5% 60px}.layout{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start}
+.steps{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;position:sticky;top:88px}.step{display:flex;gap:9px;padding:9px 0;color:#94a3b8;font-size:13px}.num{width:25px;height:25px;border-radius:50%;background:#f1f5f9;display:grid;place-items:center;font-size:11px;font-weight:900}.step.active{color:var(--p);font-weight:800}.step.active .num{background:#eee7ff}.step.done{color:#07866f}.step.done .num{background:#d8fff5}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 10px 28px rgba(0,0,0,.04)}.panel h2{margin:0 0 5px}.panel>.sub{margin-top:0}
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.choice{border:1.5px solid #e2e8f0;border-radius:14px;padding:15px;cursor:pointer}.choice.selected{border-color:#a78bfa;background:#faf5ff}.choice b{display:block;margin-top:6px}.choice small{color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:11px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.fg{margin-bottom:13px}.fg label{display:block;font-size:12px;font-weight:800;color:#475569;margin-bottom:6px}.control{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:10px 11px;outline:none;background:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid #d1d5db;border-radius:999px;padding:8px 11px;background:#fff;cursor:pointer;font-size:12px}.chip.selected,.chip.active{background:#eee7ff;color:var(--p);border-color:#c4b5fd;font-weight:800}
+.actions{display:flex;justify-content:space-between;margin-top:22px;padding-top:17px;border-top:1px solid var(--line)}
+.cleaner{border:1px solid #e2e8f0;border-radius:16px;padding:16px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;margin-bottom:12px}.photo{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#fce7f3,#ddd6fe);font-size:31px}.cleaner h3{margin:0 0 4px}.meta{font-size:12px;color:var(--muted);line-height:1.55}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{font-size:10px;background:#f1f5f9;border-radius:999px;padding:5px 7px}.price{text-align:right;min-width:130px}.price strong{font-size:19px}.price small{display:block;color:var(--muted);margin:4px 0 9px}.link{font-size:12px;color:var(--p);font-weight:800;margin-top:7px;cursor:pointer}
+.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.checkout{display:grid;grid-template-columns:1fr 340px;gap:18px}.pay{border:1px solid #dbe1e8;border-radius:13px;padding:13px;margin-bottom:9px;cursor:pointer}.pay.selected{border-color:#a78bfa;background:#faf5ff}.summary{border:1px solid #dbe1e8;background:#fbfdff;border-radius:15px;padding:16px}.line{display:flex;justify-content:space-between;gap:12px;margin:10px 0;font-size:13px}.total{border-top:1px solid var(--line);padding-top:12px;font-size:17px;font-weight:900}.trust{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;border-radius:10px;padding:11px;font-size:11px;line-height:1.65;margin-top:12px}
+.confirm{text-align:center;padding:25px}.ok{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:#d1fae5;color:#047857;font-size:34px;margin:0 auto 14px}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.52);display:grid;place-items:center;padding:18px;z-index:50}.modalbox{width:min(680px,95vw);background:#fff;border-radius:20px;padding:22px}.modalhead{display:flex;justify-content:space-between}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.stat{background:#f8fafc;border-radius:11px;padding:10px;text-align:center}.stat strong{display:block}.stat small{color:var(--muted);font-size:10px}.review{border-top:1px solid var(--line);padding:11px 0;font-size:12px}
+footer{text-align:center;padding:24px;color:#94a3b8;font-size:12px;border-top:1px solid #eee;background:#fff}
+@media(max-width:900px){.hero-inner,.layout,.checkout{grid-template-columns:1fr}.hero-art,.steps{display:none}.services{grid-template-columns:repeat(2,1fr)}.choices,.two,.three{grid-template-columns:1fr}.cleaner{grid-template-columns:auto 1fr}.price{grid-column:1/-1;text-align:left}.navlinks a{display:none}.hero h1{font-size:39px}}
+
+/* ===== MochiMaid marketplace-style homepage ===== */
+.home-nav{
+  height:76px;background:#fff;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 6%;position:sticky;top:0;z-index:30
+}
+.home-nav-links{display:flex;gap:24px;align-items:center;font-size:14px;font-weight:700}
+.home-nav-links a{text-decoration:none;color:#26313f}
+.home-nav-links a:hover{color:var(--p)}
+.home-nav-links .login-link{margin-left:8px}
+.cleaner-cta{
+  border:1.5px solid var(--p)!important;color:var(--p)!important;
+  padding:11px 18px;border-radius:999px;background:#fff
+}
+.cleaner-cta:hover{background:#faf5ff!important}
+
+.market-hero{
+  padding:70px 7% 58px;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(23,183,159,.15),transparent 24%),
+    radial-gradient(circle at 5% 8%,rgba(233,90,157,.12),transparent 20%),
+    #fff
+}
+.hero-copy{max-width:920px;margin:0 auto 34px;text-align:center}
+.hero-kicker,.section-kicker{
+  display:inline-block;font-size:12px;text-transform:uppercase;letter-spacing:.8px;
+  font-weight:900;color:var(--p);margin-bottom:10px
+}
+.market-hero h1{font-size:52px;letter-spacing:-2px;margin:0 0 14px;color:#142033}
+.market-hero .hero-copy p{font-size:17px;line-height:1.7;color:var(--muted);max-width:780px;margin:0 auto}
+.home-service-grid{
+  max-width:1120px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);
+  gap:12px
+}
+.home-service-card{
+  border:1px solid var(--line);background:#fff;border-radius:17px;padding:20px 14px;
+  min-height:150px;text-align:left;cursor:pointer;transition:.18s;
+  box-shadow:0 8px 22px rgba(15,23,42,.035)
+}
+.home-service-card:hover{
+  transform:translateY(-4px);border-color:#c4b5fd;
+  box-shadow:0 15px 30px rgba(111,60,195,.10)
+}
+.home-service-icon{
+  width:48px;height:48px;border-radius:14px;background:#f5efff;
+  display:grid;place-items:center;font-size:25px;margin-bottom:14px
+}
+.home-service-card:nth-child(2) .home-service-icon{background:#fff0f7}
+.home-service-card:nth-child(3) .home-service-icon{background:#e8fffa}
+.home-service-card:nth-child(4) .home-service-icon{background:#fff8df}
+.home-service-card:nth-child(5) .home-service-icon{background:#edf5ff}
+.home-service-card strong{display:block;font-size:14px;margin-bottom:6px;color:#172033}
+.home-service-card small{font-size:12px;color:var(--muted);line-height:1.45}
+
+.about-home{
+  max-width:1120px;margin:0 auto;padding:74px 5%;
+  display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center
+}
+.about-visual{
+  min-height:400px;border-radius:28px;position:relative;overflow:hidden;
+  background:linear-gradient(145deg,#eee7ff,#ffe8f4 58%,#ddfff7);
+  box-shadow:0 18px 45px rgba(111,60,195,.10)
+}
+.about-visual-main{
+  position:absolute;inset:0;display:grid;place-items:center;font-size:135px
+}
+.mini-card{
+  position:absolute;background:#fff;border-radius:15px;padding:13px 15px;
+  box-shadow:0 10px 25px rgba(0,0,0,.10);font-size:12px
+}
+.mini-card b{display:block;margin-bottom:3px}
+.mini-card span{color:var(--muted)}
+.mc-one{top:34px;left:28px}.mc-two{right:24px;top:160px}.mc-three{left:54px;bottom:35px}
+.about-copy h2,.section-title-center h2,.how-card h2{
+  font-size:34px;line-height:1.16;letter-spacing:-1px;margin:0 0 15px;color:#172033
+}
+.about-copy p{color:var(--muted);line-height:1.75;font-size:15px}
+.about-button{margin-top:8px}
+
+.kpi-section{
+  padding:62px 7%;background:#f8f6ff;border-top:1px solid #eee7ff;border-bottom:1px solid #eee7ff
+}
+.section-title-center{text-align:center;max-width:760px;margin:0 auto 28px}
+.section-title-center p{color:var(--muted);font-size:13px}
+.kpi-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.kpi-card{
+  background:#fff;border:1px solid #e9e3f5;border-radius:17px;padding:22px;text-align:center
+}
+.kpi-card strong{display:block;font-size:31px;color:var(--p);margin-bottom:7px}
+.kpi-card span{font-size:12px;color:#536071;line-height:1.45}
+
+.reviews-section{max-width:1120px;margin:0 auto;padding:74px 5%}
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.review-card{
+  border:1px solid var(--line);border-radius:17px;padding:20px;background:#fff;
+  min-height:190px
+}
+.review-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.review-head span{color:#f3b51b;letter-spacing:2px}
+.review-card p{line-height:1.65;color:#344153;font-size:14px}
+.review-card small{color:var(--muted)}
+
+.how-section{
+  max-width:1120px;margin:0 auto;padding:40px 5% 78px;
+  display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:stretch
+}
+.how-image-card{
+  border-radius:25px;min-height:520px;background:
+    linear-gradient(145deg,rgba(111,60,195,.92),rgba(23,183,159,.84));
+  display:grid;place-items:center;position:relative;overflow:hidden
+}
+.how-big-icon{font-size:150px}
+.how-caption{
+  position:absolute;left:25px;right:25px;bottom:25px;background:rgba(255,255,255,.94);
+  border-radius:15px;padding:14px;font-size:14px;font-weight:800;text-align:center
+}
+.how-card{background:#fff;border:1px solid var(--line);border-radius:25px;padding:34px}
+.how-step{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start;margin:22px 0}
+.how-num{
+  width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+  background:#eee7ff;color:var(--p);font-weight:900;font-size:18px
+}
+.how-step:nth-of-type(3) .how-num{background:#fff5d8;color:#9b6a00}
+.how-step:nth-of-type(4) .how-num{background:#ddfff5;color:#067b69}
+.how-step:nth-of-type(5) .how-num{background:#ffe5f1;color:#a81f65}
+.how-step strong{font-size:15px}
+.how-step p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.55}
+
+.faq-section{padding:72px 7%;background:#fffaf1}
+.faq-list{max-width:860px;margin:0 auto}
+.faq-list details{
+  background:#fff;border:1px solid #eee4cc;border-radius:14px;margin-bottom:11px;
+  padding:0 17px
+}
+.faq-list summary{padding:17px 0;cursor:pointer;font-weight:800;color:#26313f}
+.faq-list p{margin:0 0 17px;color:var(--muted);line-height:1.6;font-size:13px}
+
+.home-bottom-cta{
+  max-width:1040px;margin:65px auto;padding:32px 36px;border-radius:22px;
+  background:linear-gradient(90deg,#ede7ff,#ffe9f4,#e2fff8);
+  display:flex;align-items:center;justify-content:space-between;gap:20px
+}
+.home-bottom-cta h2{margin:0 0 5px}.home-bottom-cta p{margin:0;color:var(--muted)}
+.prototype-disclaimer{
+  max-width:1040px;margin:0 auto 55px;padding:14px 17px;border-radius:12px;
+  background:#f8fafc;border:1px solid var(--line);font-size:11px;color:var(--muted)
+}
+
+@media(max-width:1050px){
+  .home-service-grid{grid-template-columns:repeat(3,1fr)}
+  .about-home,.how-section{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .review-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+  .home-nav-links a:not(.cleaner-cta){display:none}
+  .home-nav{padding:0 4%}
+  .market-hero{padding:48px 5%}
+  .market-hero h1{font-size:39px}
+  .home-service-grid{grid-template-columns:repeat(2,1fr)}
+  .review-grid,.kpi-grid{grid-template-columns:1fr}
+  .home-bottom-cta{margin:40px 5%;flex-direction:column;align-items:flex-start}
+}
+
+
+/* ===== v3 homepage overrides ===== */
+.about-home{max-width:1240px;margin:0 auto;padding:46px 5% 10px;display:block}
+.about-photo-block{position:relative;background:#ece2f4;border-radius:26px;padding:56px 52px;min-height:520px}
+.about-photo{height:400px;border-radius:18px;background-color:#e9eef2;background-image:url('about-mochimaid.png');background-size:cover;background-position:center right;background-repeat:no-repeat}
+.about-overlay-card{position:absolute;left:95px;top:120px;width:420px;max-width:calc(100% - 140px);background:#fff;border-radius:18px;padding:34px 34px 28px;box-shadow:0 18px 36px rgba(0,0,0,.10)}
+.about-overlay-card h2{font-size:22px;line-height:1.28;letter-spacing:-.5px;margin:0 0 14px;color:#172033}
+.about-overlay-card ul{margin:16px 0 0;padding-left:18px;color:#334155;line-height:1.7;font-size:14px}
+.about-overlay-card li{margin:10px 0}
+
+.kpi-strip-section{max-width:1240px;margin:0 auto;padding:8px 5% 52px}
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;border-top:0}
+.kpi-strip-item{padding:10px 16px;text-align:left}
+.kpi-strip-item strong{display:block;font-size:28px;color:#117e6e;margin-bottom:4px;letter-spacing:-.5px}
+.kpi-strip-item span{font-size:14px;color:#374151;font-weight:700}
+.kpi-strip-note{margin:6px 16px 0;color:#6b7280;font-size:12px}
+
+.how-section{max-width:1240px;margin:0 auto;padding:36px 5% 76px;display:block}
+.how-photo-block{position:relative;background:#eeedd7;border-radius:26px;padding:58px 52px;min-height:520px}
+.how-photo{height:400px;border-radius:18px;background-color:#e8eee9;background-image:url('how-it-works.png');background-size:cover;background-position:center right;background-repeat:no-repeat}
+.how-overlay-card{position:absolute;left:95px;top:120px;width:430px;max-width:calc(100% - 140px);background:#fff;border-radius:18px;padding:34px 32px 28px;box-shadow:0 18px 36px rgba(0,0,0,.10)}
+.how-overlay-card h2{font-size:22px;line-height:1.28;letter-spacing:-.5px;margin:0 0 8px;color:#172033}
+.how-step{display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:start;margin:18px 0}
+.how-num{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#d9d6ff;color:#3f3b9e;font-weight:900;font-size:18px}
+.how-step:nth-of-type(4) .how-num{background:#f5f0d9;color:#7d6c16}
+.how-step:nth-of-type(5) .how-num{background:#d9f5e8;color:#0d7b58}
+.how-step:nth-of-type(6) .how-num{background:#ffe6ef;color:#9f2d62}
+.how-step p{margin:4px 0 0;color:#6b7280;line-height:1.55;font-size:13px}
+.how-step strong{font-size:15px;color:#172033}
+
+@media(max-width:1050px){
+  .about-photo-block,.how-photo-block{padding:34px 24px 28px;min-height:auto}
+  .about-photo,.how-photo{height:320px}
+  .about-overlay-card,.how-overlay-card{position:relative;left:auto;top:auto;width:auto;max-width:none;margin:-40px 20px 0}
+  .kpi-strip{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+  .about-overlay-card,.how-overlay-card{margin:16px 0 0;padding:24px}
+  .kpi-strip{grid-template-columns:1fr 1fr}
+}
+
+
+/* ===== v4 refinements ===== */
+
+/* Give both account actions equal visual importance */
+.home-nav-links .nav-pill{
+  border:1.5px solid var(--p)!important;
+  color:var(--p)!important;
+  padding:11px 18px;
+  border-radius:999px;
+  background:#fff;
+  margin-left:0;
+  transition:.18s ease;
+}
+.home-nav-links .nav-pill:hover{
+  background:#faf5ff!important;
+  transform:translateY(-1px);
+}
+.home-nav-links .cleaner-cta{
+  margin-left:-10px;
+}
+
+/* Keep the full How it works card inside the colored section */
+.how-photo-block{
+  min-height:690px;
+  padding:58px 52px;
+  overflow:hidden;
+}
+.how-photo{
+  height:570px;
+}
+.how-overlay-card{
+  top:92px;
+  bottom:auto;
+  width:445px;
+  padding:30px 30px 26px;
+}
+.how-overlay-card h2{
+  font-size:21px;
+  margin-bottom:4px;
+}
+.how-step{
+  margin:14px 0;
+  grid-template-columns:50px 1fr;
+  gap:12px;
+}
+.how-num{
+  width:44px;
+  height:44px;
+  font-size:17px;
+}
+.how-step p{
+  margin-top:3px;
+  font-size:12.5px;
+  line-height:1.45;
+}
+.how-step strong{
+  font-size:14px;
+}
+
+/* More colorful FAQ area */
+.faq-section{
+  padding:76px 7%;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(111,60,195,.10), transparent 26%),
+    radial-gradient(circle at 90% 12%, rgba(233,90,157,.10), transparent 24%),
+    radial-gradient(circle at 85% 90%, rgba(23,183,159,.10), transparent 24%),
+    linear-gradient(135deg,#f8f4ff 0%,#fff5fa 48%,#f2fffb 100%);
+}
+.faq-list details{
+  background:#fff;
+  border:1px solid #e5d9f5;
+  box-shadow:0 8px 20px rgba(72,40,120,.045);
+  transition:.18s ease;
+}
+.faq-list details:nth-child(2){border-color:#f3d4e4}
+.faq-list details:nth-child(3){border-color:#cfeee7}
+.faq-list details:nth-child(4){border-color:#eadbbf}
+.faq-list details:nth-child(5){border-color:#d6def6}
+.faq-list details:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 25px rgba(72,40,120,.07);
+}
+.faq-list summary{
+  color:#1f2937;
+}
+.faq-list details[open]{
+  background:#fff;
+  border-color:#c9b5ee;
+}
+
+/* Make the class-project note quieter */
+.prototype-disclaimer{
+  background:#fbfbfd;
+  color:#7a8391;
+}
+
+@media(max-width:1050px){
+  .how-photo-block{min-height:auto}
+  .how-photo{height:360px}
+  .how-overlay-card{
+    position:relative;
+    top:auto;
+    bottom:auto;
+    width:auto;
+    max-width:none;
+    margin:-48px 20px 0;
+  }
+}
+@media(max-width:760px){
+  .home-nav-links .nav-pill{
+    display:inline-block!important;
+    padding:9px 12px;
+    font-size:12px;
+  }
+  .home-nav-links .cleaner-cta{margin-left:-14px}
+  .how-overlay-card{margin:16px 0 0}
+}
+
+
+/* ===== v5 booking-flow refinements ===== */
+
+/* General booking controls: readable on Safari/macOS */
+.control,
+select.control,
+input.control,
+textarea.control{
+  color:#1f2937!important;
+  background:#ffffff!important;
+  border:1.5px solid #cbd5e1!important;
+  font-size:18px!important;
+  line-height:1.3;
+  min-height:56px;
+  box-shadow:none!important;
+}
+select.control{
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  background-color:#ffffff!important;
+  background-image:
+    linear-gradient(45deg,transparent 50%,#6b7280 50%),
+    linear-gradient(135deg,#6b7280 50%,transparent 50%)!important;
+  background-position:
+    calc(100% - 22px) 24px,
+    calc(100% - 16px) 24px!important;
+  background-size:6px 6px,6px 6px!important;
+  background-repeat:no-repeat!important;
+  padding-right:48px!important;
+}
+select.control option{
+  color:#1f2937!important;
+  background:#ffffff!important;
+  font-size:18px!important;
+}
+.control:focus{
+  outline:none!important;
+  border-color:#8b5cf6!important;
+  box-shadow:0 0 0 4px rgba(139,92,246,.12)!important;
+}
+
+/* Homepage service selection carries into the property page */
+.selected-service-banner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  padding:15px 18px;
+  margin-bottom:24px;
+  border-radius:13px;
+  background:linear-gradient(90deg,#f3e8ff,#fce7f3);
+  border:1px solid #dfc9f8;
+}
+.selected-service-banner span{
+  color:#6b7280;
+  font-size:13px;
+  font-weight:700;
+}
+.selected-service-banner strong{
+  color:#6d28d9;
+  font-size:17px;
+}
+
+/* Property page: linear, one question per row */
+.property-panel{
+  max-width:820px;
+  margin:0 auto;
+  padding:34px!important;
+}
+.property-panel h2{
+  font-size:32px;
+  margin-bottom:8px;
+}
+.property-panel>.sub{
+  font-size:16px;
+  margin-bottom:28px;
+}
+.property-stack{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+.property-question{
+  padding:20px 22px;
+  border:1px solid #e5e7eb;
+  border-radius:15px;
+  background:#fcfcfd;
+}
+.property-question label{
+  display:block;
+  margin-bottom:10px;
+  color:#334155;
+  font-size:17px;
+  font-weight:800;
+}
+.large-control{
+  width:100%;
+  font-size:18px!important;
+}
+
+/* "What should be cleaned?" readable in both selected and unselected states */
+#s3 .chips{
+  gap:11px;
+}
+#s3 .chip{
+  color:#273449!important;
+  background:#ffffff!important;
+  border:1.5px solid #cbd5e1!important;
+  font-size:16px!important;
+  font-weight:700!important;
+  padding:11px 16px!important;
+}
+#s3 .chip:hover{
+  border-color:#a78bfa!important;
+  background:#faf5ff!important;
+  color:#5b21b6!important;
+}
+#s3 .chip.selected{
+  color:#5b21b6!important;
+  background:#f3e8ff!important;
+  border-color:#a78bfa!important;
+}
+#s3 .fg>label{
+  font-size:17px;
+  color:#334155;
+}
+#s3 textarea.control{
+  color:#1f2937!important;
+  background:#ffffff!important;
+}
+
+/* TaskRabbit-style cleaner selection */
+.tasker-select-panel{
+  max-width:1180px;
+  margin:0 auto;
+  padding:28px!important;
+}
+.tasker-page-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:22px;
+  margin-bottom:22px;
+}
+.tasker-page-head h2{
+  font-size:31px;
+  margin-bottom:6px;
+}
+.tasker-sort{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.tasker-sort select{
+  min-width:230px;
+  padding:11px 42px 11px 13px;
+  border:1.5px solid #9ca3af;
+  border-radius:10px;
+  background:#fff;
+  color:#1f2937;
+  font-size:15px;
+  -webkit-appearance:none;
+  appearance:none;
+  background-image:
+    linear-gradient(45deg,transparent 50%,#374151 50%),
+    linear-gradient(135deg,#374151 50%,transparent 50%);
+  background-position:calc(100% - 19px) 19px,calc(100% - 13px) 19px;
+  background-size:6px 6px,6px 6px;
+  background-repeat:no-repeat;
+}
+
+.tasker-layout{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:24px;
+  align-items:start;
+}
+.tasker-filters{
+  border:1px solid #d1d5db;
+  border-radius:16px;
+  background:#fff;
+  padding:20px;
+  position:sticky;
+  top:94px;
+}
+.filter-section{
+  padding:0 0 20px;
+  margin-bottom:20px;
+  border-bottom:1px solid #e5e7eb;
+}
+.filter-section:last-child{
+  margin-bottom:0;
+  border-bottom:0;
+}
+.filter-section h3{
+  margin:0 0 13px;
+  font-size:16px;
+}
+.filter-date-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.filter-pill{
+  border:1.5px solid #9ca3af;
+  border-radius:999px;
+  background:#fff;
+  color:#1f2937;
+  padding:9px 7px;
+  font-weight:700;
+  font-size:12px;
+}
+.filter-pill.active{
+  border-color:#0f766e;
+  background:#f0fdfa;
+  color:#115e59;
+}
+.filter-check{
+  display:block;
+  margin:10px 0;
+  color:#26313f;
+  font-size:13px;
+}
+.filter-check input{
+  accent-color:#0f766e;
+  margin-right:8px;
+}
+.filter-check span{
+  color:#6b7280;
+}
+.specific-time{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#6b7280;
+  font-size:11px;
+  margin:16px 0 10px;
+}
+.filter-select{
+  width:100%;
+  border:1px solid #9ca3af;
+  border-radius:10px;
+  padding:10px 12px;
+  background:#fff;
+  color:#1f2937;
+}
+.price-slider{
+  width:100%;
+  accent-color:#0f766e;
+}
+.price-range-labels{
+  display:flex;
+  justify-content:space-between;
+  color:#374151;
+  font-size:12px;
+  font-weight:800;
+  margin-top:5px;
+}
+.filter-section small{
+  display:block;
+  margin-top:10px;
+  color:#6b7280;
+  line-height:1.4;
+}
+.result-count{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:12px;
+  color:#374151;
+}
+.result-count span{
+  color:#6b7280;
+  font-size:12px;
+}
+
+.tasker-card{
+  display:grid;
+  grid-template-columns:190px 1fr;
+  gap:24px;
+  padding:24px;
+  margin-bottom:18px;
+  background:#fff;
+  border:1px solid #d1d5db;
+  border-radius:16px;
+}
+.tasker-left{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+.tasker-photo{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:68px;
+  background:linear-gradient(145deg,#dbeafe,#fce7f3);
+  border:5px solid #fff;
+  box-shadow:0 0 0 1px #d1d5db;
+}
+.profile-review-link{
+  border:0;
+  background:none;
+  color:#087f68;
+  font-size:14px;
+  font-weight:800;
+  line-height:1.4;
+  margin:13px 0;
+}
+.select-continue-btn{
+  width:100%;
+  border:0;
+  border-radius:999px;
+  background:#0b8369;
+  color:#fff;
+  padding:12px 13px;
+  font-weight:900;
+  font-size:14px;
+}
+.tasker-small-note{
+  color:#6b7280;
+  font-size:10.5px;
+  line-height:1.45;
+  margin:10px 4px 0;
+}
+.tasker-title-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:flex-start;
+}
+.tasker-title-row h3{
+  margin:0;
+  font-size:25px;
+}
+.tasker-price{
+  font-size:24px;
+  font-weight:900;
+  color:#111827;
+  white-space:nowrap;
+}
+.tasker-price span{
+  font-size:14px;
+  font-weight:600;
+}
+.tasker-badges{
+  display:flex;
+  gap:6px;
+  margin-top:7px;
+}
+.elite-badge,
+.minimum-badge{
+  padding:5px 7px;
+  border-radius:5px;
+  font-size:10px;
+  font-weight:900;
+}
+.elite-badge{
+  background:#f3e8ff;
+  color:#7e22ce;
+}
+.minimum-badge{
+  background:#ecfdf5;
+  color:#166534;
+}
+.tasker-rating{
+  margin:13px 0 7px;
+  font-size:15px;
+}
+.tasker-rating span{
+  color:#4b5563;
+}
+.tasker-completed{
+  color:#315f4e;
+  font-size:14px;
+  margin-bottom:6px;
+}
+.tasker-distance{
+  color:#4b5563;
+  font-size:13px;
+}
+.help-box{
+  margin-top:18px;
+  padding:16px;
+  background:#f4f6f5;
+  border-radius:4px;
+}
+.help-box strong{
+  color:#4b5563;
+}
+.help-box p{
+  margin:6px 0 10px;
+  color:#59616c;
+  line-height:1.5;
+  font-size:13px;
+}
+.tasker-review-snippet{
+  display:grid;
+  grid-template-columns:44px 1fr;
+  gap:12px;
+  margin-top:16px;
+}
+.review-avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#e5e7eb;
+}
+.review-date{
+  color:#6b7280;
+  font-size:11px;
+}
+.tasker-review-snippet p{
+  margin:6px 0 0;
+  color:#4b5563;
+  font-size:13px;
+  line-height:1.5;
+}
+
+@media(max-width:950px){
+  .tasker-layout{grid-template-columns:1fr}
+  .tasker-filters{position:static}
+  .tasker-card{grid-template-columns:1fr}
+  .tasker-left{max-width:240px;margin:auto}
+  .tasker-page-head{align-items:flex-start;flex-direction:column}
+}
+
+
+/* ===== v6 booking journey ===== */
+
+/* Back button: visible and intentionally styled */
+.secondary,
+.back-btn{
+  background:#f2eafe!important;
+  color:#6434b9!important;
+  border:1.5px solid #a98ae7!important;
+  font-weight:800!important;
+}
+.secondary:hover,
+.back-btn:hover{
+  background:#e8dbfb!important;
+  border-color:#875dcc!important;
+}
+
+/* Booking top journey */
+.booking-flow-header{
+  position:sticky;
+  top:0;
+  z-index:35;
+  display:grid;
+  grid-template-columns:190px 1fr;
+  align-items:center;
+  gap:30px;
+  padding:20px 5% 16px;
+  background:#fff;
+  border-bottom:1px solid #d9dde4;
+  box-shadow:0 2px 8px rgba(15,23,42,.04);
+}
+.booking-flow-brand{
+  font-size:27px;
+  font-weight:900;
+  color:var(--p);
+  cursor:pointer;
+  letter-spacing:-.7px;
+}
+.booking-flow-brand span{color:var(--pink)}
+
+.phase-progress{
+  display:flex;
+  align-items:flex-start;
+  width:100%;
+  max-width:980px;
+  margin:0 auto;
+}
+.phase-step{
+  width:150px;
+  min-width:120px;
+  text-align:center;
+  color:#9aa5b4;
+}
+.phase-dot{
+  width:28px;
+  height:28px;
+  margin:0 auto 7px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#d9dde1;
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  border:3px solid #d9dde1;
+}
+.phase-label{
+  font-size:12px;
+  line-height:1.25;
+  font-weight:700;
+}
+.phase-step.active{color:#183d34}
+.phase-step.active .phase-dot{
+  background:#fff;
+  color:#0c705c;
+  border-color:#0c705c;
+}
+.phase-step.done{color:#0c705c}
+.phase-step.done .phase-dot{
+  background:#0c705c;
+  border-color:#0c705c;
+}
+.phase-line{
+  height:5px;
+  flex:1;
+  min-width:40px;
+  margin-top:12px;
+  border-radius:999px;
+  background:#d4d7d9;
+}
+.phase-line.done{background:#0c705c}
+
+/* Compact left progress only during task-description phase */
+.describe-layout{
+  max-width:1050px;
+  margin:28px auto 70px;
+  padding:0 4%;
+  display:grid;
+  grid-template-columns:160px 1fr;
+  gap:18px;
+  align-items:start;
+}
+.compact-steps{
+  width:160px;
+  padding:14px 12px;
+  position:sticky;
+  top:125px;
+  border-radius:14px;
+}
+.compact-steps .step{
+  gap:8px;
+  padding:9px 0;
+  font-size:12px;
+}
+.compact-steps .num{
+  width:25px;
+  height:25px;
+  font-size:11px;
+}
+.compact-steps .step span{
+  font-size:11px;
+}
+.describe-main{
+  min-width:0;
+}
+.property-panel,
+.requirements-panel{
+  max-width:none!important;
+  margin:0!important;
+}
+
+/* Full pages after "Describe your task" */
+.full-flow{
+  max-width:1240px;
+  margin:26px auto 70px;
+  padding:0 4%;
+}
+.full-flow .panel{
+  width:100%;
+}
+
+/* Cleaner browser */
+.tasker-select-panel{
+  max-width:none!important;
+  margin:0!important;
+}
+.full-page-actions{
+  margin-top:26px;
+}
+
+/* Mandatory auth gate */
+.auth-page{
+  max-width:980px;
+  margin:0 auto;
+  padding:34px!important;
+}
+.auth-wrap{
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:50px;
+  align-items:center;
+  min-height:480px;
+}
+.auth-copy h2{
+  font-size:36px;
+  line-height:1.12;
+  letter-spacing:-1px;
+  margin:0 0 15px;
+}
+.auth-copy>p{
+  color:#667085;
+  line-height:1.7;
+  margin-bottom:28px;
+}
+.auth-benefit{
+  padding:10px 0;
+  color:#334155;
+  font-weight:700;
+}
+.auth-card{
+  border:1px solid #dde2ea;
+  border-radius:18px;
+  padding:24px;
+  background:#fff;
+  box-shadow:0 16px 35px rgba(15,23,42,.07);
+}
+.auth-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:23px;
+}
+.auth-tab{
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  padding:10px;
+  background:#fff;
+  color:#475569;
+  font-weight:800;
+}
+.auth-tab.active{
+  border-color:#8b5cf6;
+  color:#6d28d9;
+  background:#f5f0ff;
+}
+.auth-card h3{
+  font-size:23px;
+  margin:0 0 18px;
+}
+.auth-field{
+  margin-bottom:15px;
+}
+.auth-field label{
+  display:block;
+  font-size:13px;
+  color:#475569;
+  font-weight:800;
+  margin-bottom:7px;
+}
+.auth-field input{
+  width:100%;
+  min-height:52px;
+  padding:11px 13px;
+  border:1.5px solid #cbd5e1;
+  border-radius:10px;
+  color:#1f2937;
+  background:#fff;
+  font-size:16px;
+}
+.auth-field input:focus{
+  outline:none;
+  border-color:#8b5cf6;
+  box-shadow:0 0 0 4px rgba(139,92,246,.10);
+}
+.auth-submit{
+  width:100%;
+  margin-top:4px;
+}
+.auth-demo-note{
+  display:block;
+  margin-top:12px;
+  color:#8a94a3;
+  text-align:center;
+}
+
+/* Payment */
+.payment-page{
+  max-width:980px;
+  margin:0 auto;
+  padding:34px!important;
+}
+.payment-heading{
+  margin-bottom:24px;
+}
+.payment-heading h2{
+  font-size:31px;
+  margin:3px 0 5px;
+}
+
+/* Date/time popup */
+.schedule-modal-card{
+  width:min(860px,94vw);
+  max-height:92vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:18px;
+  padding:28px;
+  box-shadow:0 30px 80px rgba(0,0,0,.28);
+}
+.schedule-modal-head{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+  margin-bottom:20px;
+}
+.schedule-modal-head h2{
+  margin:2px 0 0;
+  font-size:30px;
+  letter-spacing:-.6px;
+}
+.modal-close-btn{
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#f1f5f9;
+  color:#1f2937;
+  font-size:25px;
+  line-height:1;
+}
+.schedule-modal-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:28px;
+}
+.calendar-side{
+  padding-right:26px;
+  border-right:1px solid #e5e7eb;
+}
+.selected-cleaner-mini{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-bottom:23px;
+}
+.schedule-cleaner-photo{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(145deg,#dbeafe,#fce7f3);
+  font-size:24px;
+}
+.selected-cleaner-mini strong{
+  display:block;
+}
+.selected-cleaner-mini span{
+  display:block;
+  color:#667085;
+  font-size:12px;
+  margin-top:3px;
+}
+.calendar-title{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:13px;
+}
+.calendar-week,
+.calendar-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+.calendar-week{
+  color:#8a94a3;
+  font-size:10px;
+  font-weight:800;
+  text-align:center;
+  margin-bottom:5px;
+}
+.calendar-day{
+  aspect-ratio:1/1;
+  min-width:40px;
+  border:0;
+  border-radius:6px;
+  background:#fff;
+  color:#1f2937;
+  font-size:15px;
+  cursor:pointer;
+}
+.calendar-day:hover{
+  background:#eefaf6;
+}
+.calendar-day.selected{
+  background:#0b8369;
+  color:#fff;
+  font-weight:900;
+}
+.calendar-day.muted-day{
+  color:#aeb6c2;
+  cursor:default;
+}
+.schedule-time-label{
+  display:block;
+  margin:22px 0 7px;
+  font-size:13px;
+  color:#475569;
+  font-weight:800;
+}
+.schedule-time-select{
+  width:100%;
+  min-height:54px;
+  border:1.5px solid #9ca3af;
+  border-radius:12px;
+  padding:10px 14px;
+  background:#fff;
+  color:#1f2937;
+  font-size:16px;
+}
+.schedule-hint{
+  color:#667085;
+  font-size:12px;
+  line-height:1.55;
+}
+.schedule-summary-side{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.schedule-summary-side h3{
+  margin:0 0 5px;
+  font-size:16px;
+}
+.schedule-request{
+  font-size:23px;
+  font-weight:900;
+  color:#1f2937;
+  margin-bottom:9px;
+}
+.schedule-minimum{
+  color:#185d4e;
+  font-weight:800;
+  font-size:13px;
+  line-height:1.4;
+}
+.schedule-continue{
+  width:100%;
+  margin:26px 0 22px;
+  border:0;
+  border-radius:999px;
+  padding:14px;
+  background:#0b8369;
+  color:#fff;
+  font-weight:900;
+  font-size:15px;
+}
+.next-step-note{
+  display:grid;
+  grid-template-columns:30px 1fr;
+  gap:10px;
+  align-items:start;
+  color:#475569;
+  font-size:12px;
+  line-height:1.5;
+}
+.next-step-note span{
+  width:27px;
+  height:27px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#dff7f1;
+  color:#0b8369;
+  font-weight:900;
+}
+.next-step-note p{margin:2px 0 0}
+
+/* Confirmation */
+.confirmation-page{
+  max-width:800px;
+  margin:0 auto;
+}
+
+/* Keep requirements chips readable */
+#s3 .chip{
+  color:#26313f!important;
+  background:#fff!important;
+  border:1.5px solid #cbd5e1!important;
+}
+#s3 .chip.selected{
+  color:#5b21b6!important;
+  background:#f3e8ff!important;
+  border-color:#a78bfa!important;
+}
+
+@media(max-width:900px){
+  .booking-flow-header{
+    grid-template-columns:1fr;
+  }
+  .booking-flow-brand{
+    text-align:center;
+  }
+  .phase-step{
+    min-width:80px;
+    width:auto;
+    flex:1;
+  }
+  .phase-label{
+    font-size:10px;
+  }
+  .describe-layout{
+    grid-template-columns:1fr;
+  }
+  .compact-steps{
+    position:static;
+    width:100%;
+    display:flex;
+    gap:20px;
+  }
+  .compact-steps .step{
+    flex:1;
+  }
+  .auth-wrap{
+    grid-template-columns:1fr;
+  }
+  .schedule-modal-grid{
+    grid-template-columns:1fr;
+  }
+  .calendar-side{
+    padding-right:0;
+    border-right:0;
+    border-bottom:1px solid #e5e7eb;
+    padding-bottom:22px;
+  }
+}
+
+
+/* ===== v7 refinements ===== */
+.booking-flow-brand{position:relative;z-index:3}
+.schedule-time-select{
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  color:#1f2937!important;
+  background-color:#fff!important;
+  background-image:linear-gradient(45deg,transparent 50%,#475569 50%),linear-gradient(135deg,#475569 50%,transparent 50%)!important;
+  background-position:calc(100% - 22px) 23px,calc(100% - 16px) 23px!important;
+  background-size:6px 6px,6px 6px!important;
+  background-repeat:no-repeat!important;
+  padding:12px 46px 12px 14px!important;
+  min-height:54px;
+  border:1.5px solid #94a3b8!important;
+  border-radius:12px!important;
+  font-size:17px!important;
+  font-weight:700;
+  box-shadow:none!important;
+}
+.schedule-time-select option{color:#1f2937!important;background:#fff!important;font-size:16px!important}
+.schedule-time-select:focus{outline:none!important;border-color:#0b8369!important;box-shadow:0 0 0 4px rgba(11,131,105,.12)!important}
+.filter-pill{cursor:pointer}
+.filter-pill.active{background:#e7faf5!important;border-color:#0b8369!important;color:#0b6555!important}
+.filter-check input{width:17px;height:17px;vertical-align:-3px}
+.price-slider{cursor:pointer}
+.no-results{padding:45px 28px;border:1px dashed #cbd5e1;border-radius:14px;text-align:center;background:#fafafa;color:#475569}
+.no-results strong{display:block;font-size:18px;margin-bottom:6px;color:#1f2937}
+.no-results span{font-size:13px}
+.new-badge{padding:5px 7px;border-radius:5px;font-size:10px;font-weight:900;background:#fff4d8;color:#8a6100}
+
+
+/* ===== v9 payment checkout ===== */
+.payment-page{max-width:1120px!important}
+.payment-layout{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:24px;
+  align-items:start;
+}
+.booking-review-card,
+.payment-checkout-card{
+  background:#fff;
+  border:1px solid #dfe3e9;
+  border-radius:18px;
+  padding:24px;
+}
+.payment-overline{
+  display:block;
+  color:#6f3cc3;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  font-weight:900;
+  margin-bottom:5px;
+}
+.payment-section-head h3,
+.payment-method-section h3{
+  margin:0;
+  font-size:22px;
+}
+.payment-cleaner-card{
+  display:grid;
+  grid-template-columns:58px 1fr auto;
+  gap:13px;
+  align-items:center;
+  padding:16px;
+  margin:18px 0 8px;
+  border-radius:14px;
+  background:#faf8ff;
+  border:1px solid #ece4fa;
+}
+.payment-cleaner-photo{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:29px;
+  background:linear-gradient(145deg,#dbeafe,#fce7f3);
+}
+.payment-cleaner-info strong{display:block;font-size:17px}
+.payment-cleaner-info span{display:block;margin-top:4px;color:#667085;font-size:12px}
+.edit-link{
+  border:0;
+  background:none;
+  color:#6f3cc3;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+  padding:7px;
+}
+.edit-link:hover{text-decoration:underline}
+.booking-detail-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:15px;
+  padding:18px 4px;
+  border-bottom:1px solid #e8ebef;
+}
+.booking-detail-row:last-child{border-bottom:0}
+.booking-detail-row strong{display:block;color:#1f2937;margin-top:4px}
+.booking-detail-row small,
+.instruction-text{
+  display:block;
+  color:#667085;
+  margin-top:4px;
+  font-size:12px;
+  line-height:1.5;
+}
+.detail-label{
+  color:#667085;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  font-weight:900;
+}
+.price-box{
+  padding-bottom:18px;
+  border-bottom:1px solid #e5e7eb;
+}
+.price-line{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:7px 0;
+  color:#475569;
+  font-size:14px;
+}
+.price-line strong{color:#1f2937}
+.price-line.grand-total{
+  border-top:1px solid #d7dce3;
+  margin-top:8px;
+  padding-top:15px;
+  font-size:20px;
+  font-weight:900;
+  color:#111827;
+}
+.payment-method-section{margin-top:22px}
+.payment-method-section h3{margin-bottom:13px}
+.payment-method{
+  width:100%;
+  display:grid;
+  grid-template-columns:38px 1fr 28px;
+  align-items:center;
+  gap:10px;
+  border:1.5px solid #d5dbe3;
+  border-radius:13px;
+  background:#fff;
+  color:#1f2937;
+  padding:13px;
+  margin-bottom:9px;
+  text-align:left;
+  cursor:pointer;
+}
+.payment-method:hover{
+  border-color:#bfa9e7;
+  background:#fcfaff;
+}
+.payment-method.selected{
+  border-color:#7c3aed;
+  background:#faf7ff;
+}
+.payment-method-icon{font-size:22px}
+.payment-method strong{display:block;font-size:14px}
+.payment-method small{display:block;color:#667085;margin-top:3px;font-size:11px}
+.method-check{
+  visibility:hidden;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  place-items:center;
+  background:#7c3aed;
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+}
+.payment-method.selected .method-check{
+  display:grid;
+  visibility:visible;
+}
+.payment-option-panel{
+  margin-top:15px;
+  padding:17px;
+  border-radius:13px;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+}
+.payment-field{margin-bottom:13px}
+.payment-field label{
+  display:block;
+  color:#475569;
+  font-size:11px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.payment-field input{
+  width:100%;
+  min-height:48px;
+  border:1.5px solid #cbd5e1;
+  border-radius:10px;
+  background:#fff;
+  color:#1f2937;
+  padding:10px 12px;
+  font-size:15px;
+  outline:none;
+}
+.payment-field input:focus{
+  border-color:#8b5cf6;
+  box-shadow:0 0 0 4px rgba(139,92,246,.10);
+}
+.payment-field-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.payment-demo-note{
+  margin:3px 0 0;
+  color:#8a94a3;
+  font-size:10px;
+}
+.qr-placeholder{
+  text-align:center;
+  color:#475569;
+}
+.fake-qr{
+  width:110px;
+  height:110px;
+  margin:0 auto 10px;
+  display:grid;
+  place-items:center;
+  border:7px solid #1f2937;
+  background:repeating-linear-gradient(45deg,#1f2937 0 6px,#fff 6px 12px);
+  color:#fff;
+  font-size:45px;
+}
+.qr-placeholder p{
+  color:#667085;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.confirm-pay-btn{
+  width:100%;
+  min-height:52px;
+  margin-top:17px;
+  border:0;
+  border-radius:999px;
+  background:linear-gradient(90deg,#6f3cc3,#e95a9d);
+  color:#fff;
+  font-size:16px;
+  font-weight:900;
+  cursor:pointer;
+}
+.confirm-pay-btn:hover{filter:brightness(.98)}
+.charge-note{
+  text-align:center;
+  color:#667085;
+  font-size:10.5px;
+  margin:9px 0 15px;
+}
+.payment-trust-list{
+  padding:13px 15px;
+  border-radius:11px;
+  background:#ecfdf5;
+  border:1px solid #a7f3d0;
+  color:#065f46;
+  font-size:11px;
+  line-height:1.75;
+}
+.policy-link{
+  display:block;
+  margin:14px auto 0;
+  border:0;
+  background:none;
+  color:#6f3cc3;
+  font-size:11px;
+  font-weight:900;
+  cursor:pointer;
+}
+.cancellation-policy{
+  margin-top:10px;
+  padding:11px;
+  border-radius:9px;
+  background:#fff8e8;
+  border:1px solid #f0dca6;
+  color:#745b20;
+  font-size:10.5px;
+  line-height:1.5;
+}
+@media(max-width:900px){
+  .payment-layout{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .payment-cleaner-card{grid-template-columns:52px 1fr}
+  .payment-cleaner-card .edit-link{grid-column:1/-1;text-align:left;padding-left:0}
+  .payment-field-row{grid-template-columns:1fr}
+}
+
+
+/* ===== v10 service-aware task + scheduling flow ===== */
+
+.dynamic-property-control{
+  color:#1f2937!important;
+}
+.requirements-panel .fg{
+  margin-bottom:24px;
+}
+.requirements-panel .fg>label{
+  font-size:17px!important;
+  color:#334155!important;
+}
+
+/* Cleaner sort dropdown */
+.tasker-sort select,
+.tasker-sort select option,
+.schedule-time-select,
+.schedule-time-select option{
+  color:#1f2937!important;
+  background-color:#fff!important;
+  -webkit-text-fill-color:#1f2937!important;
+  opacity:1!important;
+}
+
+/* Period first, exact time second */
+.schedule-period-options{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-bottom:18px;
+}
+.schedule-period-btn{
+  min-height:66px;
+  border:1.5px solid #cbd5e1;
+  border-radius:12px;
+  background:#fff;
+  color:#273449;
+  padding:9px 8px;
+  cursor:pointer;
+  text-align:center;
+}
+.schedule-period-btn strong{
+  display:block;
+  font-size:14px;
+}
+.schedule-period-btn span{
+  display:block;
+  margin-top:4px;
+  color:#667085;
+  font-size:10px;
+}
+.schedule-period-btn:hover:not(:disabled){
+  border-color:#0b8369;
+  background:#f3fffb;
+}
+.schedule-period-btn.selected{
+  border-color:#0b8369;
+  background:#e9fbf6;
+  color:#075f4e;
+}
+.schedule-period-btn.selected span{
+  color:#397b6e;
+}
+.schedule-period-btn.unavailable,
+.schedule-period-btn:disabled{
+  opacity:.40;
+  cursor:not-allowed;
+  background:#f1f3f5;
+  border-color:#d8dde4;
+}
+.schedule-time-select{
+  min-height:58px!important;
+  font-size:17px!important;
+  border:1.5px solid #9aa7b8!important;
+  box-shadow:none!important;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  background-image:
+    linear-gradient(45deg,transparent 50%,#475569 50%),
+    linear-gradient(135deg,#475569 50%,transparent 50%)!important;
+  background-position:
+    calc(100% - 22px) 25px,
+    calc(100% - 16px) 25px!important;
+  background-size:6px 6px,6px 6px!important;
+  background-repeat:no-repeat!important;
+  padding-right:48px!important;
+}
+.schedule-time-select:focus{
+  border-color:#0b8369!important;
+  box-shadow:0 0 0 4px rgba(11,131,105,.10)!important;
+}
+
+@media(max-width:650px){
+  .schedule-period-options{grid-template-columns:1fr}
+}
+
+
+/* ===== v11 rolling one-month booking calendar ===== */
+.calendar-nav{
+  display:grid;
+  grid-template-columns:42px 1fr 42px;
+  align-items:center;
+  gap:10px;
+  margin-bottom:6px;
+}
+.calendar-title{
+  margin:0!important;
+  text-align:center;
+}
+.calendar-nav-btn{
+  width:40px;
+  height:40px;
+  border:1.5px solid #cbd5e1;
+  border-radius:50%;
+  background:#fff;
+  color:#334155;
+  font-size:27px;
+  line-height:1;
+  cursor:pointer;
+}
+.calendar-nav-btn:hover:not(:disabled){
+  border-color:#0b8369;
+  background:#eefbf7;
+  color:#0b8369;
+}
+.calendar-nav-btn:disabled{
+  opacity:.28;
+  cursor:not-allowed;
+}
+.booking-window-note{
+  margin:4px 0 15px;
+  color:#667085;
+  font-size:11px;
+  text-align:center;
+}
+.calendar-empty{
+  aspect-ratio:1/1;
+}
+.calendar-day:disabled{
+  color:#b9c1cc!important;
+  background:#fff!important;
+  cursor:not-allowed!important;
+}
+.calendar-day.selected{
+  background:#0b8369!important;
+  color:#fff!important;
+}
+
+
+/* ===== v12 clearer price transparency ===== */
+.price-line > span{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.price-detail-note{
+  display:block;
+  color:#8a94a3;
+  font-size:9.5px;
+  font-weight:500;
+  line-height:1.35;
+  max-width:250px;
+}
+
+
+/* ===== v13 TaskRabbit-inspired checkout layout ===== */
+
+.payment-page-v13{
+  max-width:1240px!important;
+  background:#f7f9f8!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+
+.payment-v13-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(360px,.85fr);
+  gap:28px;
+  align-items:start;
+}
+
+.payment-main-column,
+.payment-summary-column{
+  background:#fff;
+  border:1px solid #d6dce2;
+  border-radius:18px;
+}
+
+.payment-main-column{
+  padding:34px 38px;
+}
+
+.confirm-details-title{
+  margin:0 0 30px;
+  font-size:34px!important;
+  letter-spacing:-.8px;
+}
+
+.frequency-section h3,
+.payment-entry-section h3{
+  font-size:27px;
+  margin:0 0 6px;
+}
+
+.frequency-intro,
+.payment-intro{
+  color:#667085;
+  font-size:14px;
+  margin:0 0 20px;
+}
+
+.frequency-options{
+  display:grid;
+  gap:10px;
+}
+
+.frequency-option{
+  display:grid;
+  grid-template-columns:28px 1fr;
+  align-items:start;
+  gap:14px;
+  cursor:pointer;
+  padding:10px 6px;
+}
+
+.frequency-option input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.frequency-radio{
+  width:25px;
+  height:25px;
+  border-radius:50%;
+  border:1.8px solid #6b7280;
+  margin-top:1px;
+  position:relative;
+}
+
+.frequency-option.selected .frequency-radio{
+  border-color:#0b8369;
+}
+
+.frequency-option.selected .frequency-radio::after{
+  content:"";
+  position:absolute;
+  inset:5px;
+  border-radius:50%;
+  background:#0b8369;
+}
+
+.frequency-copy strong{
+  display:block;
+  font-size:19px;
+  color:#1f2937;
+}
+
+.frequency-copy small{
+  display:block;
+  color:#667085;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.reward-info-link{
+  border:0;
+  background:none;
+  color:#7c3aed;
+  font-weight:900;
+  font-size:13px;
+  margin:14px 0 0 42px;
+  padding:0;
+  cursor:pointer;
+}
+
+.reward-info-link:hover{text-decoration:underline}
+
+.reward-info-box{
+  display:grid;
+  grid-template-columns:120px 1fr;
+  gap:18px;
+  align-items:center;
+  margin:18px 0 0 42px;
+  padding:20px 22px;
+  border-radius:24px;
+  background:linear-gradient(135deg,#f6edc8 0%,#ecf5e8 100%);
+  border:2px solid #bfe2d5;
+}
+
+.reward-stamp-badge{
+  width:102px;
+  height:102px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#f0b53b;
+  color:#123d36;
+  font-size:48px;
+  font-weight:900;
+  box-shadow:0 10px 24px rgba(240,181,59,.22);
+}
+
+.reward-info-copy strong{
+  display:block;
+  margin-top:3px;
+  color:#155146!important;
+  font-size:18px;
+}
+
+.reward-info-box p{
+  margin:10px 0 0;
+  color:#45645e;
+  font-size:13px;
+  line-height:1.7;
+}
+
+.payment-section-divider{
+  height:1px;
+  background:#d7dce2;
+  margin:28px 0;
+}
+
+.payment-method-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.payment-method-tab{
+  min-height:86px;
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:10px;
+  align-items:center;
+  text-align:left;
+  border:1.5px solid #d2d8e0;
+  border-radius:13px;
+  background:#fff;
+  padding:13px;
+  color:#1f2937;
+  cursor:pointer;
+}
+
+.payment-method-tab.selected{
+  border-color:#7c3aed;
+  background:#fbf8ff;
+}
+
+.payment-method-tab>span{
+  font-size:24px;
+}
+
+.payment-method-tab strong{
+  display:block;
+  font-size:14px;
+}
+
+.payment-method-tab small{
+  display:block;
+  margin-top:3px;
+  font-size:10px;
+  color:#667085;
+  line-height:1.35;
+}
+
+.payment-method-panel{
+  padding:20px 0 4px;
+}
+
+.payment-country-select{
+  width:100%;
+  min-height:48px;
+  padding:10px 42px 10px 12px;
+  border:1.5px solid #cbd5e1;
+  border-radius:10px;
+  background:#fff;
+  color:#1f2937;
+  font-size:15px;
+}
+
+.save-payment-row{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin:16px 0 4px;
+  color:#475569;
+  font-size:13px;
+}
+
+.save-payment-row input{
+  width:18px;
+  height:18px;
+  accent-color:#7c3aed;
+}
+
+.promo-link{
+  border:0;
+  background:none;
+  color:#0b8369;
+  font-size:13px;
+  font-weight:900;
+  padding:0;
+  margin-top:16px;
+  cursor:pointer;
+}
+
+.promo-box{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  margin-top:10px;
+}
+
+.promo-box input{
+  min-height:44px;
+  border:1.5px solid #cbd5e1;
+  border-radius:9px;
+  padding:9px 11px;
+}
+
+.promo-box button{
+  border:0;
+  border-radius:9px;
+  background:#0b8369;
+  color:#fff;
+  font-weight:800;
+  padding:0 18px;
+}
+
+.payment-summary-column{
+  overflow:hidden;
+  position:sticky;
+  top:118px;
+}
+
+.summary-top-card{
+  background:#f1f4f2;
+  text-align:center;
+  padding:19px 20px 16px;
+}
+
+.summary-service-name{
+  display:block;
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:9px;
+}
+
+.summary-cleaner-avatar{
+  width:78px;
+  height:78px;
+  margin:0 auto 8px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:40px;
+  background:linear-gradient(145deg,#dbeafe,#fce7f3);
+}
+
+.summary-cleaner-name{
+  display:block;
+  font-size:16px;
+}
+
+.summary-cleaner-rating{
+  display:block;
+  margin-top:3px;
+  color:#667085;
+  font-size:11px;
+}
+
+.summary-details-wrap{
+  padding:22px;
+}
+
+.summary-info-row{
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:10px;
+  align-items:start;
+  margin-bottom:16px;
+}
+
+.summary-icon{
+  font-size:18px;
+}
+
+.summary-info-row strong{
+  display:block;
+  color:#1f2937;
+  font-size:14px;
+}
+
+.summary-info-row small{
+  display:block;
+  color:#667085;
+  font-size:11px;
+  margin-top:3px;
+  line-height:1.4;
+}
+
+.edit-task-btn{
+  border:1.5px solid #0b8369;
+  border-radius:999px;
+  background:#fff;
+  color:#0b8369;
+  font-weight:900;
+  padding:10px 18px;
+  margin:4px 0 4px 44px;
+  cursor:pointer;
+}
+
+.summary-divider{
+  height:1px;
+  background:#d7dce2;
+  margin:20px 0;
+}
+
+.summary-details-wrap h3{
+  font-size:18px;
+  margin:0 0 13px;
+}
+
+.task-detail-card{
+  border:1.5px solid #d2dbe4;
+  border-radius:18px;
+  padding:18px;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfcfd 100%);
+  box-shadow:0 10px 24px rgba(15,23,42,.05);
+}
+
+.task-detail-top{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.task-main-chip,
+.task-soft-chip,
+.task-chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.task-main-chip{
+  background:#e8f6f2;
+  color:#0f7668;
+  border:1px solid #b8e1d8;
+}
+
+.task-soft-chip{
+  background:#f4edff;
+  color:#7c3aed;
+  border:1px solid #d9c4fb;
+}
+
+.task-detail-section + .task-detail-section{
+  margin-top:14px;
+}
+
+.task-detail-label{
+  display:block;
+  margin-bottom:8px;
+  color:#475467;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.task-chip-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.task-chip{
+  background:#f7faf9;
+  color:#334155;
+  border:1px solid #d7e1df;
+}
+
+.task-chip.empty{
+  background:#fcfcfd;
+  color:#667085;
+  font-weight:700;
+}
+
+.task-note-box{
+  min-height:74px;
+  padding:12px 14px;
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px solid #d9e1ea;
+  color:#475569;
+  font-size:12px;
+  line-height:1.65;
+}
+
+.summary-price-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:8px 0;
+  color:#475569;
+  font-size:13px;
+}
+
+.summary-price-row>span{
+  display:flex;
+  flex-direction:column;
+}
+
+.summary-price-note{
+  display:block;
+  color:#8a94a3;
+  font-size:9px;
+  margin-top:2px;
+  max-width:220px;
+  line-height:1.35;
+}
+
+.summary-total-row{
+  border-top:1px solid #d7dce2;
+  margin-top:7px;
+  padding-top:13px;
+  font-size:17px;
+  font-weight:900;
+  color:#111827;
+}
+
+.confirm-pay-v13{
+  margin-top:16px;
+}
+
+.payment-back-row{
+  margin-top:22px!important;
+}
+
+.qr-v13{
+  padding:10px 0 4px;
+}
+
+/* Stamp reward */
+.stamp-reward-card{
+  position:relative;
+  width:min(720px,94vw);
+  background:#fff;
+  border-radius:26px;
+  padding:34px;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.28);
+}
+
+.stamp-close-btn{
+  position:absolute;
+  right:16px;
+  top:16px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#f1f5f9;
+  font-size:24px;
+  color:#334155;
+  cursor:pointer;
+}
+
+.stamp-modal-eyebrow{
+  display:block;
+  margin-bottom:8px;
+  color:#7c3aed;
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+}
+
+.stamp-reward-card h2{
+  margin:4px 0 8px;
+  font-size:34px;
+}
+
+.stamp-reward-card>p{
+  color:#667085;
+  line-height:1.7;
+  font-size:14px;
+  max-width:520px;
+  margin:0 auto 22px;
+}
+
+.stamp-card-preview{
+  width:min(100%,620px);
+  border-radius:18px;
+  border:1px solid #ece6df;
+  background:#fff;
+  box-shadow:0 14px 34px rgba(15,23,42,.08);
+}
+
+.stamp-card-visual{
+  position:relative;
+  width:min(100%,620px);
+  margin:0 auto;
+}
+
+.stamp-card-visual .stamp-card-preview{
+  width:100%;
+  display:block;
+}
+
+/* Earned loyalty stamps are drawn over the broom icons after payment. */
+.earned-stamp-layer{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+}
+.earned-stamp-marker{
+  position:absolute;
+  transform:translate(-50%,-50%) rotate(-7deg);
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:rgba(16,139,112,.94);
+  border:4px solid rgba(255,255,255,.94);
+  color:#fff;
+  font-size:30px;
+  line-height:1;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(16,139,112,.28);
+}
+@media(max-width:650px){
+  .earned-stamp-marker{
+    width:42px;
+    height:42px;
+    font-size:23px;
+    border-width:3px;
+  }
+}
+
+.stamp-profile-note{
+  margin:20px auto 0;
+  max-width:520px;
+  padding:12px 14px;
+  border-radius:12px;
+  background:#ecfdf5;
+  border:1px solid #a7f3d0;
+  color:#065f46;
+  font-size:12px;
+  line-height:1.55;
+}
+
+.stamp-done-btn{
+  min-width:150px;
+  margin-top:22px;
+}
+
+@media(max-width:980px){
+  .payment-v13-grid{
+    grid-template-columns:1fr;
+  }
+  .payment-summary-column{
+    position:static;
+  }
+}
+
+@media(max-width:620px){
+  .payment-main-column{
+    padding:24px 20px;
+  }
+  .payment-method-tabs{
+    grid-template-columns:1fr;
+  }
+  .stamp-grid{
+    grid-template-columns:repeat(5,1fr);
+    gap:7px;
+  }
+}
+
+
+/* ===== v14 warmer, clearer rewards + FAQ styling ===== */
+
+/* Stamp reward: always visible and less purple */
+.reward-info-link{
+  display:none!important;
+}
+
+.reward-info-box{
+  display:grid!important;
+  grid-template-columns:56px 1fr!important;
+  gap:15px!important;
+  margin:20px 0 0!important;
+  padding:18px!important;
+  border-radius:16px!important;
+  background:linear-gradient(135deg,#fff6cf 0%,#e9fbf6 100%)!important;
+  border:1.5px solid #c8e7d9!important;
+  box-shadow:0 8px 18px rgba(26,111,87,.06)!important;
+}
+
+.reward-stamp-mini{
+  width:52px!important;
+  height:52px!important;
+  background:#f4b83f!important;
+  color:#173f36!important;
+  box-shadow:none!important;
+}
+
+.reward-eyebrow{
+  display:block;
+  margin-bottom:4px;
+  color:#d05f37;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  font-weight:900;
+}
+
+.reward-info-box strong{
+  display:block;
+  color:#154d40!important;
+  font-size:16px;
+}
+
+.reward-info-box p{
+  color:#435d58!important;
+  font-size:13px!important;
+  line-height:1.6!important;
+}
+
+.reward-preview-stamps{
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:5px;
+  margin-top:13px;
+}
+
+.reward-preview-stamps span{
+  aspect-ratio:1/1;
+  min-width:26px;
+  border-radius:50%;
+  border:1.5px dashed #9bbcaf;
+  display:grid;
+  place-items:center;
+  color:#66857b;
+  background:#fff;
+  font-size:9px;
+  font-weight:900;
+}
+
+.reward-preview-stamps .filled{
+  border:0;
+  background:#168873;
+  color:#fff;
+  font-size:14px;
+}
+
+.reward-preview-stamps .reward-last{
+  border:1.5px solid #ee7c55;
+  background:#fff1e9;
+  color:#c65331;
+  font-size:8px;
+}
+
+/* FAQ section: Amazon-like structure, brighter and easier to read */
+.faq-v14{
+  padding:78px 6%!important;
+  background:
+    radial-gradient(circle at 8% 12%,rgba(255,196,92,.18),transparent 24%),
+    radial-gradient(circle at 92% 90%,rgba(22,136,115,.13),transparent 26%),
+    #f7fbfa!important;
+}
+
+.faq-v14-inner{
+  max-width:1040px;
+  margin:0 auto;
+}
+
+.faq-v14-head{
+  max-width:760px;
+  margin-bottom:28px;
+}
+
+.faq-v14-kicker{
+  display:inline-block;
+  color:#d45f3c;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.faq-v14-head h2{
+  margin:0 0 8px;
+  color:#17302b;
+  font-size:38px;
+  letter-spacing:-1px;
+}
+
+.faq-v14-head p{
+  margin:0;
+  color:#61716d;
+  font-size:15px;
+}
+
+.faq-list-v14 details{
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-top:1px solid #bdcbc7!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+
+.faq-list-v14 details:last-child{
+  border-bottom:1px solid #bdcbc7!important;
+}
+
+.faq-list-v14 summary{
+  position:relative;
+  list-style:none;
+  padding:22px 58px 22px 4px!important;
+  color:#20312d!important;
+  font-size:17px!important;
+  line-height:1.45;
+  font-weight:800!important;
+  cursor:pointer;
+}
+
+.faq-list-v14 summary::-webkit-details-marker{
+  display:none;
+}
+
+.faq-list-v14 summary::after{
+  content:"+";
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#0e7664;
+  background:#e2f5ef;
+  font-size:24px;
+  font-weight:500;
+  transition:.18s ease;
+}
+
+.faq-list-v14 details[open] summary::after{
+  content:"−";
+  background:#ffe7d8;
+  color:#c85a35;
+}
+
+.faq-answer{
+  margin:0 4px 20px;
+  padding:18px 20px;
+  border-radius:14px;
+  border:1px solid transparent;
+}
+
+.faq-answer p{
+  margin:0!important;
+  color:#263936!important;
+  font-size:16px!important;
+  line-height:1.7!important;
+}
+
+.faq-answer-green{
+  background:#e8f8f3;
+  border-color:#b9e5d7;
+}
+
+.faq-answer-peach{
+  background:#fff0e8;
+  border-color:#f3c9b5;
+}
+
+.faq-answer-blue{
+  background:#ebf5ff;
+  border-color:#c5ddf5;
+}
+
+.faq-answer-yellow{
+  background:#fff8dc;
+  border-color:#eadb9d;
+}
+
+/* Five service cards now */
+.home-service-grid{
+  grid-template-columns:repeat(5,1fr)!important;
+}
+
+@media(max-width:1050px){
+  .home-service-grid{
+    grid-template-columns:repeat(3,1fr)!important;
+  }
+}
+
+@media(max-width:700px){
+  .home-service-grid{
+    grid-template-columns:repeat(2,1fr)!important;
+  }
+
+  .reward-preview-stamps{
+    grid-template-columns:repeat(5,1fr);
+    max-width:300px;
+  }
+
+  .faq-v14-head h2{
+    font-size:32px;
+  }
+
+  .faq-list-v14 summary{
+    font-size:16px!important;
+  }
+
+  .faq-answer p{
+    font-size:15px!important;
+  }
+}
+
+
+/* ===== v15 homepage navigation ===== */
+#services,
+#how-it-works,
+#reviews,
+#faq{
+  scroll-margin-top:92px;
+}
+
+
+@media(max-width:700px){
+  .reward-info-box{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+  .reward-stamp-badge{
+    margin:0 auto;
+  }
+  .reward-preview-stamps{
+    grid-template-columns:repeat(5,1fr);
+  }
+  .task-detail-top{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
+
+
+/* ===== v22: show the actual MochiMaid loyalty stamp card image ===== */
+.reward-info-box.loyalty-image-box{
+  display:block!important;
+  margin:24px 0 0!important;
+  padding:16px!important;
+  border-radius:22px!important;
+  background:#fffdf8!important;
+  border:1.5px solid #d9e7df!important;
+  box-shadow:0 12px 28px rgba(15,23,42,.07)!important;
+  overflow:hidden;
+}
+.loyalty-main-card{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:none;
+  object-fit:contain;
+  border-radius:14px;
+  background:#fff;
+}
+.loyalty-profile-note{
+  margin:12px 4px 2px!important;
+  text-align:center;
+  color:#5d6f69!important;
+  font-size:12px!important;
+  line-height:1.5!important;
+  font-weight:700;
+}
+@media(max-width:700px){
+  .reward-info-box.loyalty-image-box{padding:10px!important;border-radius:16px!important}
+  .loyalty-profile-note{font-size:11px!important}
+}
+
+input[aria-invalid="true"]{border:2px solid #dc2626!important;background:#fff7f7}
+</style>
+</head>
+<body>
+
+<nav class="home-nav">
+  <div class="logo" onclick="returnHome()" style="cursor:pointer">Mochi<span>Maid</span></div>
+  <div class="home-nav-links">
+    <a href="#services" onclick="goToHomeSection('services'); return false;">Services</a>
+    <a href="#reviews" onclick="goToHomeSection('reviews'); return false;">Reviews</a>
+    <a href="#how-it-works" onclick="goToHomeSection('how-it-works'); return false;">How it works</a>
+    <a href="#faq" onclick="goToHomeSection('faq'); return false;">FAQ</a>
+    <a id="accountNavLink" href="login.html" class="login-link nav-pill">Sign up / Log in</a>
+    <a href="cleaner_v2.html" class="cleaner-cta nav-pill">Become a Cleaner</a>
+  </div>
+</nav>
+
+<div id="home">
+
+  <section class="market-hero">
+    <div class="hero-copy">
+      <span class="hero-kicker">Your Mess, Our Match ✨</span>
+      <h1>What do you want help with?</h1>
+      <p>Choose the cleaning service you need, then tell us the property details, preferred time, and requirements. MochiMaid will help you compare suitable cleaners before you book.</p>
+    </div>
+
+    <div id="services" class="home-service-grid">
+      <button class="home-service-card" onclick="quick('Regular Home Cleaning')">
+        <span class="home-service-icon">🏠</span>
+        <strong>Regular Cleaning</strong>
+        <small>Routine home cleaning</small>
+      </button>
+      <button class="home-service-card" onclick="quick('Deep Cleaning')">
+        <span class="home-service-icon">✨</span>
+        <strong>Deep Cleaning</strong>
+        <small>Detailed intensive cleaning</small>
+      </button>
+      <button class="home-service-card" onclick="quick('Condo Cleaning')">
+        <span class="home-service-icon">🏢</span>
+        <strong>Condo Cleaning</strong>
+        <small>Apartment & condo units</small>
+      </button>
+      <button class="home-service-card" onclick="quick('Move-In / Move-Out')">
+        <span class="home-service-icon">📦</span>
+        <strong>Move In / Out</strong>
+        <small>Before or after moving</small>
+      </button>
+      <button class="home-service-card" onclick="quick('Office Cleaning')">
+        <span class="home-service-icon">🏬</span>
+        <strong>Office Cleaning</strong>
+        <small>Small offices & workspaces</small>
+      </button>
+    </div>
+
+    <!-- Hidden values retained for the existing booking workflow. -->
+    <select id="heroService" class="hide">
+      <option>Regular Home Cleaning</option>
+      <option>Deep Cleaning</option>
+      <option>Condo Cleaning</option>
+      <option>Move-In / Move-Out</option>
+      <option>Office Cleaning</option>
+    </select>
+    <input id="heroLocation" class="hide" value="Pathum Thani, Thailand">
+  </section>
+
+  
+  <section class="about-home">
+    <div class="about-photo-block">
+      <div class="about-photo"></div>
+      <div class="about-overlay-card">
+        <span class="section-kicker">About MochiMaid</span>
+        <h2>Cleaning marketplace with more customer choice.</h2>
+        <ul>
+          <li>Compare cleaner profiles, prices, distance, and availability before booking.</li>
+          <li>See transparent pricing, including separate transportation fees.</li>
+          <li>Use reviews, ratings, and service performance to choose the right cleaner.</li>
+          <li>Support independent cleaners by giving them visibility and booking opportunities.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="kpi-strip-section">
+    <div class="kpi-strip">
+      <div class="kpi-strip-item">
+        <strong>4.8★</strong>
+        <span>Average Rating</span>
+      </div>
+      <div class="kpi-strip-item">
+        <strong>890+</strong>
+        <span>Homes Cleaned</span>
+      </div>
+      <div class="kpi-strip-item">
+        <strong>650+</strong>
+        <span>Customers Served</span>
+      </div>
+      <div class="kpi-strip-item">
+        <strong>120+</strong>
+        <span>Total Cleaners</span>
+      </div>
+    </div>
+    
+  </section>
+
+  <section id="reviews" class="reviews-section">
+    <div class="section-title-center">
+      <span class="section-kicker">Customer confidence</span>
+      <h2>What customers could say about MochiMaid</h2>
+      <p>What our customers say.</p>
+    </div>
+
+    <div class="review-grid">
+      <article class="review-card">
+        <div class="review-head"><strong>Anya P.</strong><span>★★★★★</span></div>
+        <p>“I liked being able to compare the cleaner’s distance, price and reviews before booking. The whole process felt very clear.”</p>
+        <small>Regular Cleaning · Example review</small>
+      </article>
+      <article class="review-card">
+        <div class="review-head"><strong>Narin T.</strong><span>★★★★★</span></div>
+        <p>“The transportation fee was shown separately, so I knew the full cost before confirming the booking.”</p>
+        <small>Condo Cleaning · Example review</small>
+      </article>
+      <article class="review-card">
+        <div class="review-head"><strong>Mina R.</strong><span>★★★★★</span></div>
+        <p>“The before-and-after verification feature would be really useful when I am not at the property during the service.”</p>
+        <small>Move-Out Cleaning · Example review</small>
+      </article>
+      <article class="review-card">
+        <div class="review-head"><strong>Ken S.</strong><span>★★★★☆</span></div>
+        <p>“I could choose based on availability instead of waiting for a company to assign someone to me.”</p>
+        <small>Deep Cleaning · Example review</small>
+      </article>
+      <article class="review-card">
+        <div class="review-head"><strong>Ploy K.</strong><span>★★★★★</span></div>
+        <p>“The cleaner profile gave me more information than just a star rating, especially completed jobs and punctuality.”</p>
+        <small>Regular Cleaning · Example review</small>
+      </article>
+      <article class="review-card">
+        <div class="review-head"><strong>Daniel L.</strong><span>★★★★★</span></div>
+        <p>“Being able to rebook the same cleaner would make recurring cleaning much easier.”</p>
+        <small>Office Cleaning · Example review</small>
+      </article>
+    </div>
+  </section>
+
+  
+  <section id="how-it-works" class="how-section">
+    <div class="how-photo-block">
+      <div class="how-photo"></div>
+      <div class="how-overlay-card">
+        <span class="section-kicker">How it works</span>
+        <h2>Book cleaning help in four simple steps</h2>
+        <div class="how-step">
+          <div class="how-num">1</div>
+          <div><strong>Choose a service</strong><p>Select the cleaning type that best matches your needs.</p></div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">2</div>
+          <div><strong>Add details and schedule</strong><p>Enter property information, cleaning requirements, and your preferred date and time.</p></div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">3</div>
+          <div><strong>Compare cleaners</strong><p>Review pricing, ratings, distance, availability, and cleaner performance before choosing.</p></div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">4</div>
+          <div><strong>Book, pay, and review</strong><p>Confirm the total cost, complete the service, and leave a verified review afterward.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq-section faq-v14">
+    <div class="faq-v14-inner">
+      <div class="faq-v14-head">
+        <span class="faq-v14-kicker">Need help?</span>
+        <h2>Frequently asked questions</h2>
+        <p>Quick answers to common booking and service questions.</p>
+      </div>
+
+      <div class="faq-list faq-list-v14">
+        <details>
+          <summary>Can I cancel my booking after I have already paid?</summary>
+          <div class="faq-answer faq-answer-green">
+            <p>Yes. You can cancel from your booking details. Whether the full amount is refunded will depend on how close the cancellation is to the scheduled cleaning time. The final cancellation terms will always be shown before you confirm payment.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>What should I do if I notice something missing after the cleaning?</summary>
+          <div class="faq-answer faq-answer-peach">
+            <p>Report the issue to MochiMaid support as soon as possible. The booking information, cleaner details, and service record can then be reviewed so the issue can be handled through the platform rather than privately between the customer and cleaner.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Can I add extra cleaning tasks after the cleaner has already arrived?</summary>
+          <div class="faq-answer faq-answer-blue">
+            <p>Yes, as long as the cleaner agrees and has enough time. Any additional task and extra charge should be added and confirmed through MochiMaid before the cleaner begins the extra work, so both sides can see the updated booking total.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>What happens if my cleaner does not arrive? Will I get a refund?</summary>
+          <div class="faq-answer faq-answer-yellow">
+            <p>If the cleaner does not arrive and the service is not provided, you can report the booking as a no-show. The booking can then be rescheduled, matched with another cleaner, or refunded according to the no-show policy.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-bottom-cta">
+    <div>
+      <h2>Ready to find cleaning help?</h2>
+      <p>Choose a service and start comparing cleaners.</p>
+    </div>
+    <button class="primary" onclick="scrollToServices()">Start booking</button>
+  </section>
+
+  
+</div>
+
+
+<section id="app" class="hide">
+
+  <!-- Main booking journey: TaskRabbit-style top progress -->
+  <header class="booking-flow-header">
+    <div class="booking-flow-brand" onclick="returnHome()">Mochi<span>Maid</span></div>
+
+    <div class="phase-progress">
+      <div class="phase-step active" data-phase="1">
+        <div class="phase-dot">1</div>
+        <div class="phase-label">Describe your task</div>
+      </div>
+      <div class="phase-line"></div>
+      <div class="phase-step" data-phase="2">
+        <div class="phase-dot">2</div>
+        <div class="phase-label">Browse cleaners & prices</div>
+      </div>
+      <div class="phase-line"></div>
+      <div class="phase-step" data-phase="3">
+        <div class="phase-dot">3</div>
+        <div class="phase-label">Choose date & time</div>
+      </div>
+      <div class="phase-line"></div>
+      <div class="phase-step" data-phase="4">
+        <div class="phase-dot">4</div>
+        <div class="phase-label">Payment</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Only the task-description screens use the compact left panel -->
+  <div id="describeLayout" class="describe-layout">
+    <aside class="steps compact-steps">
+      <div class="step done" data-task="1">
+        <div class="num">1</div>
+        <div><b>Service</b><br><span>Selected</span></div>
+      </div>
+      <div class="step active" data-task="2">
+        <div class="num">2</div>
+        <div><b>Property</b><br><span>Job details</span></div>
+      </div>
+      <div class="step" data-task="3">
+        <div class="num">3</div>
+        <div><b>Requirements</b><br><span>Areas & add-ons</span></div>
+      </div>
+    </aside>
+
+    <main class="describe-main">
+      
+      <div id="s2" class="panel screen property-panel">
+        <div class="selected-service-banner">
+          <span>Selected service</span>
+          <strong id="selectedServiceLabel">Cleaning Service</strong>
+        </div>
+
+        <h2 id="propertyPageTitle">Tell us about the property</h2>
+        <p id="propertyPageSub" class="sub">Answer each question below so we can match the job with suitable cleaners.</p>
+
+        <div id="propertyStack" class="property-stack"></div>
+
+        <div class="actions">
+          <button class="secondary back-btn" onclick="returnHome()">← Back to home</button>
+          <button class="primary" onclick="go(3)">Continue</button>
+        </div>
+      </div>
+
+      <div id="s3" class="panel screen hide requirements-panel">
+        <div class="selected-service-banner">
+          <span>Selected service</span>
+          <strong id="selectedServiceLabel2">Cleaning Service</strong>
+        </div>
+
+        <h2 id="requirementsPageTitle">What should be cleaned?</h2>
+        <p id="requirementsPageSub" class="sub">Choose the areas and any additional requirements.</p>
+
+        <div class="fg">
+          <label id="areasLabel">Areas to clean</label>
+          <div id="areasChips" class="chips multi"></div>
+        </div>
+
+        <div id="addonsGroup" class="fg">
+          <label>Add-ons</label>
+          <div id="addons" class="chips multi"></div>
+        </div>
+
+        <div class="fg">
+          <label>Special instructions</label>
+          <textarea id="specialInstructions" class="control" rows="5" placeholder="Anything the cleaner should know?"></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="secondary back-btn" onclick="go(2)">← Back</button>
+          <button class="primary" onclick="go(5)">Browse cleaners & prices</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Full-width pages after the task has been described -->
+  <div id="fullFlow" class="full-flow hide">
+
+    <div id="s5" class="panel screen hide tasker-select-panel">
+      <div class="tasker-page-head">
+        <div>
+          <h2>Choose your cleaner</h2>
+          <p class="sub">Filter and compare cleaners, then select the person who best matches your needs.</p>
+        </div>
+        <div class="tasker-sort">
+          <label for="sortSelect">Sorted by:</label>
+          <select id="sortSelect">
+            <option value="rating" selected>Highest Rated</option>
+            <option value="nearest">Nearest</option>
+            <option value="price">Price (Lowest to Highest)</option>
+            <option value="priceHigh">Price (Highest to Lowest)</option>
+            <option value="jobs">Completed Jobs</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="tasker-layout">
+        <aside class="tasker-filters">
+          <div class="filter-section">
+            <h3>General availability</h3>
+            <div class="filter-date-grid" id="availabilityFilters">
+              <button type="button" class="filter-pill" data-availability="today">Today</button>
+              <button type="button" class="filter-pill" data-availability="3days">Within 3 Days</button>
+              <button type="button" class="filter-pill active" data-availability="week">Within a Week</button>
+              <button type="button" class="filter-pill" data-availability="flexible">Flexible</button>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <h3>Time preference</h3>
+            <label class="filter-check"><input id="timeMorning" type="checkbox" value="morning"> Morning <span>(9am–12pm)</span></label>
+            <label class="filter-check"><input id="timeAfternoon" type="checkbox" value="afternoon"> Afternoon <span>(12pm–4pm)</span></label>
+            <label class="filter-check"><input id="timeEvening" type="checkbox" value="evening"> Evening <span>(4pm–8pm)</span></label>
+            <small>You will choose the exact date and start time after selecting a cleaner.</small>
+          </div>
+
+          <div class="filter-section">
+            <h3>Price</h3>
+            <input id="priceFilter" type="range" min="180" max="350" value="350" class="price-slider">
+            <div class="price-range-labels"><span>฿180/hr</span><span id="priceMaxLabel">฿350+/hr</span></div>
+          </div>
+
+          <div class="filter-section">
+            <h3>Cleaner type</h3>
+            <label class="filter-check"><input id="typeVerified" type="checkbox" value="verified"> Verified</label>
+            <label class="filter-check"><input id="typeTop" type="checkbox" value="top"> Top Rated</label>
+            <label class="filter-check"><input id="typeNew" type="checkbox" value="new"> New Cleaner</label>
+          </div>
+        </aside>
+
+        <section class="tasker-results">
+          <div class="result-count">
+            <strong id="resultCount">4 cleaners available</strong>
+            <span id="resultHint">matching your service and task requirements</span>
+          </div>
+          <div id="cleaners"></div>
+        </section>
+      </div>
+
+      <div class="actions full-page-actions">
+        <button class="secondary back-btn" onclick="go(3)">← Back to requirements</button>
+        <span></span>
+      </div>
+    </div>
+
+
+    
+    
+    <div id="s6" class="panel screen hide payment-page payment-page-v13">
+
+      <div class="payment-v13-grid">
+
+        <!-- LEFT: CONFIRM DETAILS + FREQUENCY + PAYMENT -->
+        <section class="payment-main-column">
+          <h2 class="confirm-details-title">Confirm details</h2>
+
+          <!-- Frequency -->
+          <section class="frequency-section">
+            <h3>Select a frequency</h3>
+            <p class="frequency-intro">Choose whether this is a one-time cleaning or a repeat booking.</p>
+
+            <div class="frequency-options">
+              <label class="frequency-option selected">
+                <input type="radio" name="frequency" value="Just Once" checked onchange="selectFrequency(this)">
+                <span class="frequency-radio"></span>
+                <span class="frequency-copy">
+                  <strong>Just Once</strong>
+                  <small>One cleaning appointment</small>
+                </span>
+              </label>
+
+              <label class="frequency-option">
+                <input type="radio" name="frequency" value="Weekly" onchange="selectFrequency(this)">
+                <span class="frequency-radio"></span>
+                <span class="frequency-copy">
+                  <strong>Weekly</strong>
+                  <small>Repeat every week</small>
+                </span>
+              </label>
+
+              <label class="frequency-option">
+                <input type="radio" name="frequency" value="Every 2 Weeks" onchange="selectFrequency(this)">
+                <span class="frequency-radio"></span>
+                <span class="frequency-copy">
+                  <strong>Every 2 Weeks</strong>
+                  <small>Repeat every two weeks</small>
+                </span>
+              </label>
+
+              <label class="frequency-option">
+                <input type="radio" name="frequency" value="Every 4 Weeks" onchange="selectFrequency(this)">
+                <span class="frequency-radio"></span>
+                <span class="frequency-copy">
+                  <strong>Every 4 Weeks</strong>
+                  <small>Repeat every four weeks</small>
+                </span>
+              </label>
+            </div>
+          </section>
+
+          <div class="payment-section-divider"></div>
+
+          <!-- Payment method -->
+          <section class="payment-entry-section">
+            <h3>Payment method</h3>
+            <p class="payment-intro">Choose how you would like to pay for this booking.</p>
+
+            <div class="payment-method-tabs">
+              <button type="button" class="payment-method-tab selected" data-method="card" onclick="selectPaymentMethod('card',this)">
+                <span>💳</span>
+                <div><strong>Credit / Debit Card</strong><small>Visa, Mastercard or supported debit card</small></div>
+              </button>
+
+              <button type="button" class="payment-method-tab" data-method="qr" onclick="selectPaymentMethod('qr',this)">
+                <span>📱</span>
+                <div><strong>QR Payment</strong><small>Scan using a supported banking or payment app</small></div>
+              </button>
+            </div>
+
+            <div id="cardPaymentPanel" class="payment-method-panel">
+              <div class="payment-field">
+                <label>Card number</label>
+                <input id="cardNumber" type="text" inputmode="numeric" maxlength="19" placeholder="1234 1234 1234 1234">
+              </div>
+
+              <div class="payment-field-row">
+                <div class="payment-field">
+                  <label>Expiration date</label>
+                  <input id="cardExpiry" type="text" maxlength="5" placeholder="MM / YY">
+                </div>
+                <div class="payment-field">
+                  <label>Security code</label>
+                  <input id="cardCvv" type="password" inputmode="numeric" maxlength="4" placeholder="CVC">
+                </div>
+              </div>
+
+              <div class="payment-field">
+                <label>Name on card</label>
+                <input id="cardName" type="text" placeholder="Name as shown on card">
+              </div>
+
+              <div class="payment-field">
+                <label>Country</label>
+                <select class="payment-country-select">
+                  <option selected>Thailand</option>
+                  <option>Nepal</option>
+                  <option>Australia</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <label class="save-payment-row">
+                <input type="checkbox">
+                <span>Save my payment information for faster checkout</span>
+              </label>
+
+              
+            </div>
+
+            <div id="qrPaymentPanel" class="payment-method-panel hide">
+              <div class="qr-placeholder qr-v13">
+                <div class="fake-qr">▦</div>
+                <strong>Scan to pay</strong>
+                <p>A QR code would be generated here for the customer to scan with a supported payment or banking app.</p>
+              </div>
+            </div>
+
+            <button type="button" class="promo-link" onclick="togglePromoBox()">Do you have a promo code?</button>
+            <div id="promoBox" class="promo-box hide">
+              <input type="text" placeholder="Enter promo code">
+              <button type="button">Apply</button>
+            </div>
+          </section>
+        </section>
+
+        <!-- RIGHT: BOOKING SUMMARY -->
+        <aside class="payment-summary-column">
+          <div class="summary-top-card">
+            <span class="summary-service-name" id="rightServiceName">Cleaning</span>
+
+            <div class="summary-cleaner-avatar" id="payCleanerPhoto">👩🏻</div>
+            <strong class="summary-cleaner-name" id="payCleanerName">Cleaner</strong>
+            <span class="summary-cleaner-rating" id="payCleanerRating">⭐ 4.9</span>
+          </div>
+
+          <div class="summary-details-wrap">
+            <div class="summary-info-row">
+              <span class="summary-icon">📅</span>
+              <div>
+                <strong id="payDate">Date & time</strong>
+                <small id="payDuration">Estimated duration: 2 hours</small>
+              </div>
+            </div>
+
+            <div class="summary-info-row">
+              <span class="summary-icon">📍</span>
+              <div>
+                <strong id="payLocation">Location</strong>
+                <small id="payProperty">Property</small>
+              </div>
+            </div>
+
+            <div class="summary-info-row">
+              <span class="summary-icon">🔁</span>
+              <div>
+                <strong id="payFrequency">Just Once</strong>
+                <small>Booking frequency</small>
+              </div>
+            </div>
+
+            <button type="button" class="edit-task-btn" onclick="go(3)">Edit Task</button>
+
+            <div class="summary-divider"></div>
+
+            <h3>Your task details</h3>
+            <div class="task-detail-card">
+              <div class="task-detail-top">
+                <span class="task-main-chip" id="payServiceChip">Cleaning</span>
+                <span class="task-soft-chip" id="payFrequencyChip">Just Once</span>
+              </div>
+
+              <div class="task-detail-section">
+                <span class="task-detail-label">Areas to clean</span>
+                <div class="task-chip-row" id="payAreasChips"></div>
+              </div>
+
+              <div class="task-detail-section">
+                <span class="task-detail-label">Add-ons</span>
+                <div class="task-chip-row" id="payAddonsChips"></div>
+              </div>
+
+              <div class="task-detail-section">
+                <span class="task-detail-label">Special instructions</span>
+                <div class="task-note-box" id="payInstructionsBox">No special instructions added.</div>
+              </div>
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <h3>Price Details</h3>
+
+            <div class="summary-price-row">
+              <span>
+                Cleaning fee
+                <small id="cleaningRateDetail" class="summary-price-note"></small>
+              </span>
+              <strong id="sumCleaning"></strong>
+            </div>
+
+            <div class="summary-price-row">
+              <span>
+                Add-ons
+                <small id="addonPriceDetail" class="summary-price-note"></small>
+              </span>
+              <strong id="sumAddons"></strong>
+            </div>
+
+            <div class="summary-price-row">
+              <span>
+                Transportation
+                <small id="transportPriceDetail" class="summary-price-note"></small>
+              </span>
+              <strong id="sumTransport"></strong>
+            </div>
+
+            <div class="summary-price-row summary-total-row">
+              <span>Total</span>
+              <strong id="sumTotal"></strong>
+            </div>
+
+            <div class="hide">
+              <span id="sumService"></span>
+              <span id="sumProperty"></span>
+              <span id="sumDate"></span>
+              <span id="sumCleaner"></span>
+            </div>
+
+            <button id="confirmPayBtn" type="button" class="confirm-pay-btn confirm-pay-v13" onclick="confirmPayment()">
+              Confirm & Pay
+            </button>
+
+            <p class="charge-note">You will only be charged the total amount shown above.</p>
+
+            <div class="payment-trust-list">
+              <div>✓ Secure payment flow</div>
+              <div>✓ Transportation shown separately</div>
+              <div>✓ Booking saved to your account</div>
+            </div>
+
+            <button type="button" class="policy-link" onclick="toggleCancellationPolicy()">View cancellation policy</button>
+            <div id="cancellationPolicy" class="cancellation-policy hide">
+              Cancellation terms are still being finalized. The final conditions will be shown clearly before a real booking is confirmed.
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+      <div class="actions full-page-actions payment-back-row">
+        <button class="secondary back-btn" onclick="go(5)">← Back to cleaners</button>
+        <span></span>
+      </div>
+    </div>
+<div id="s7" class="panel screen hide confirmation-page">
+      <div class="confirm">
+        <div class="ok">✓</div>
+        <h2>Booking confirmed!</h2>
+        <p class="sub">Your class-project booking has been created.</p>
+        <b>Booking #MM-1026</b>
+
+        <div class="summary" style="max-width:520px;margin:20px auto;text-align:left">
+          <div class="line"><span>Cleaner</span><b id="fCleaner"></b></div>
+          <div class="line"><span>Service</span><b id="fService"></b></div>
+          <div class="line"><span>Date & time</span><b id="fDate"></b></div>
+          <div class="line"><span>Total</span><b id="fTotal"></b></div>
+        </div>
+
+        <button class="primary" onclick="returnHome()">Return to MochiMaid</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div id="modal" class="modal hide" onclick="if(event.target.id==='modal')closeModal()">
+  <div class="modalbox">
+    <div class="modalhead"><div style="display:flex;gap:12px;align-items:center"><div id="mPhoto" class="photo"></div><div><h2 id="mName" style="margin:0"></h2><div id="mRating"></div><small style="color:#0f766e;font-weight:800">✓ Verified Cleaner</small></div></div><button class="secondary" onclick="closeModal()">Close</button></div>
+    <p id="mBio" style="color:#6b7280;line-height:1.6"></p>
+    <div class="stats"><div class="stat"><strong id="mJobs"></strong><small>Jobs</small></div><div class="stat"><strong id="mOnTime"></strong><small>On-time</small></div><div class="stat"><strong id="mDistance"></strong><small>Distance</small></div><div class="stat"><strong id="mExperience"></strong><small>Experience</small></div></div>
+    <h3>Recent verified reviews</h3><div class="review">⭐⭐⭐⭐⭐ “Very punctual and the apartment was spotless.”<br><small>Completed booking</small></div><div class="review">⭐⭐⭐⭐⭐ “Friendly and careful with everything.”<br><small>Completed booking</small></div>
+    <button id="mSelect" class="primary" style="width:100%;margin-top:8px">Select cleaner</button>
+  </div>
+
+</div>
+
+<div id="scheduleModal" class="modal hide" onclick="scheduleBackdrop(event)">
+  <div class="schedule-modal-card">
+    <div class="schedule-modal-head">
+      <div>
+        <span class="section-kicker">Choose date & time</span>
+        <h2>Choose your cleaning date and start time</h2>
+      </div>
+      <button class="modal-close-btn" onclick="closeScheduleModal()">×</button>
+    </div>
+
+    <div class="schedule-modal-grid">
+      <div class="calendar-side">
+        <div class="selected-cleaner-mini">
+          <div id="scheduleCleanerPhoto" class="schedule-cleaner-photo">👩🏻</div>
+          <div>
+            <strong id="scheduleCleanerName">Cleaner</strong>
+            <span id="scheduleCleanerRating">⭐ 4.9</span>
+          </div>
+        </div>
+
+        <div class="calendar-nav">
+          <button id="calendarPrev" type="button" class="calendar-nav-btn" onclick="changeCalendarMonth(-1)" aria-label="Previous month">‹</button>
+          <div id="calendarTitle" class="calendar-title">October 2026</div>
+          <button id="calendarNext" type="button" class="calendar-nav-btn" onclick="changeCalendarMonth(1)" aria-label="Next month">›</button>
+        </div>
+
+        <div class="booking-window-note">Bookings are available from Oct 7 through Nov 7, 2026.</div>
+
+        <div class="calendar-week">
+          <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+
+        <label class="schedule-time-label">Choose a time period</label>
+        <div id="schedulePeriodOptions" class="schedule-period-options">
+          <button type="button" class="schedule-period-btn" data-part="morning" onclick="selectSchedulePeriod('morning',this)">
+            <strong>Morning</strong><span>9 AM – 12 PM</span>
+          </button>
+          <button type="button" class="schedule-period-btn" data-part="afternoon" onclick="selectSchedulePeriod('afternoon',this)">
+            <strong>Afternoon</strong><span>12 PM – 4 PM</span>
+          </button>
+          <button type="button" class="schedule-period-btn" data-part="evening" onclick="selectSchedulePeriod('evening',this)">
+            <strong>Evening</strong><span>4 PM – 8 PM</span>
+          </button>
+        </div>
+
+        <label class="schedule-time-label">Available start times</label>
+        <select id="scheduleTimeSelect" class="schedule-time-select" onchange="updateScheduleTime()"></select>
+
+        <p class="schedule-hint">Unavailable time periods and time slots are disabled based on the cleaner's availability.</p>
+      </div>
+
+      <div class="schedule-summary-side">
+        <h3>Request for:</h3>
+        <div id="scheduleRequestText" class="schedule-request">Oct 8, 2026 · 12:30 PM</div>
+        <div class="schedule-minimum">Estimated cleaning duration: 2 hours</div>
+
+        <button class="schedule-continue" onclick="continueFromSchedule()">Select & Continue</button>
+
+        <div class="next-step-note">
+          <span>✓</span>
+          <p>Next, log in or sign up if needed, then confirm your payment details.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="stampRewardModal" class="modal hide" onclick="stampBackdrop(event)">
+  <div class="stamp-reward-card">
+    <button class="stamp-close-btn" onclick="closeStampReward()">×</button>
+
+    <span class="stamp-modal-eyebrow">Reward unlocked</span>
+    <h2>You earned a new stamp!</h2>
+    <p>Thanks for booking with MochiMaid. One completed booking adds one stamp to your reward card, and your 10th completed booking gets <b>50% off</b>.</p>
+
+    <div class="stamp-card-visual" aria-label="MochiMaid loyalty reward card">
+      <img src="mochimaid_loyalty_stamp_card.png" alt="MochiMaid loyalty stamp card" class="stamp-card-preview">
+      <div id="earnedStampLayer" class="earned-stamp-layer" aria-hidden="true"></div>
+    </div>
+
+    <div id="stampProgressText" class="stamp-profile-note">Your reward progress is saved in your customer dashboard.</div>
+
+    <button class="primary stamp-done-btn" onclick="closeStampReward()">Nice!</button>
+  </div>
+</div>
+
+
+<footer>MochiMaid customer website</footer>
+
+<script>
+// Include the three existing paid bookings once, preserving later stamp increments.
+if(localStorage.getItem('mmHistoryStampsIncluded')!=='1'){
+ const old=Math.max(0,Number(localStorage.getItem('mmStampCount'))||0);
+ localStorage.setItem('mmStampCount',String(Math.min(10,old+3)));
+ localStorage.setItem('mmHistoryStampsIncluded','1');
+}
+
+const state={
+  service:"Regular Home Cleaning",
+  cleaner:null,
+  addons:0,
+  selectedDate:"2026-10-08",
+  selectedTime:"12:30 PM",
+  duration:2,
+  availability:"week",
+  loggedIn:sessionStorage.getItem("mmLoggedIn")==="1"
+};
+
+
+const serviceConfigs={
+  "Regular Home Cleaning":{
+    propertyTitle:"Tell us about your home",
+    propertySub:"Give us a few details about the home so we can match you with suitable cleaners.",
+    fields:[
+      {id:"loc",label:"Service location",type:"text",placeholder:"Enter your address or area",value:"Pathum Thani, Thailand"},
+      {id:"property",label:"Property type",type:"select",options:["House","Condo / Apartment","Townhouse"],value:"Condo / Apartment"},
+      {id:"beds",label:"How many bedrooms?",type:"select",options:["1","2","3","4+"],value:"2"},
+      {id:"baths",label:"How many bathrooms?",type:"select",options:["1","2","3","4+"],value:"2"},
+      {id:"propertySize",label:"Approximate property size",type:"select",options:["Under 50 m²","50–100 m²","100–150 m²","150+ m²"],value:"50–100 m²"},
+      {id:"someoneHome",label:"Will someone be home during the cleaning?",type:"select",options:["Yes","No","Not sure yet"],value:"Yes"},
+      {id:"pets",label:"Are there pets at the property?",type:"select",options:["No","Yes — dog","Yes — cat","Yes — other"],value:"No"}
+    ],
+    areas:["Kitchen","Bathrooms","Bedrooms","Living room","Dining area","Balcony"],
+    defaultAreas:["Kitchen","Bathrooms","Bedrooms","Living room"],
+    addons:[["Inside fridge",100],["Inside oven",120],["Inside cabinets",100],["Interior windows",150]],
+    specialPlaceholder:"Example: Please focus on the kitchen and bathrooms."
+  },
+
+  "Deep Cleaning":{
+    propertyTitle:"Tell us about the space for deep cleaning",
+    propertySub:"Deep cleaning depends on the size and current condition of the property.",
+    fields:[
+      {id:"loc",label:"Service location",type:"text",placeholder:"Enter your address or area",value:"Pathum Thani, Thailand"},
+      {id:"property",label:"Property type",type:"select",options:["House","Condo / Apartment","Townhouse"],value:"Condo / Apartment"},
+      {id:"beds",label:"How many bedrooms?",type:"select",options:["1","2","3","4+"],value:"2"},
+      {id:"baths",label:"How many bathrooms?",type:"select",options:["1","2","3","4+"],value:"2"},
+      {id:"propertySize",label:"Approximate property size",type:"select",options:["Under 50 m²","50–100 m²","100–150 m²","150+ m²"],value:"50–100 m²"},
+      {id:"lastDeepClean",label:"When was the last deep clean?",type:"select",options:["Within the last month","1–3 months ago","3–6 months ago","More than 6 months / Not sure"],value:"3–6 months ago"},
+      {id:"condition",label:"Current cleaning condition",type:"select",options:["Light buildup","Moderate buildup","Heavy buildup"],value:"Moderate buildup"}
+    ],
+    areas:["Kitchen","Bathrooms","Bedrooms","Living areas","Balcony","Interior windows"],
+    defaultAreas:["Kitchen","Bathrooms","Bedrooms","Living areas"],
+    addons:[["Inside fridge",120],["Inside oven",140],["Inside cabinets",120],["Grease removal",150],["Limescale treatment",120]],
+    specialPlaceholder:"Tell the cleaner about heavy stains, buildup, or areas needing extra attention."
+  },
+
+  "Condo Cleaning":{
+    propertyTitle:"Tell us about your condo",
+    propertySub:"Share the unit and building details that may affect the cleaning visit.",
+    fields:[
+      {id:"loc",label:"Condo / building location",type:"text",placeholder:"Enter condo or building address",value:"Pathum Thani, Thailand"},
+      {id:"unitSize",label:"Approximate unit size",type:"select",options:["Under 35 m²","35–60 m²","60–100 m²","100+ m²"],value:"60–100 m²"},
+      {id:"beds",label:"How many bedrooms?",type:"select",options:["Studio","1","2","3+"],value:"2"},
+      {id:"baths",label:"How many bathrooms?",type:"select",options:["1","2","3+"],value:"2"},
+      {id:"floor",label:"Which floor is the unit on?",type:"select",options:["1–5","6–15","16–25","26+"],value:"6–15"},
+      {id:"elevator",label:"Is an elevator available?",type:"select",options:["Yes","No","Not sure"],value:"Yes"},
+      {id:"parking",label:"Is visitor parking available for the cleaner?",type:"select",options:["Yes","No","Not sure"],value:"Yes"}
+    ],
+    areas:["Kitchen","Bathrooms","Bedrooms","Living room","Balcony","Entryway"],
+    defaultAreas:["Kitchen","Bathrooms","Bedrooms","Living room"],
+    addons:[["Inside fridge",100],["Inside oven",120],["Inside cabinets",100],["Interior windows",150],["Laundry area",80]],
+    specialPlaceholder:"Add building access instructions, parking notes, or anything the cleaner should know."
+  },
+
+  "Move-In / Move-Out":{
+    propertyTitle:"Tell us about the move-in / move-out property",
+    propertySub:"This helps us estimate the scope of an empty or changing property.",
+    fields:[
+      {id:"loc",label:"Property location",type:"text",placeholder:"Enter the property address",value:"Pathum Thani, Thailand"},
+      {id:"property",label:"Property type",type:"select",options:["House","Condo / Apartment","Townhouse"],value:"Condo / Apartment"},
+      {id:"moveStage",label:"Which service do you need?",type:"select",options:["Move-in cleaning","Move-out cleaning"],value:"Move-out cleaning"},
+      {id:"beds",label:"How many bedrooms?",type:"select",options:["Studio","1","2","3","4+"],value:"2"},
+      {id:"baths",label:"How many bathrooms?",type:"select",options:["1","2","3","4+"],value:"2"},
+      {id:"propertySize",label:"Approximate property size",type:"select",options:["Under 50 m²","50–100 m²","100–150 m²","150+ m²"],value:"50–100 m²"},
+      {id:"furnished",label:"Will the property be furnished?",type:"select",options:["Empty","Partially furnished","Fully furnished"],value:"Empty"}
+    ],
+    areas:["Entire property","Kitchen","Bathrooms","Bedrooms","Living areas","Closets / storage","Balcony"],
+    defaultAreas:["Entire property"],
+    addons:[["Inside cabinets",150],["Inside fridge",120],["Inside oven",140],["Interior windows",180],["Wall spot cleaning",150],["Trash removal",120]],
+    specialPlaceholder:"Mention keys, access arrangements, remaining furniture, or areas requiring extra attention."
+  },
+
+  "Office Cleaning":{
+    propertyTitle:"Tell us about the office",
+    propertySub:"Office cleaning uses workspace details instead of bedroom or home information.",
+    fields:[
+      {id:"loc",label:"Office location",type:"text",placeholder:"Enter office or building address",value:"Pathum Thani, Thailand"},
+      {id:"officeSize",label:"Approximate office size",type:"select",options:["Under 50 m²","50–100 m²","100–250 m²","250+ m²"],value:"50–100 m²"},
+      {id:"workstations",label:"Number of workstations",type:"select",options:["1–10","11–25","26–50","50+"],value:"11–25"},
+      {id:"restrooms",label:"Number of restrooms",type:"select",options:["0","1","2","3+"],value:"2"},
+      {id:"meetingRooms",label:"Number of meeting rooms",type:"select",options:["0","1","2","3+"],value:"1"},
+      {id:"officeFloors",label:"Number of office floors",type:"select",options:["1","2","3+"],value:"1"},
+      {id:"officeTiming",label:"Preferred cleaning period",type:"select",options:["During office hours","After office hours","Weekend"],value:"After office hours"}
+    ],
+    areas:["Workstations","Meeting rooms","Restrooms","Pantry / kitchen","Reception","Common areas"],
+    defaultAreas:["Workstations","Restrooms","Pantry / kitchen","Common areas"],
+    addons:[["Interior windows",200],["Pantry appliance cleaning",150],["Trash / recycling removal",120],["Cabinet / storage cleaning",150],["Floor deep clean",250]],
+    specialPlaceholder:"Mention building access, security procedures, restricted rooms, or office-specific requirements."
+  }
+};
+
+const data=[
+  {id:1,name:"May S.",e:"👩🏻",rating:4.9,reviews:186,jobs:284,on:98,dist:1.8,price:260,transport:0,exp:"3 years",tags:["Deep Cleaning","Condo","Pet Friendly"],bio:"Experienced cleaner focused on reliable home and condo cleaning.",availability:"today",parts:["morning","afternoon"],types:["verified","top"],times:["9:00 AM","10:00 AM","11:00 AM","12:30 PM","2:00 PM"]},
+  {id:2,name:"Pim N.",e:"👩🏽",rating:4.8,reviews:142,jobs:391,on:96,dist:3.6,price:240,transport:30,exp:"5 years",tags:["Home Cleaning","Move In / Out","Office"],bio:"Experienced across homes, offices and move-out cleaning.",availability:"3days",parts:["afternoon","evening"],types:["verified"],times:["12:30 PM","1:30 PM","3:00 PM","5:00 PM"]},
+  {id:3,name:"Nok P.",e:"👩🏻‍🦱",rating:4.7,reviews:95,jobs:167,on:97,dist:.9,price:220,transport:0,exp:"2 years",tags:["Regular Cleaning","Condo","Available Now"],bio:"Nearby cleaner specializing in routine apartment cleaning.",availability:"today",parts:["morning","afternoon","evening"],types:["verified","new"],times:["9:00 AM","10:30 AM","1:00 PM","4:00 PM","6:00 PM"]},
+  {id:4,name:"Bank T.",e:"👨🏻",rating:4.9,reviews:210,jobs:326,on:99,dist:5.4,price:280,transport:60,exp:"4 years",tags:["Deep Cleaning","Office","English / Thai"],bio:"Highly punctual cleaner experienced in deep cleaning and offices.",availability:"week",parts:["afternoon","evening"],types:["verified","top"],times:["1:00 PM","2:30 PM","4:00 PM","5:30 PM"]}
+];
+
+function returnHome(){
+  document.getElementById("scheduleModal")?.classList.add("hide");
+  document.getElementById("modal")?.classList.add("hide");
+  document.querySelectorAll(".screen").forEach(x=>x.classList.add("hide"));
+
+  document.getElementById("app").classList.add("hide");
+  document.getElementById("home").classList.remove("hide");
+  document.querySelector(".home-nav")?.classList.remove("hide");
+
+  document.getElementById("describeLayout")?.classList.remove("hide");
+  document.getElementById("fullFlow")?.classList.add("hide");
+
+  state.cleaner=null;
+
+  if(window.history && history.replaceState){
+    history.replaceState({},"","index.html");
+  }
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+
+function goToHomeSection(sectionId){
+  const app=document.getElementById("app");
+  const home=document.getElementById("home");
+  const nav=document.querySelector(".home-nav");
+
+  if(app && !app.classList.contains("hide")){
+    app.classList.add("hide");
+    home.classList.remove("hide");
+    nav?.classList.remove("hide");
+  }
+
+  window.setTimeout(()=>{
+    const target=document.getElementById(sectionId);
+    if(target){
+      target.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+  },50);
+}
+
+function scrollToServices(){
+  const services=document.getElementById("services");
+  if(services) services.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function escapeHtml(value){
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;");
+}
+
+function currentServiceConfig(){
+  return serviceConfigs[state.service] || serviceConfigs["Regular Home Cleaning"];
+}
+
+function renderDynamicPropertyFields(savedDetails={}){
+  const config=currentServiceConfig();
+  const stack=document.getElementById("propertyStack");
+  if(!stack) return;
+
+  document.getElementById("propertyPageTitle").textContent=config.propertyTitle;
+  document.getElementById("propertyPageSub").textContent=config.propertySub;
+
+  stack.innerHTML=config.fields.map(field=>{
+    const value=savedDetails[field.id]!==undefined ? savedDetails[field.id] : field.value;
+
+    if(field.type==="text"){
+      return `
+        <div class="property-question">
+          <label for="${field.id}">${field.label}</label>
+          <input id="${field.id}" data-field-id="${field.id}"
+            class="control large-control dynamic-property-control"
+            type="text" value="${escapeHtml(value || "")}"
+            placeholder="${escapeHtml(field.placeholder || "")}">
+        </div>
+      `;
+    }
+
+    return `
+      <div class="property-question">
+        <label for="${field.id}">${field.label}</label>
+        <select id="${field.id}" data-field-id="${field.id}"
+          class="control large-control dynamic-property-control">
+          ${field.options.map(opt=>`<option ${String(opt)===String(value)?"selected":""}>${escapeHtml(opt)}</option>`).join("")}
+        </select>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderDynamicRequirements(savedAreas=null,savedAddons=[]){
+  const config=currentServiceConfig();
+
+  document.getElementById("requirementsPageTitle").textContent=
+    state.service==="Office Cleaning" ? "Which office areas should be cleaned?" :
+    state.service==="Move-In / Move-Out" ? "What should be included in the cleaning?" :
+    "What should be cleaned?";
+
+  document.getElementById("requirementsPageSub").textContent=
+    state.service==="Office Cleaning"
+      ? "Choose the office areas and any additional services required."
+      : "Choose the relevant areas and any additional requirements.";
+
+  const selectedAreas=savedAreas===null ? config.defaultAreas : savedAreas;
+
+  document.getElementById("areasChips").innerHTML=config.areas.map(label=>`
+    <button type="button" class="chip ${selectedAreas.includes(label)?"selected":""}"
+      data-area="${escapeHtml(label)}">${escapeHtml(label)}</button>
+  `).join("");
+
+  document.getElementById("addons").innerHTML=config.addons.map(([label,price])=>{
+    const fullLabel=`${label} +฿${price}`;
+    return `<button type="button" class="chip ${savedAddons.includes(fullLabel)?"selected":""}"
+      data-price="${price}">${escapeHtml(label)} +฿${price}</button>`;
+  }).join("");
+
+  const instructions=document.getElementById("specialInstructions");
+  instructions.placeholder=config.specialPlaceholder;
+
+  attachRequirementChips();
+  calcAddons();
+}
+
+function selectService(v,savedDetails={},savedAreas=null,savedAddons=[]){
+  state.service=v;
+
+  document.getElementById("selectedServiceLabel").textContent=v;
+  document.getElementById("selectedServiceLabel2").textContent=v;
+
+  renderDynamicPropertyFields(savedDetails);
+  renderDynamicRequirements(savedAreas,savedAddons);
+}
+
+function attachRequirementChips(){
+  document.querySelectorAll("#areasChips .chip, #addons .chip").forEach(x=>{
+    x.onclick=e=>{
+      e.preventDefault();
+      x.classList.toggle("selected");
+      calcAddons();
+    };
+  });
+}
+
+function calcAddons(){
+  let total=0;
+  document.querySelectorAll("#addons .chip.selected").forEach(x=>{
+    total+=Number(x.dataset.price||0);
+  });
+  state.addons=total;
+}
+
+function start(){
+  selectService(state.service);
+
+  document.getElementById("home").classList.add("hide");
+  document.querySelector(".home-nav")?.classList.add("hide");
+  document.getElementById("app").classList.remove("hide");
+  document.getElementById("describeLayout").classList.remove("hide");
+  document.getElementById("fullFlow").classList.add("hide");
+
+  setPhase(1);
+  updateTaskSteps(2);
+  window.scrollTo({top:0});
+}
+
+function quick(v){
+  state.service=v;
+  start();
+  go(2);
+}
+function setPhase(n,completeAll=false){
+  document.querySelectorAll(".phase-step").forEach(step=>{
+    const p=+step.dataset.phase;
+    step.classList.toggle("active",!completeAll && p===n);
+    step.classList.toggle("done",completeAll ? p<=n : p<n);
+  });
+  document.querySelectorAll(".phase-line").forEach((line,index)=>{
+    line.classList.toggle("done",completeAll ? index<n : index<n-1);
+  });
+}
+
+function updateTaskSteps(n){
+  document.querySelectorAll(".compact-steps .step").forEach(step=>{
+    const k=+step.dataset.task;
+    step.classList.toggle("active",k===n);
+    step.classList.toggle("done",k<n || k===1);
+  });
+}
+
+function go(target){
+  if(target===6 && sessionStorage.getItem("mmLoggedIn")!=="1"){redirectToBookingLogin();return;}
+  document.querySelectorAll(".screen").forEach(x=>x.classList.add("hide"));
+  if(target===2 || target===3){
+    document.getElementById("describeLayout").classList.remove("hide");
+    document.getElementById("fullFlow").classList.add("hide");
+    document.getElementById("s"+target).classList.remove("hide");
+    setPhase(1);
+    updateTaskSteps(target);
+  } else {
+    document.getElementById("describeLayout").classList.add("hide");
+    document.getElementById("fullFlow").classList.remove("hide");
+    if(target===5){
+      document.getElementById("s5").classList.remove("hide");
+      setPhase(2);
+      applyFilters();
+    }else if(target===6){
+      document.getElementById("s6").classList.remove("hide");
+      setPhase(4);
+      summary();
+    }else if(target===7){
+      document.getElementById("s7").classList.remove("hide");
+      setPhase(4,true);
+    }
+  }
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function availabilityPass(cleaner,filter){
+  if(filter==="flexible") return true;
+  const order={today:1,"3days":2,week:3};
+  return order[cleaner.availability] <= order[filter];
+}
+
+function getFilterState(){
+  const parts=[];
+  if(document.getElementById("timeMorning")?.checked) parts.push("morning");
+  if(document.getElementById("timeAfternoon")?.checked) parts.push("afternoon");
+  if(document.getElementById("timeEvening")?.checked) parts.push("evening");
+  const types=[];
+  if(document.getElementById("typeVerified")?.checked) types.push("verified");
+  if(document.getElementById("typeTop")?.checked) types.push("top");
+  if(document.getElementById("typeNew")?.checked) types.push("new");
+  return {parts,types,maxPrice:+(document.getElementById("priceFilter")?.value||350)};
+}
+
+function applyFilters(){
+  const sort=document.getElementById("sortSelect")?.value || "rating";
+  const f=getFilterState();
+  let a=data.filter(c=>availabilityPass(c,state.availability));
+  if(f.parts.length) a=a.filter(c=>f.parts.some(p=>c.parts.includes(p)));
+  if(f.types.length) a=a.filter(c=>f.types.every(t=>c.types.includes(t)));
+  a=a.filter(c=>c.price<=f.maxPrice);
+  render(sort,a);
+}
+
+function render(sort,input){
+  let a=[...(input||data)];
+  if(sort==="nearest") a.sort((x,y)=>x.dist-y.dist);
+  if(sort==="rating") a.sort((x,y)=>y.rating-x.rating || y.reviews-x.reviews);
+  if(sort==="price") a.sort((x,y)=>x.price-y.price);
+  if(sort==="priceHigh") a.sort((x,y)=>y.price-x.price);
+  if(sort==="jobs") a.sort((x,y)=>y.jobs-x.jobs);
+
+  const count=document.getElementById("resultCount");
+  if(count) count.textContent=`${a.length} cleaner${a.length===1?"":"s"} available`;
+  const container=document.getElementById("cleaners");
+  if(!a.length){
+    container.innerHTML=`<div class="no-results"><strong>No cleaners match these filters.</strong><span>Try increasing the price range or changing availability.</span></div>`;
+    return;
+  }
+
+  const reviewNames=["Nina P.","Deborah S.","Ken T.","Maya R."];
+  const reviewTexts=[
+    "Very thorough, punctual, and easy to communicate with. I would book again.",
+    "The cleaning was detailed and professional. Everything was left neat and fresh.",
+    "Arrived on time and followed all of my instructions carefully.",
+    "Great service and very transparent about the booking and travel cost."
+  ];
+
+  container.innerHTML=a.map((c,index)=>`
+    <article class="tasker-card">
+      <div class="tasker-left">
+        <div class="tasker-photo">${c.e}</div>
+        <button class="profile-review-link" onclick="profile(${c.id})">View Profile & Reviews</button>
+        <button class="select-continue-btn" onclick="openSchedule(${c.id})">Select Cleaner</button>
+        <p class="tasker-small-note">Choose the exact date and start time after selecting this cleaner.</p>
+      </div>
+      <div class="tasker-main">
+        <div class="tasker-title-row">
+          <div>
+            <h3>${c.name}</h3>
+            <div class="tasker-badges">
+              ${c.types.includes("top") ? '<span class="elite-badge">★ TOP RATED</span>' : ''}
+              ${c.types.includes("new") ? '<span class="new-badge">NEW CLEANER</span>' : ''}
+              <span class="minimum-badge">AVAILABLE</span>
+            </div>
+          </div>
+          <div class="tasker-price">฿${c.price}<span>/hr</span></div>
+        </div>
+        <div class="tasker-rating">★ ${c.rating} <span>(${c.reviews} reviews)</span></div>
+        <div class="tasker-completed">✓ ${c.jobs} cleaning jobs completed</div>
+        <div class="tasker-distance">📍 ${c.dist} km away · ${c.on}% on-time · Transport ฿${c.transport}</div>
+        <div class="help-box"><strong>How I can help:</strong><p>${c.bio}</p><div class="tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div></div>
+        <div class="tasker-review-snippet"><div class="review-avatar">👤</div><div><strong>${reviewNames[(c.id-1)%reviewNames.length]}</strong><span class="review-date"> · verified completed booking</span><p>“${reviewTexts[(c.id-1)%reviewTexts.length]}”</p></div></div>
+      </div>
+    </article>`).join("");
+}
+
+function profile(id){
+  const c=data.find(x=>x.id===id);
+  mPhoto.textContent=c.e;
+  mName.textContent=c.name;
+  mRating.textContent=`⭐ ${c.rating} · ${c.reviews} reviews`;
+  mBio.textContent=c.bio;
+  mJobs.textContent=c.jobs;
+  mOnTime.textContent=c.on+"%";
+  mDistance.textContent=c.dist+" km";
+  mExperience.textContent=c.exp;
+  mSelect.onclick=()=>{closeModal();openSchedule(id);};
+  modal.classList.remove("hide");
+}
+function closeModal(){modal.classList.add("hide");}
+
+function minutesFromTimeLabel(label){
+  const match=String(label).match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if(!match) return 0;
+
+  let hour=Number(match[1]);
+  const minute=Number(match[2]);
+  const meridiem=match[3].toUpperCase();
+
+  if(hour===12) hour=0;
+  if(meridiem==="PM") hour+=12;
+
+  return hour*60+minute;
+}
+
+function partForTime(label){
+  const minutes=minutesFromTimeLabel(label);
+  if(minutes < 12*60) return "morning";
+  if(minutes < 16*60) return "afternoon";
+  return "evening";
+}
+
+function populateSchedulePeriods(cleaner){
+  const buttons=[...document.querySelectorAll("#schedulePeriodOptions .schedule-period-btn")];
+
+  buttons.forEach(btn=>{
+    const part=btn.dataset.part;
+    const hasTimes=cleaner.times.some(t=>partForTime(t)===part);
+    const available=cleaner.parts.includes(part) && hasTimes;
+
+    btn.disabled=!available;
+    btn.classList.toggle("unavailable",!available);
+    btn.classList.remove("selected");
+  });
+
+  const preferredParts=getFilterState().parts;
+  let initialPart=preferredParts.find(part=>{
+    return cleaner.parts.includes(part) && cleaner.times.some(t=>partForTime(t)===part);
+  });
+
+  if(!initialPart){
+    initialPart=["morning","afternoon","evening"].find(part=>{
+      return cleaner.parts.includes(part) && cleaner.times.some(t=>partForTime(t)===part);
+    });
+  }
+
+  const initialButton=buttons.find(btn=>btn.dataset.part===initialPart);
+  if(initialButton) selectSchedulePeriod(initialPart,initialButton);
+}
+
+function selectSchedulePeriod(part,button){
+  if(button?.disabled) return;
+
+  document.querySelectorAll("#schedulePeriodOptions .schedule-period-btn").forEach(btn=>{
+    btn.classList.toggle("selected",btn===button);
+  });
+
+  state.selectedPart=part;
+
+  const availableTimes=state.cleaner.times.filter(t=>partForTime(t)===part);
+  const select=document.getElementById("scheduleTimeSelect");
+
+  if(!availableTimes.length){
+    select.innerHTML='<option selected disabled>No available times</option>';
+    select.disabled=true;
+    state.selectedTime="";
+  }else{
+    select.disabled=false;
+    select.innerHTML=availableTimes.map((t,i)=>`<option ${i===0?"selected":""}>${t}</option>`).join("");
+    state.selectedTime=availableTimes[0];
+  }
+
+  updateScheduleRequest();
+}
+
+const BOOKING_TODAY=new Date(2026,9,7);
+const BOOKING_MAX_DATE=new Date(2026,10,7);
+let calendarCursorYear=2026;
+let calendarCursorMonth=9;
+
+function isoDate(year,month,day){
+  return `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+}
+
+function dateFromIso(value){
+  const [y,m,d]=String(value).split("-").map(Number);
+  return new Date(y,m-1,d);
+}
+
+function sameMonth(aYear,aMonth,bDate){
+  return aYear===bDate.getFullYear() && aMonth===bDate.getMonth();
+}
+
+function withinBookingWindow(date){
+  const t=date.getTime();
+  return t>=BOOKING_TODAY.getTime() && t<=BOOKING_MAX_DATE.getTime();
+}
+
+function renderCalendar(){
+  const title=document.getElementById("calendarTitle");
+  const grid=document.getElementById("calendarGrid");
+  const prev=document.getElementById("calendarPrev");
+  const next=document.getElementById("calendarNext");
+  if(!title || !grid) return;
+
+  const monthName=new Intl.DateTimeFormat("en-US",{month:"long",year:"numeric"})
+    .format(new Date(calendarCursorYear,calendarCursorMonth,1));
+  title.textContent=monthName;
+
+  const firstDay=new Date(calendarCursorYear,calendarCursorMonth,1).getDay();
+  const daysInMonth=new Date(calendarCursorYear,calendarCursorMonth+1,0).getDate();
+
+  let html="";
+  for(let i=0;i<firstDay;i++){
+    html+='<span class="calendar-empty" aria-hidden="true"></span>';
+  }
+
+  for(let day=1;day<=daysInMonth;day++){
+    const date=new Date(calendarCursorYear,calendarCursorMonth,day);
+    const key=isoDate(calendarCursorYear,calendarCursorMonth,day);
+    const enabled=withinBookingWindow(date);
+    const selected=key===state.selectedDate;
+
+    html+=`
+      <button type="button"
+        class="calendar-day ${selected?"selected":""} ${enabled?"":"muted-day"}"
+        ${enabled?`onclick="chooseCalendarDate('${key}')"`:"disabled"}
+        aria-label="${key}">
+        ${day}
+      </button>`;
+  }
+
+  grid.innerHTML=html;
+
+  const prevMonth=new Date(calendarCursorYear,calendarCursorMonth-1,1);
+  const nextMonth=new Date(calendarCursorYear,calendarCursorMonth+1,1);
+
+  if(prev){
+    prev.disabled=prevMonth.getFullYear()<BOOKING_TODAY.getFullYear() ||
+      (prevMonth.getFullYear()===BOOKING_TODAY.getFullYear() && prevMonth.getMonth()<BOOKING_TODAY.getMonth());
+  }
+
+  if(next){
+    next.disabled=nextMonth.getFullYear()>BOOKING_MAX_DATE.getFullYear() ||
+      (nextMonth.getFullYear()===BOOKING_MAX_DATE.getFullYear() && nextMonth.getMonth()>BOOKING_MAX_DATE.getMonth());
+  }
+}
+
+function changeCalendarMonth(offset){
+  const next=new Date(calendarCursorYear,calendarCursorMonth+offset,1);
+  if(next.getFullYear()<BOOKING_TODAY.getFullYear() ||
+     (next.getFullYear()===BOOKING_TODAY.getFullYear() && next.getMonth()<BOOKING_TODAY.getMonth())) return;
+
+  if(next.getFullYear()>BOOKING_MAX_DATE.getFullYear() ||
+     (next.getFullYear()===BOOKING_MAX_DATE.getFullYear() && next.getMonth()>BOOKING_MAX_DATE.getMonth())) return;
+
+  calendarCursorYear=next.getFullYear();
+  calendarCursorMonth=next.getMonth();
+  renderCalendar();
+}
+
+function chooseCalendarDate(value){
+  const date=dateFromIso(value);
+  if(!withinBookingWindow(date)) return;
+
+  state.selectedDate=value;
+  calendarCursorYear=date.getFullYear();
+  calendarCursorMonth=date.getMonth();
+  renderCalendar();
+  updateScheduleRequest();
+}
+
+function openSchedule(id){
+  state.cleaner=data.find(x=>x.id===id);
+  setPhase(3);
+
+  document.getElementById("scheduleCleanerPhoto").textContent=state.cleaner.e;
+  document.getElementById("scheduleCleanerName").textContent=state.cleaner.name;
+  document.getElementById("scheduleCleanerRating").textContent=`⭐ ${state.cleaner.rating} · ฿${state.cleaner.price}/hr`;
+
+  let selected=dateFromIso(state.selectedDate);
+  if(!withinBookingWindow(selected)){
+    state.selectedDate="2026-10-08";
+    selected=dateFromIso(state.selectedDate);
+  }
+
+  calendarCursorYear=selected.getFullYear();
+  calendarCursorMonth=selected.getMonth();
+  renderCalendar();
+
+  populateSchedulePeriods(state.cleaner);
+  updateScheduleRequest();
+
+  document.getElementById("scheduleModal").classList.remove("hide");
+}
+
+function closeScheduleModal(){
+  document.getElementById("scheduleModal").classList.add("hide");
+  setPhase(2);
+}
+
+function scheduleBackdrop(e){
+  if(e.target.id==="scheduleModal") closeScheduleModal();
+}
+
+function updateScheduleTime(){
+  const select=document.getElementById("scheduleTimeSelect");
+  if(!select || select.disabled) return;
+  state.selectedTime=select.value;
+  updateScheduleRequest();
+}
+
+function formatSelectedDate(){
+  const date=dateFromIso(state.selectedDate);
+  return new Intl.DateTimeFormat("en-US",{
+    month:"short",
+    day:"numeric",
+    year:"numeric"
+  }).format(date);
+}
+
+function updateScheduleRequest(){
+  document.getElementById("scheduleRequestText").textContent=
+    `${formatSelectedDate()} · ${state.selectedTime || "Choose a time"}`;
+}
+function collectPropertyDetails(){
+  const details={};
+  document.querySelectorAll(".dynamic-property-control").forEach(el=>{
+    details[el.dataset.fieldId]=el.value;
+  });
+  return details;
+}
+
+function serializeBookingState(){
+  return {
+    frequency:state.frequency||"Just Once",
+    service:state.service,
+    cleanerId:state.cleaner?.id||null,
+    addons:state.addons,
+    selectedAddons:[...document.querySelectorAll("#addons .chip.selected")].map(x=>x.textContent.trim()),
+    selectedAreas:[...document.querySelectorAll("#areasChips .chip.selected")].map(x=>x.textContent.trim()),
+    propertyDetails:collectPropertyDetails(),
+    selectedDate:state.selectedDate,
+    selectedTime:state.selectedTime,
+    selectedPart:state.selectedPart||"",
+    duration:state.duration,
+    instructions:document.getElementById("specialInstructions")?.value||""
+  };
+}
+function redirectToBookingLogin(){
+ const saved=JSON.stringify(serializeBookingState());
+ sessionStorage.setItem('mmPendingBooking',saved);
+ window.location.href='login.html?resume=booking&state='+encodeURIComponent(saved);
+}
+function continueFromSchedule(){
+  updateScheduleTime();
+
+  if(!state.selectedTime){
+    alert("Please choose an available time before continuing.");
+    return;
+  }
+
+  document.getElementById("scheduleModal").classList.add("hide");
+
+  // Logged-in customers continue directly to payment.
+  if(sessionStorage.getItem("mmLoggedIn")==="1"){
+    go(6);
+    return;
+  }
+
+  // Otherwise preserve the booking details and redirect to the separate login page.
+  redirectToBookingLogin();
+}
+
+const STAMP_POSITIONS=[
+  {left:15.8,top:50.2},{left:34.0,top:50.2},{left:52.0,top:50.2},{left:70.0,top:50.2},{left:87.7,top:50.2},
+  {left:15.8,top:74.2},{left:34.0,top:74.2},{left:52.0,top:74.2},{left:70.0,top:74.2},{left:87.7,top:74.2}
+];
+
+function getStampCount(){
+  return Math.max(0,Math.min(10,Number(localStorage.getItem("mmStampCount")||0)));
+}
+
+function setStampCount(value){
+  localStorage.setItem("mmStampCount",String(Math.max(0,Math.min(10,value))));
+}
+
+function updateAccountNav(){
+  const link=document.getElementById("accountNavLink");
+  if(!link) return;
+  const loggedIn=sessionStorage.getItem("mmLoggedIn")==="1";
+  state.loggedIn=loggedIn;
+  link.textContent=loggedIn ? "My Dashboard" : "Sign up / Log in";
+  link.href=loggedIn ? "dashboard.html" : "login.html";
+}
+
+function renderEarnedStamps(count=getStampCount()){
+  const layer=document.getElementById("earnedStampLayer");
+  if(!layer) return;
+  layer.innerHTML="";
+  STAMP_POSITIONS.slice(0,count).forEach((pos,index)=>{
+    const stamp=document.createElement("div");
+    stamp.className="earned-stamp-marker";
+    stamp.style.left=`${pos.left}%`;
+    stamp.style.top=`${pos.top}%`;
+    stamp.textContent="★";
+    stamp.setAttribute("aria-label",`Earned stamp ${index+1}`);
+    layer.appendChild(stamp);
+  });
+  const progress=document.getElementById("stampProgressText");
+  if(progress){
+    progress.textContent=count>=10
+      ? "10 / 10 stamps — your 50% reward is unlocked. Your progress is saved in your customer dashboard."
+      : `${count} / 10 stamps earned. Your progress is saved in your customer dashboard.`;
+  }
+}
+
+function savePaidBooking(){
+  const booking={
+    id:`MM-${Date.now()}`,
+    service:state.service,
+    cleaner:state.cleaner?.name||"Cleaner",
+    date:formatSelectedDate(),
+    time:state.selectedTime,
+    total:state.total||0,
+    frequency:state.frequency||"Just Once",
+    createdAt:new Date().toISOString(),
+    status:"Confirmed",
+    paid:true,
+    areas:[...document.querySelectorAll("#areasChips .chip.selected")].map(x=>x.textContent.trim()).join(", "),
+    addons:[...document.querySelectorAll("#addons .chip.selected")].map(x=>x.textContent.trim()),
+    instructions:document.getElementById("specialInstructions").value
+  };
+  let bookings=[];
+  try{ bookings=JSON.parse(localStorage.getItem("mmBookings")||"[]"); }catch(e){}
+  bookings.unshift(booking);
+  localStorage.setItem("mmBookings",JSON.stringify(bookings.slice(0,20)));
+  localStorage.setItem("mmLastBooking",JSON.stringify(booking));
+}
+
+function addStampAfterPayment(){
+  const next=Math.min(10,getStampCount()+1);
+  setStampCount(next);
+  renderEarnedStamps(next);
+  return next;
+}
+
+function selectFrequency(input){
+  state.frequency=input.value;
+
+  document.querySelectorAll(".frequency-option").forEach(label=>{
+    const radio=label.querySelector('input[type="radio"]');
+    label.classList.toggle("selected",radio.checked);
+  });
+
+  const frequencyLabel=document.getElementById("payFrequency");
+  if(frequencyLabel) frequencyLabel.textContent=state.frequency;
+  document.getElementById("payFrequencyChip").textContent=state.frequency;
+}
+
+
+function togglePromoBox(){
+  document.getElementById("promoBox").classList.toggle("hide");
+}
+
+function showStampReward(){
+  renderEarnedStamps(getStampCount());
+  document.getElementById("stampRewardModal").classList.remove("hide");
+}
+
+function closeStampReward(){
+  document.getElementById("stampRewardModal").classList.add("hide");
+  go(7);
+}
+
+function stampBackdrop(e){
+  if(e.target.id==="stampRewardModal") closeStampReward();
+}
+
+state.paymentMethod="card";
+
+function choosePay(x){
+  document.querySelectorAll(".pay").forEach(y=>y.classList.remove("selected"));
+  x.classList.add("selected");
+}
+
+function selectPaymentMethod(method,button){
+  state.paymentMethod=method;
+
+  document.querySelectorAll(".payment-method-tab").forEach(x=>{const chosen=x.dataset.method===method;x.classList.toggle("selected",chosen);x.setAttribute("aria-pressed",String(chosen))});
+
+  document.getElementById("cardPaymentPanel").classList.toggle("hide",method!=="card");
+  document.getElementById("qrPaymentPanel").classList.toggle("hide",method!=="qr");
+}
+
+function toggleCancellationPolicy(){
+  document.getElementById("cancellationPolicy").classList.toggle("hide");
+}
+
+function editTaskDetails(){
+  go(3);
+}
+
+function editSchedule(){
+  if(!state.cleaner) return;
+  openSchedule(state.cleaner.id);
+}
+
+function validateCardDetails(){
+ if(state.paymentMethod!=='card')return true;
+ const fields=['cardNumber','cardExpiry','cardCvv','cardName'];
+ for(const id of fields){const field=document.getElementById(id);field.required=true;field.setCustomValidity(field.value.trim()?'':'Please fill in this required field.');field.oninput=()=>{field.setCustomValidity('');field.removeAttribute('aria-invalid')};if(!field.checkValidity()){field.setAttribute('aria-invalid','true');field.reportValidity();field.focus();return false}}
+ return true;
+}
+function confirmPayment(){if(validateCardDetails())confirmBooking()}
+
+function restoreBooking(saved){
+  if(!saved) return;
+
+  state.frequency=saved.frequency||"Just Once";
+  state.service=saved.service||state.service;
+  state.cleaner=data.find(x=>x.id===saved.cleanerId)||null;
+  state.addons=Number(saved.addons)||0;
+  state.selectedDate=saved.selectedDate||state.selectedDate;
+  state.selectedTime=saved.selectedTime||state.selectedTime;
+  state.selectedPart=saved.selectedPart||"";
+  state.duration=Number(saved.duration)||2;
+
+  selectService(
+    state.service,
+    saved.propertyDetails||{},
+    Array.isArray(saved.selectedAreas) ? saved.selectedAreas : null,
+    saved.selectedAddons||[]
+  );
+
+  document.getElementById("specialInstructions").value=saved.instructions||"";
+  calcAddons();
+}
+function propertySummary(){
+  const d=collectPropertyDetails();
+
+  if(state.service==="Office Cleaning"){
+    return `${d.officeSize || "Office"} · ${d.workstations || ""} workstations`;
+  }
+  if(state.service==="Condo Cleaning"){
+    return `${d.beds || ""}-bedroom condo · ${d.unitSize || ""}`;
+  }
+  if(state.service==="Move-In / Move-Out"){
+    return `${d.beds || ""}-bedroom ${d.property || "property"} · ${d.moveStage || ""}`;
+  }
+
+  return `${d.beds || ""}-bedroom ${d.property || "property"} · ${d.propertySize || ""}`;
+}
+
+function renderSummaryChips(id,items,emptyText){
+ const box=document.getElementById(id);if(!box)return;
+ box.replaceChildren();
+ (items.length?items:[emptyText]).forEach(text=>{const chip=document.createElement('span');chip.className='task-chip';chip.textContent=text;box.appendChild(chip)});
+}
+function summary(){
+  const c=state.cleaner;
+  if(!c) return;
+
+  calcAddons();
+
+  const clean=c.price*state.duration;
+  const total=clean+c.transport+state.addons;
+  state.total=total;
+
+  const d=collectPropertyDetails();
+  const propertyText=propertySummary();
+  const dateText=`${formatSelectedDate()} · ${state.selectedTime}`;
+  const locationText=d.loc || "";
+  const instructions=document.getElementById("specialInstructions")?.value.trim() || "No special instructions added.";
+
+  const selectedAddonButtons=[...document.querySelectorAll("#addons .chip.selected")];
+  const selectedAddonText=selectedAddonButtons.length
+    ? selectedAddonButtons.map(x=>x.textContent.trim().replace(/\s*\+฿\d+$/,"")).join(", ")
+    : "None";
+
+  document.getElementById("sumService").textContent=state.service;
+  document.getElementById("sumProperty").textContent=propertyText;
+  document.getElementById("sumDate").textContent=dateText;
+  document.getElementById("sumCleaner").textContent=c.name;
+
+  document.getElementById("sumCleaning").textContent=`฿${clean}`;
+  document.getElementById("sumTransport").textContent=`฿${c.transport}`;
+  document.getElementById("sumAddons").textContent=`฿${state.addons}`;
+  document.getElementById("sumTotal").textContent=`฿${total}`;
+
+  document.getElementById("cleaningRateDetail").textContent=`฿${c.price}/hr × ${state.duration} hours`;
+  document.getElementById("addonPriceDetail").textContent=
+    selectedAddonText==="None" ? "No paid add-ons selected" : selectedAddonText;
+  document.getElementById("transportPriceDetail").textContent=
+    c.transport===0 ? "No transportation charge for this cleaner" : "Shown separately based on cleaner distance";
+
+  document.getElementById("payCleanerPhoto").textContent=c.e;
+  document.getElementById("payCleanerName").textContent=c.name;
+  document.getElementById("payCleanerRating").textContent=`⭐ ${c.rating} · ${c.reviews} reviews`;
+  document.getElementById("rightServiceName").textContent=state.service;
+  document.getElementById("payFrequency").textContent=state.frequency || "Just Once";
+  document.getElementById("payProperty").textContent=propertyText;
+  document.getElementById("payLocation").textContent=locationText;
+  document.getElementById("payDate").textContent=dateText;
+  document.getElementById("payDuration").textContent=`${state.duration} hours`;
+
+  const serviceChip=document.getElementById("payServiceChip");
+  if(serviceChip) serviceChip.textContent=state.service;
+
+  const frequencyChip=document.getElementById("payFrequencyChip");
+  if(frequencyChip) frequencyChip.textContent=state.frequency || "Just Once";
+
+  const areas=[...document.querySelectorAll("#areasChips .chip.selected")].map(x=>x.dataset.area||x.textContent.trim());
+  renderSummaryChips("payAreasChips", areas, "No areas selected");
+
+  const addonItems = selectedAddonText==="None"
+    ? ["No add-ons selected"]
+    : selectedAddonText.split(",").map(item=>item.trim()).filter(Boolean);
+  renderSummaryChips("payAddonsChips", addonItems, "No add-ons selected");
+
+  const instructionsBox=document.getElementById("payInstructionsBox");
+  if(instructionsBox) instructionsBox.textContent=instructions;
+
+  const payButton=document.getElementById("confirmPayBtn");
+  if(payButton) payButton.textContent=`Confirm & Pay ฿${total}`;
+}
+function confirmBooking(){
+  if(!validateCardDetails())return;
+  if(sessionStorage.getItem("mmLoggedIn")!=="1"){redirectToBookingLogin();return;}
+  document.getElementById("fCleaner").textContent=state.cleaner.name;
+  document.getElementById("fService").textContent=state.service;
+  document.getElementById("fDate").textContent=`${formatSelectedDate()} · ${state.selectedTime}`;
+  document.getElementById("fTotal").textContent=`฿${state.total}`;
+
+  savePaidBooking();
+  addStampAfterPayment();
+  showStampReward();
+}
+
+function wireDynamicFilters(){
+  document.querySelectorAll("#availabilityFilters .filter-pill").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      document.querySelectorAll("#availabilityFilters .filter-pill").forEach(x=>x.classList.remove("active"));
+      btn.classList.add("active");
+      state.availability=btn.dataset.availability;
+      applyFilters();
+    });
+  });
+  ["timeMorning","timeAfternoon","timeEvening","typeVerified","typeTop","typeNew"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener("change",applyFilters);
+  });
+  const slider=document.getElementById("priceFilter");
+  if(slider){
+    slider.addEventListener("input",()=>{
+      document.getElementById("priceMaxLabel").textContent=`฿${slider.value}/hr`;
+      applyFilters();
+    });
+  }
+  const sort=document.getElementById("sortSelect");
+  if(sort) sort.addEventListener("change",applyFilters);
+}
+
+function restoreAfterLogin(){
+  const params=new URLSearchParams(window.location.search);
+  state.loggedIn=sessionStorage.getItem("mmLoggedIn")==="1";
+  updateAccountNav();
+
+  if(params.get("auth")!=="1" || !params.get("state") || !state.loggedIn){
+    if(params.get("auth")==="1" && window.history && history.replaceState){
+      history.replaceState({},"","index.html");
+    }
+    return;
+  }
+  try{
+    const saved=JSON.parse(params.get("state"));
+    restoreBooking(saved);
+    sessionStorage.removeItem("mmPendingBooking");
+    document.getElementById("home").classList.add("hide");
+    document.querySelector(".home-nav")?.classList.add("hide");
+    document.getElementById("app").classList.remove("hide");
+    document.getElementById("describeLayout").classList.add("hide");
+    document.getElementById("fullFlow").classList.remove("hide");
+    go(6);
+    if(window.history && history.replaceState) history.replaceState({},"","index.html");
+  }catch(e){
+    console.error("Could not restore booking",e);
+  }
+}
+
+wireDynamicFilters();
+restoreAfterLogin();
+updateAccountNav();
+</script>
+</body>
+</html>

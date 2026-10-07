@@ -1,0 +1,1797 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MochiMaid — Cleaner Portal</title>
+<style>
+/* ===== Shared MochiMaid theme (same tokens as index.html) ===== */
+:root{--p:#6f3cc3;--pink:#e95a9d;--mint:#17b79f;--green:#0b8369;--ink:#1f2937;--muted:#6b7280;--line:#e5e7eb;--bg:#fafafa;--warn:#f47b4f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hide{display:none!important}
+a{color:inherit}
+.logo{font-size:27px;font-weight:900;color:var(--p);cursor:pointer;letter-spacing:-.5px}
+.logo span{color:var(--pink)}
+.logo-tag{font-size:10.5px;font-weight:900;color:var(--green);background:#e7faf5;border:1px solid #b9ecdf;border-radius:999px;padding:5px 9px;margin-left:10px;vertical-align:5px;letter-spacing:.5px}
+.section-kicker{display:inline-block;font-size:12px;text-transform:uppercase;letter-spacing:.8px;font-weight:900;color:var(--p);margin-bottom:10px}
+.sub{color:var(--muted);font-size:14px;line-height:1.6}
+.primary{border:0;border-radius:11px;padding:12px 18px;background:linear-gradient(90deg,var(--p),var(--pink));color:#fff;font-weight:800}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.secondary{border-radius:11px;padding:11px 16px;background:#f2eafe;color:#6434b9;border:1.5px solid #a98ae7;font-weight:800}
+.secondary:hover{background:#e8dbfb}
+.green-btn{border:0;border-radius:999px;padding:12px 18px;background:var(--green);color:#fff;font-weight:900}
+.green-btn:disabled{background:#9ccfc3;cursor:not-allowed}
+.link-btn{border:0;background:none;color:var(--p);font-weight:900;font-size:13px;padding:6px 0}
+.link-btn:hover{text-decoration:underline}
+.big{padding:15px 22px;font-size:16px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:11px;background:#f1f5f9;border-radius:999px;padding:6px 9px;color:#334155;font-weight:700}
+.tag.pink{background:#fff0f7;color:#a81f65}
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{border:1.5px solid #cbd5e1;border-radius:999px;padding:10px 15px;background:#fff;color:#273449;font-weight:700;font-size:14px}
+.chip:hover{border-color:#a78bfa;background:#faf5ff}
+.chip.selected{color:#5b21b6;background:#f3e8ff;border-color:#a78bfa}
+.chip small{font-size:10px;color:#9a6b00;margin-left:4px}
+.new-badge,.elite-badge,.minimum-badge,.ver-badge,.unv-badge{padding:5px 7px;border-radius:5px;font-size:10px;font-weight:900;display:inline-block}
+.new-badge{background:#fff4d8;color:#8a6100}
+.elite-badge{background:#f3e8ff;color:#7e22ce}
+.minimum-badge{background:#ecfdf5;color:#166534}
+.ver-badge{background:#dcfce7;color:#15803d}
+.unv-badge{background:#f1f5f9;color:#64748b}
+
+/* ===== Public nav (from index.html) ===== */
+.home-nav{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:30}
+.home-nav-links{display:flex;gap:22px;align-items:center;font-size:14px;font-weight:700}
+.home-nav-links a{text-decoration:none;color:#26313f}
+.home-nav-links a:hover{color:var(--p)}
+.nav-pill{border:1.5px solid var(--p);color:var(--p)!important;padding:11px 18px;border-radius:999px;background:#fff;transition:.18s}
+.nav-pill:hover{background:#faf5ff;transform:translateY(-1px)}
+.nav-pill.solid{background:linear-gradient(90deg,var(--p),var(--pink));color:#fff!important;border-color:transparent}
+
+/* ===== Landing ===== */
+.c-hero{padding:70px 7% 0;background:radial-gradient(circle at 90% 0%,rgba(23,183,159,.16),transparent 26%),radial-gradient(circle at 5% 8%,rgba(233,90,157,.12),transparent 22%),#fff}
+.c-hero-inner{max-width:1120px;margin:auto;display:grid;grid-template-columns:1.1fr .9fr;gap:46px;align-items:center}
+.c-hero h1{font-size:52px;line-height:1.05;letter-spacing:-2px;margin:0 0 16px;color:#142033}
+.c-hero h1 span{color:var(--p)}
+.c-hero p{color:var(--muted);font-size:17px;line-height:1.7;margin:0}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.hero-mock{position:relative;min-height:450px;border-radius:28px;background:linear-gradient(145deg,#eee7ff,#ffe8f4 58%,#ddfff7);padding:34px}
+.mock-card{background:#fff;border-radius:18px;box-shadow:0 18px 40px rgba(72,40,120,.14);padding:18px}
+.mock-card.notif{max-width:340px}
+.mock-head{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:800;margin-bottom:10px}
+.mock-head b{color:var(--p)}
+.mock-card h4{margin:0 0 6px;font-size:17px}
+.mock-card .meta{font-size:12.5px;color:#475569;line-height:1.7}
+.mock-earn{display:flex;justify-content:space-between;align-items:center;margin:12px 0;padding:10px 12px;border-radius:12px;background:#ecfdf5;color:#065f46;font-weight:800;font-size:13px}
+.mock-earn strong{font-size:20px}
+.mock-btns{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+.mock-btns span{border-radius:999px;padding:9px;text-align:center;font-size:12px;font-weight:900}
+.mock-btns .d{background:#f2eafe;color:#6434b9}
+.mock-btns .a{background:var(--green);color:#fff}
+.mock-card.small{position:absolute;padding:13px 15px;font-size:12px}
+.mock-card.earn{right:26px;bottom:24px;width:170px}
+.mock-card.rating{right:44px;top:34px}
+.mini-bars{display:flex;align-items:flex-end;gap:5px;height:44px;margin-top:8px}
+.mini-bars i{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--p),var(--pink))}
+.stat-band{max-width:1060px;margin:54px auto 0;display:grid;grid-template-columns:repeat(4,1fr) auto;gap:18px;align-items:center;padding:26px 30px;border-radius:20px;background:linear-gradient(90deg,#5b2fb0,#8f3fb9 55%,#d2508f);color:#fff;box-shadow:0 18px 40px rgba(111,60,195,.22)}
+.stat-band strong{display:block;font-size:30px;letter-spacing:-.5px}
+.stat-band span{font-size:12.5px;opacity:.9}
+.stat-band button{border:0;background:#fff;color:var(--p);border-radius:12px;padding:14px 20px;font-weight:900}
+.c-hero .sample-note{font-size:11px;color:#94a3b8;line-height:1.4;max-width:1060px;margin:12px auto 0;padding-bottom:20px!important;font-size:11px;color:#94a3b8;padding:0 4px}
+.c-section{max-width:1120px;margin:0 auto;padding:70px 5%}
+.center-title{text-align:center;max-width:760px;margin:0 auto 32px}
+.center-title h2{font-size:34px;line-height:1.16;letter-spacing:-1px;margin:0 0 10px;color:#172033}
+.benefit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.benefit{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 22px rgba(15,23,42,.035)}
+.benefit .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:#f5efff;margin-bottom:14px}
+.benefit:nth-child(2) .ic{background:#fff0f7}.benefit:nth-child(3) .ic{background:#e8fffa}.benefit:nth-child(4) .ic{background:#fff8df}.benefit:nth-child(5) .ic{background:#edf5ff}
+.benefit b{display:block;font-size:16px;margin-bottom:6px}
+.benefit p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.6}
+.tier-wrap{background:linear-gradient(135deg,#f8f4ff 0%,#fff5fa 48%,#f2fffb 100%)}
+.tier-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tier{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:28px}
+.tier.v{border-color:#7dd3c0;box-shadow:0 16px 36px rgba(11,131,105,.10)}
+.tier h3{margin:8px 0 4px;font-size:23px}
+.tier .when{color:var(--muted);font-size:13px}
+.tier h4{margin:20px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:#475569}
+.tier ul{list-style:none;padding:0;margin:0}
+.tier li{padding:7px 0;font-size:14px;color:#334155;display:flex;gap:9px}
+.tier li i{font-style:normal;width:18px;flex:none;text-align:center;font-weight:900;color:var(--green)}
+.tier li i.no{color:#cbd5e1}
+.tier-note{text-align:center;color:var(--muted);font-size:12px;margin-top:16px}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.how-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}
+.how-num{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#d9d6ff;color:#3f3b9e;font-weight:900;font-size:18px;margin-bottom:14px}
+.how-card:nth-child(2) .how-num{background:#f5f0d9;color:#7d6c16}.how-card:nth-child(3) .how-num{background:#d9f5e8;color:#0d7b58}.how-card:nth-child(4) .how-num{background:#ffe6ef;color:#9f2d62}
+.how-card b{display:block;margin-bottom:6px}
+.how-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.faq-section{padding:72px 7%;background:radial-gradient(circle at 10% 10%,rgba(111,60,195,.10),transparent 26%),radial-gradient(circle at 90% 12%,rgba(233,90,157,.10),transparent 24%),linear-gradient(135deg,#f8f4ff 0%,#fff5fa 48%,#f2fffb 100%)}
+.faq-list{max-width:860px;margin:0 auto}
+.faq-list details{background:#fff;border:1px solid #e5d9f5;border-radius:14px;margin-bottom:11px;padding:0 17px;box-shadow:0 8px 20px rgba(72,40,120,.045)}
+.faq-list summary{padding:17px 0;cursor:pointer;font-weight:800;color:#1f2937}
+.faq-list p{margin:0 0 17px;color:var(--muted);line-height:1.6;font-size:13px}
+.home-bottom-cta{max-width:1040px;margin:65px auto;padding:32px 36px;border-radius:22px;background:linear-gradient(90deg,#ede7ff,#ffe9f4,#e2fff8);display:flex;align-items:center;justify-content:space-between;gap:20px}
+.home-bottom-cta h2{margin:0 0 5px}.home-bottom-cta p{margin:0;color:var(--muted)}
+.prototype-disclaimer{max-width:1040px;margin:0 auto 55px;padding:14px 17px;border-radius:12px;background:#fbfbfd;border:1px solid var(--line);font-size:11px;color:#7a8391}
+footer{text-align:center;padding:24px;color:#94a3b8;font-size:12px;border-top:1px solid #eee;background:#fff}
+
+/* ===== Application (Turno-style) ===== */
+.apply-top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:18px;padding:18px 5%;background:#fff;border-bottom:1px solid #d9dde4}
+.apply-title{font-weight:800;color:#475569;padding-left:18px;border-left:1px solid var(--line)}
+.apply-top .link-btn{margin-left:auto}
+.apply-wrap{max-width:1200px;margin:28px auto 70px;padding:0 4%;display:grid;grid-template-columns:370px 1fr;gap:26px;align-items:start}
+.apply-aside{position:sticky;top:96px}
+.apply-intro{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+.intro-ic{width:62px;height:62px;flex:none;border-radius:16px;display:grid;place-items:center;font-size:30px;background:#e7faf5;border:1.5px solid #b9ecdf}
+.apply-intro h2{font-size:19px;line-height:1.35;margin:0}
+.app-step{display:grid;grid-template-columns:38px 1fr 22px;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:14px;padding:15px;background:#fff;margin-bottom:11px;cursor:pointer;transition:.15s}
+.app-step .n{width:34px;height:34px;border-radius:50%;border:2px solid #cbd5e1;display:grid;place-items:center;font-weight:900;color:#94a3b8;background:#fff}
+.app-step b{display:block;font-size:15px;margin-bottom:3px}
+.app-step small{color:var(--muted);font-size:12px;line-height:1.4}
+.app-step .lock{color:#94a3b8;font-size:14px;text-align:center}
+.app-step.active{border-color:var(--green);box-shadow:0 10px 24px rgba(11,131,105,.12)}
+.app-step.active .n{border-color:var(--green);color:var(--green)}
+.app-step.active .lock{color:var(--green);font-size:22px;font-weight:900}
+.app-step.done .n{background:var(--green);border-color:var(--green);color:#fff}
+.app-step.locked{opacity:.55;cursor:not-allowed}
+.apply-side-note{margin:14px 0 6px;padding:12px 14px;border-radius:12px;background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;font-size:12.5px;line-height:1.55}
+.form-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:0 10px 28px rgba(0,0,0,.04)}
+.form-panel h2{font-size:28px;margin:0 0 6px;letter-spacing:-.5px}
+.form-panel>section>.sub{margin:0 0 24px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{margin-bottom:18px}
+.field>label,.f-label{display:block;font-size:13px;font-weight:800;color:#475569;margin-bottom:8px}
+.req{color:#e11d48}
+.input{width:100%;min-height:50px;border:1.5px solid #cbd5e1;border-radius:10px;padding:10px 13px;background:#fff;color:var(--ink);font-size:15px}
+.input:focus{outline:none;border-color:#8b5cf6;box-shadow:0 0 0 4px rgba(139,92,246,.10)}
+select.input{-webkit-appearance:none;appearance:none;background-image:linear-gradient(45deg,transparent 50%,#6b7280 50%),linear-gradient(135deg,#6b7280 50%,transparent 50%);background-position:calc(100% - 20px) 22px,calc(100% - 14px) 22px;background-size:6px 6px;background-repeat:no-repeat;padding-right:40px}
+textarea.input{min-height:110px;resize:vertical}
+.field.err .input{border-color:#e11d48;background:#fff1f2}
+.field.err>label{color:#be123c}
+.av-pick{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.av-opt{width:54px;height:54px;border-radius:50%;border:2px solid #e2e8f0;background:linear-gradient(145deg,#dbeafe,#fce7f3);font-size:27px;display:grid;place-items:center;overflow:hidden;padding:0}
+.av-opt.selected{border-color:var(--p);box-shadow:0 0 0 4px rgba(111,60,195,.15)}
+.av-opt img{width:100%;height:100%;object-fit:cover}
+.upload-av{border:1.5px dashed #a98ae7;border-radius:999px;padding:10px 14px;font-size:13px;font-weight:800;color:#6434b9;background:#faf7ff;cursor:pointer}
+.addr-cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.addr-box{border:1.5px solid #cbd5e1;border-radius:14px;overflow:hidden;background:#fff}
+.addr-row{padding:9px 14px;border-top:1px solid #d6dbe2}
+.addr-row:first-child{border-top:0}
+.addr-row label{display:block;font-size:11px;color:#6b7280;font-weight:700}
+.addr-row input,.addr-row select{border:0;outline:0;width:100%;font-size:15px;padding:4px 0 2px;background:transparent;color:var(--ink)}
+.addr-row:focus-within{background:#faf7ff}
+.addr-row.err{background:#fff1f2}
+.addr-row.err label{color:#be123c}
+.loc-btn{width:100%;margin-top:12px;border:1.5px solid #9ca3af;background:#fff;border-radius:12px;padding:12px;font-weight:800;color:#1f2937}
+.loc-btn:hover{border-color:var(--green);color:var(--green)}
+.coord-txt{font-size:12px;color:#0b6555;font-weight:800;margin-top:8px;min-height:16px}
+.map-box{position:relative;height:250px;border-radius:14px;overflow:hidden;border:1px solid #d7e4dc;
+  background:
+   linear-gradient(90deg,transparent 47%,#fff 47%,#fff 50%,transparent 50%),
+   linear-gradient(0deg,transparent 31%,#fff 31%,#fff 34%,transparent 34%),
+   linear-gradient(0deg,transparent 72%,#fdf3c4 72%,#fdf3c4 76%,transparent 76%),
+   linear-gradient(115deg,transparent 60%,#fff 60%,#fff 62%,transparent 62%),
+   radial-gradient(circle at 18% 22%,#cfe9d6 0 12%,transparent 13%),
+   radial-gradient(circle at 82% 78%,#cfe9d6 0 14%,transparent 15%),
+   radial-gradient(circle at 78% 18%,#d6e8f7 0 9%,transparent 10%),
+   #e9f2ec}
+.map-radius{position:absolute;left:50%;top:50%;border-radius:50%;background:rgba(111,60,195,.12);border:2px dashed rgba(111,60,195,.55);transform:translate(-50%,-50%);transition:.2s}
+.map-pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-92%);font-size:34px;filter:drop-shadow(0 4px 4px rgba(0,0,0,.2))}
+.map-dot{position:absolute;width:13px;height:13px;border-radius:50%;background:#cbd5e1;border:2px solid #fff;transform:translate(-50%,-50%)}
+.map-dot.in{background:var(--pink)}
+.map-label{position:absolute;left:12px;bottom:12px;right:12px;background:rgba(255,255,255,.95);border-radius:10px;padding:9px 11px;font-size:12px;font-weight:800;color:#334155}
+.range{width:100%;accent-color:var(--p);cursor:pointer}
+.range-row{display:flex;justify-content:space-between;font-size:12px;color:#475569;font-weight:800;margin-top:4px}
+.fee-table{margin-top:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13px}
+.fee-table div{display:flex;justify-content:space-between;padding:9px 12px;border-top:1px solid #eef0f3}
+.fee-table div:first-child{border-top:0;background:#f8fafc;font-weight:900;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#64748b}
+.privacy{margin-top:12px;padding:11px 13px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0;color:#475569;font-size:12px;line-height:1.55}
+.rate-big{font-size:34px;font-weight:900;color:var(--p);letter-spacing:-1px}
+.rate-big small{font-size:15px;color:var(--muted);font-weight:700}
+.hint-box{margin-top:10px;padding:11px 13px;border-radius:10px;background:#faf7ff;border:1px solid #ece4fa;font-size:12.5px;color:#4c3a78;line-height:1.55}
+.wk{display:grid;grid-template-columns:70px repeat(3,1fr);gap:8px}
+.wk-h{font-size:12px;font-weight:900;color:#334155;text-align:center;padding:4px 0}
+.wk-h small{display:block;font-weight:600;color:var(--muted);font-size:10.5px;margin-top:2px}
+.wk-d{font-weight:900;font-size:13px;display:flex;align-items:center;color:#334155}
+.slot{border:1.5px solid #e2e8f0;background:#fff;border-radius:10px;min-height:44px;font-size:12px;font-weight:800;color:#94a3b8}
+.slot:hover{border-color:#a7f3d0}
+.slot.on{background:#e7faf5;border-color:var(--green);color:#0b6555}
+.preset-row{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.preset-row button{border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;color:#334155}
+.preset-row button:hover{border-color:var(--green);color:var(--green)}
+.avail-sum{margin-top:14px;font-size:13px;color:#0b6555;font-weight:800}
+.form-actions{display:flex;justify-content:space-between;margin-top:26px;padding-top:18px;border-top:1px solid var(--line)}
+
+/* ===== App shell (Turno-style sidebar) ===== */
+.shell{display:grid;grid-template-columns:262px 1fr;min-height:100vh}
+.shell>*{min-width:0}
+.side{background:#fff;border-right:1px solid var(--line);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:22px 14px;overflow:auto}
+.side>.logo{padding:0 10px 18px}
+.me{display:flex;gap:11px;align-items:center;padding:12px;border-radius:14px;background:#faf8ff;border:1px solid #ece4fa;margin-bottom:16px}
+.av{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#dbeafe,#fce7f3);font-size:23px;overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover}
+.av.sm{width:36px;height:36px;font-size:19px}
+.me b{display:block;font-size:15px;margin-bottom:4px}
+.status-pill{display:inline-block;font-size:10.5px;font-weight:900;border-radius:999px;padding:4px 9px}
+.status-pill.unv{background:#fff1e8;color:#c2410c}
+.status-pill.pen{background:#fef9c3;color:#854d0e}
+.status-pill.ver{background:#dcfce7;color:#15803d}
+.side-nav button{display:flex;align-items:center;gap:13px;width:100%;border:0;background:none;padding:13px 12px;border-radius:12px;font-size:15px;color:#374151;font-weight:700;text-align:left;margin-bottom:2px}
+.side-nav button:hover{background:#f8fafc}
+.side-nav button.active{background:#f2eafe;color:var(--p)}
+.side-nav .ic{width:22px;text-align:center;font-size:17px}
+.side-nav .badge{margin-left:auto;background:var(--pink);color:#fff;border-radius:999px;font-size:11px;padding:2px 8px;font-weight:900}
+.side-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--line)}
+.online{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;background:#f8fafc;cursor:pointer;margin-bottom:8px}
+.online b{display:block;font-size:13px}
+.online small{font-size:11px;color:var(--muted)}
+.online input{display:none}
+.sw{width:42px;height:24px;flex:none;border-radius:999px;background:#cbd5e1;position:relative;transition:.2s}
+.sw::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.online input:checked+.sw{background:var(--green)}
+.online input:checked+.sw::after{left:21px}
+.side-link{display:block;width:100%;text-align:left;border:0;background:none;padding:9px 12px;font-size:13px;font-weight:700;color:#64748b;text-decoration:none}
+.side-link:hover{color:var(--p)}
+.main{min-width:0;padding-bottom:60px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 34px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.topbar h1{font-size:25px;margin:0;display:flex;gap:11px;align-items:center;color:#273449}
+.top-actions{display:flex;align-items:center;gap:12px}
+.icon-btn{width:40px;height:40px;border-radius:50%;border:0;background:#f2eafe;color:var(--p);font-weight:900;font-size:17px;position:relative}
+.icon-btn i{position:absolute;top:6px;right:7px;width:9px;height:9px;border-radius:50%;background:var(--pink);border:2px solid #fff}
+.content{padding:24px 34px;max-width:1220px}
+.verify-banner{display:flex;justify-content:space-between;align-items:center;gap:16px;background:linear-gradient(90deg,#f47b4f,#f59e6b);color:#fff;border-radius:14px;padding:16px 20px;margin-bottom:22px;box-shadow:0 10px 24px rgba(244,123,79,.25);font-size:15px;line-height:1.5}
+.verify-banner button{flex:none;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.7);color:#fff;border-radius:10px;padding:10px 15px;font-weight:900}
+.verify-banner button:hover{background:rgba(255,255,255,.32)}
+.verify-banner.pending{background:linear-gradient(90deg,#0b8369,#17b79f);box-shadow:0 10px 24px rgba(11,131,105,.22)}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:18px}
+.card h3{margin:0 0 4px;font-size:18px}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.card-head .sub{margin:2px 0 0;font-size:13px}
+.greet{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:20px}
+.greet h2{font-size:28px;margin:0 0 4px;letter-spacing:-.5px}
+.greet .sub{margin:0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.kpi .k-ic{font-size:20px;margin-bottom:8px}
+.kpi strong{display:block;font-size:27px;letter-spacing:-.5px}
+.kpi span{font-size:12px;color:var(--muted);font-weight:700}
+.dash-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;align-items:start}
+.next-job{display:grid;grid-template-columns:78px 1fr auto;gap:16px;align-items:center;padding:16px;border-radius:14px;background:linear-gradient(90deg,#f3e8ff,#fce7f3);border:1px solid #dfc9f8}
+.date-block{background:#fff;border-radius:14px;text-align:center;padding:10px 6px;color:var(--p);font-weight:800;font-size:12px;border:1px solid #ece4fa}
+.date-block b{display:block;font-size:26px;line-height:1.1}
+.mini-req{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px 0;border-top:1px solid #eef0f3}
+.mini-req b{display:block;margin-bottom:4px}
+.mini-req small{color:var(--muted);font-size:12px}
+.earn-tag{font-weight:900;color:var(--green);font-size:15px;text-align:right}
+.earn-tag small{display:block;color:var(--muted);font-weight:700;font-size:11px}
+.strength-bar,.perf-bar{height:9px;border-radius:999px;background:#eef0f3;overflow:hidden;margin:10px 0 14px}
+.strength-bar i,.perf-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--mint))}
+.check-line{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:14px;color:#334155}
+.check-line .ok{color:var(--green);font-weight:900}
+.check-line .no{color:#cbd5e1;font-weight:900}
+.perf-row{font-size:13px;color:#334155;font-weight:700;display:flex;justify-content:space-between}
+.perf-bar{margin:6px 0 14px}
+.empty{padding:40px 24px;border:1.5px dashed #d6dbe2;border-radius:16px;text-align:center;color:#64748b;background:#fcfcfd}
+.empty .e-ic{font-size:38px;margin-bottom:8px}
+.empty b{display:block;color:#1f2937;font-size:17px;margin-bottom:6px}
+.empty p{margin:0 0 14px;font-size:13px}
+
+/* requests */
+.req-card{display:grid;grid-template-columns:1fr 300px;gap:22px}
+.req-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.cust{display:flex;gap:10px;align-items:center}
+.cust b{display:block}
+.cust small{font-size:12px;color:var(--muted)}
+.expire{font-size:12px;color:#b45309;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:6px 9px;font-weight:800}
+.req-title{font-size:22px;margin:16px 0 12px}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.info{background:#f8fafc;border-radius:11px;padding:10px 12px;font-size:13.5px;font-weight:700;color:#1f2937}
+.info small{display:block;color:var(--muted);font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.lbl{display:block;color:#475569;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 2px}
+.quote{margin-top:14px;padding:12px 14px;border-left:3px solid #c4b5fd;background:#faf7ff;border-radius:0 10px 10px 0;font-size:13.5px;color:#4b5563;line-height:1.55}
+.pay-box{background:#fbfdff;border:1px solid #dbe1e8;border-radius:15px;padding:16px;align-self:start}
+.overline{display:block;color:var(--p);font-size:11px;text-transform:uppercase;letter-spacing:.8px;font-weight:900;margin-bottom:6px}
+.price-line{display:flex;justify-content:space-between;gap:12px;padding:6px 0;color:#475569;font-size:13.5px}
+.price-line strong{color:#1f2937}
+.price-line.minus strong{color:#b91c1c}
+.you-earn{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d7dce3;margin-top:8px;padding-top:12px;font-weight:900;color:var(--green);font-size:15px}
+.you-earn strong{font-size:24px}
+.pay-note{display:block;color:var(--muted);font-size:11px;margin:4px 0 14px}
+.btn-stack{display:grid;gap:8px}
+.btn-stack .green-btn{width:100%}
+.btn-stack .secondary{width:100%;border-radius:999px}
+.locked-box{padding:14px;border-radius:12px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:13px;line-height:1.5;text-align:center}
+.locked-box b{display:block;font-size:14px;margin-bottom:3px}
+.locked-box button{margin-top:10px;width:100%}
+.offline{display:flex;gap:16px;align-items:center}
+
+/* bookings */
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab{border:1.5px solid #cbd5e1;background:#fff;border-radius:999px;padding:9px 15px;font-weight:800;font-size:13px;color:#334155}
+.tab.active{background:#f2eafe;border-color:#a98ae7;color:var(--p)}
+.bk-card{display:grid;grid-template-columns:78px 1fr auto;gap:18px;align-items:center}
+.bk-card .date-block{background:#f2eafe;border:0}
+.bk-card h3{margin:0 0 6px}
+.bk-meta{font-size:13px;color:#475569;line-height:1.7}
+.stage-pill{display:inline-block;border-radius:999px;padding:6px 11px;font-size:11.5px;font-weight:900;background:#e7faf5;color:#0b6555}
+.stage-pill.s0{background:#eef2ff;color:#4338ca}
+.stage-pill.s1,.stage-pill.s2{background:#fef9c3;color:#854d0e}
+.stage-pill.s3{background:#fce7f3;color:#9d174d}
+
+/* job page */
+.job-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.job-head h2{margin:2px 0 4px;font-size:27px;letter-spacing:-.5px}
+.job-head .sub{margin:0}
+.phase-progress{display:flex;align-items:flex-start;width:100%;margin:22px 0 4px}
+.phase-step{width:120px;min-width:84px;text-align:center;color:#9aa5b4}
+.phase-dot{width:28px;height:28px;margin:0 auto 7px;border-radius:50%;display:grid;place-items:center;background:#d9dde1;color:#fff;font-size:12px;font-weight:900;border:3px solid #d9dde1}
+.phase-label{font-size:12px;line-height:1.25;font-weight:700}
+.phase-step.active{color:#183d34}
+.phase-step.active .phase-dot{background:#fff;color:#0c705c;border-color:#0c705c}
+.phase-step.done{color:#0c705c}
+.phase-step.done .phase-dot{background:#0c705c;border-color:#0c705c}
+.phase-line{height:5px;flex:1;min-width:20px;margin-top:12px;border-radius:999px;background:#d4d7d9}
+.phase-line.done{background:#0c705c}
+.action-card{display:flex;justify-content:space-between;align-items:center;gap:18px;background:linear-gradient(90deg,#f3e8ff,#fce7f3);border:1px solid #dfc9f8;border-radius:16px;padding:18px 20px;margin-bottom:18px}
+.action-card b{display:block;font-size:17px;margin-bottom:4px}
+.action-card p{margin:0;font-size:13.5px;color:#4b5563;line-height:1.5}
+.action-card .why{display:block;color:#b45309;font-size:12px;font-weight:800;margin-top:6px}
+.action-card .green-btn{flex:none;padding:14px 22px;font-size:15px}
+.job-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:start}
+.cust-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;border-radius:12px;background:#f8fafc;margin-top:14px}
+.cust-actions{display:flex;gap:8px}
+.cust-actions button{border:1.5px solid #cbd5e1;background:#fff;border-radius:999px;padding:8px 13px;font-weight:800;font-size:12px}
+.check-item{display:flex;gap:11px;align-items:center;padding:12px 2px;border-bottom:1px solid #eef0f3;font-size:14.5px;font-weight:700;color:#273449}
+.check-item:last-child{border-bottom:0}
+.check-item input{width:20px;height:20px;accent-color:var(--green)}
+.check-item small{margin-left:auto;color:var(--muted);font-weight:700;font-size:11px}
+.check-item.off{color:#94a3b8}
+.photo-sec{margin-bottom:18px}
+.photo-sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.photo-sec-head b{font-size:14px}
+.count-pill{font-size:11px;font-weight:900;border-radius:999px;padding:4px 9px;background:#f1f5f9;color:#475569}
+.count-pill.okc{background:#dcfce7;color:#15803d}
+.photo-drop{display:block;border:2px dashed #c4b5fd;border-radius:14px;padding:18px;text-align:center;background:#fcfaff;cursor:pointer;color:#5b21b6;font-weight:800;font-size:14px}
+.photo-drop small{display:block;color:var(--muted);font-weight:600;font-size:11.5px;margin-top:4px}
+.photo-drop.disabled{opacity:.45;cursor:not-allowed}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.thumbs img,.thumb-ph{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;display:block}
+.thumb-ph{display:grid;place-items:center;text-align:center;padding:6px;background:linear-gradient(145deg,#e2e8f0,#cbd5e1);font-size:11px;color:#334155;font-weight:900}
+.thumb-ph.after{background:linear-gradient(145deg,#ddfff7,#ede7ff)}
+.sample-link{border:0;background:none;color:var(--p);font-size:12px;font-weight:800;padding:6px 0;margin-top:4px}
+.sample-link:disabled{color:#cbd5e1;cursor:not-allowed}
+
+/* availability */
+.avail-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start}
+.calendar-title{font-size:16px;font-weight:900;margin-bottom:10px}
+.calendar-week,.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.calendar-week{color:#8a94a3;font-size:10px;font-weight:800;text-align:center;margin-bottom:6px}
+.calendar-day{aspect-ratio:1/1;border:0;border-radius:8px;background:#f8fafc;color:#1f2937;font-size:14px;font-weight:700}
+.calendar-day:hover{background:#eefaf6}
+.calendar-day.past{background:none;color:#cbd5e1;cursor:default}
+.calendar-day.today{outline:2px solid var(--p)}
+.calendar-day.off{background:#fee2e2;color:#b91c1c;text-decoration:line-through}
+.calendar-day.blank{visibility:hidden}
+.save-bar{position:sticky;bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:#1f2937;color:#fff;border-radius:14px;padding:14px 18px;box-shadow:0 14px 30px rgba(15,23,42,.25);font-size:14px}
+
+/* history */
+.chart{display:flex;align-items:flex-end;gap:14px;height:170px;padding-top:10px}
+.chart .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px}
+.chart .bar{width:100%;max-width:56px;border-radius:9px 9px 0 0;background:linear-gradient(180deg,var(--p),var(--pink));min-height:4px}
+.chart .col:last-child .bar{background:linear-gradient(180deg,var(--green),var(--mint))}
+.chart small{font-size:11px;color:var(--muted);font-weight:700}
+.chart .v{font-size:11px;font-weight:900;color:#334155}
+.table-wrap{overflow-x:auto}
+table.hist{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+table.hist th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#64748b;padding:10px 12px;border-bottom:1px solid var(--line)}
+table.hist td{padding:14px 12px;border-bottom:1px solid #eef0f3;vertical-align:middle}
+table.hist td small{display:block;color:var(--muted);font-size:11.5px;margin-top:3px}
+.st{display:inline-block;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:900}
+.st.Completed{background:#dcfce7;color:#15803d}
+.st.Cancelled{background:#f1f5f9;color:#64748b}
+.st.Declined{background:#fee2e2;color:#b91c1c}
+.stars{color:#f3b51b;letter-spacing:1px}
+.mini-btn{border:1.5px solid #cbd5e1;background:#fff;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:800}
+
+/* profile */
+.prof-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start}
+.tasker-card{display:grid;grid-template-columns:170px 1fr;gap:22px;padding:22px;background:#fff;border:1px solid #d1d5db;border-radius:16px}
+.tasker-left{display:flex;flex-direction:column;align-items:center;text-align:center}
+.tasker-photo{width:132px;height:132px;border-radius:50%;display:grid;place-items:center;font-size:60px;background:linear-gradient(145deg,#dbeafe,#fce7f3);border:5px solid #fff;box-shadow:0 0 0 1px #d1d5db;overflow:hidden}
+.tasker-photo img{width:100%;height:100%;object-fit:cover}
+.fake-select{margin-top:14px;width:100%;border-radius:999px;background:#0b8369;color:#fff;padding:11px;font-weight:900;font-size:13px}
+.tasker-title-row{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.tasker-title-row h3{margin:0;font-size:24px}
+.tasker-price{font-size:23px;font-weight:900;white-space:nowrap}
+.tasker-price span{font-size:14px;font-weight:600}
+.tasker-badges{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
+.tasker-rating{margin:12px 0 6px;font-size:15px}
+.tasker-rating span{color:#4b5563}
+.tasker-completed{color:#315f4e;font-size:14px;margin-bottom:6px}
+.tasker-distance{color:#4b5563;font-size:13px}
+.help-box{margin-top:16px;padding:15px;background:#f4f6f5;border-radius:6px}
+.help-box strong{color:#4b5563}
+.help-box p{margin:6px 0 8px;color:#59616c;line-height:1.5;font-size:13px}
+.detail-row{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid #eef0f3;font-size:14px}
+.detail-row:last-child{border-bottom:0}
+.detail-row span{color:var(--muted);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+.stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:#f8fafc;border-radius:12px;padding:14px;text-align:center}
+.stat strong{display:block;font-size:22px}
+.stat small{color:var(--muted);font-size:11px;font-weight:700}
+.review-item{padding:14px 0;border-top:1px solid #eef0f3;font-size:14px;line-height:1.55;color:#334155}
+.review-item:first-of-type{border-top:0}
+.review-item small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.verify-card{position:sticky;top:96px}
+.verify-hero{text-align:center;padding:6px 0 14px}
+.verify-hero .big-ic{width:70px;height:70px;border-radius:50%;margin:0 auto 10px;display:grid;place-items:center;font-size:32px;background:#fff1e8}
+.verify-hero h3{font-size:21px}
+.benefits{list-style:none;padding:0;margin:0 0 16px}
+.benefits li{display:flex;gap:9px;padding:6px 0;font-size:13.5px;color:#334155}
+.benefits li i{font-style:normal;color:var(--green);font-weight:900}
+.v-step{border:1.5px solid var(--line);border-radius:13px;padding:13px 14px;margin-bottom:10px}
+.v-step.done{border-color:#86efac;background:#f0fdf4}
+.v-step-head{display:flex;gap:11px;align-items:center}
+.v-step .n{width:28px;height:28px;flex:none;border-radius:50%;border:2px solid #cbd5e1;display:grid;place-items:center;font-size:12px;font-weight:900;color:#94a3b8}
+.v-step.done .n{background:var(--green);border-color:var(--green);color:#fff}
+.v-step b{display:block;font-size:14px}
+.v-step small{color:var(--muted);font-size:11.5px}
+.v-step .opt{font-size:10px;font-weight:900;color:#64748b;background:#f1f5f9;border-radius:999px;padding:3px 7px;margin-left:6px}
+.v-upload{display:inline-block;margin:10px 0 0 39px;border:1.5px dashed #a98ae7;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:800;color:#6434b9;background:#faf7ff;cursor:pointer}
+.v-file{display:block;margin:8px 0 0 39px;font-size:12px;color:#15803d;font-weight:800}
+.v-consent{display:flex;gap:9px;align-items:flex-start;margin:10px 0 0 39px;font-size:12.5px;color:#334155;line-height:1.45}
+.v-consent input{width:18px;height:18px;accent-color:var(--green);flex:none;margin-top:1px}
+.timeline{list-style:none;padding:0;margin:10px 0 16px}
+.timeline li{position:relative;padding:0 0 18px 30px;font-size:14px;color:#334155}
+.timeline li::before{content:"";position:absolute;left:8px;top:18px;bottom:0;width:2px;background:#e2e8f0}
+.timeline li:last-child::before{display:none}
+.timeline li i{position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:#e2e8f0;font-style:normal;font-size:10px;display:grid;place-items:center;color:#fff;font-weight:900}
+.timeline li.ok i{background:var(--green)}
+.timeline li.now i{background:#f59e0b}
+.timeline li small{display:block;color:var(--muted);font-size:12px}
+
+/* modal + toast */
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.52);display:grid;place-items:center;padding:18px;z-index:60}
+.modalbox{width:min(560px,95vw);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:26px;box-shadow:0 30px 80px rgba(0,0,0,.28)}
+.modalbox.wide{width:min(760px,95vw)}
+.m-center{text-align:center}
+.m-ic{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:#d1fae5;font-size:34px;margin:0 auto 14px}
+.modalbox h2{margin:0 0 8px}
+.modalbox p{color:#4b5563;line-height:1.6;font-size:14px}
+.m-tip{margin:14px 0;padding:12px 14px;border-radius:12px;background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;font-size:13px;line-height:1.55;text-align:left}
+.m-actions{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.acc-opt{display:flex;gap:14px;align-items:center;width:100%;text-align:left;border:1.5px solid var(--line);border-radius:14px;padding:14px;background:#fff;margin-top:10px}
+.acc-opt:hover{border-color:#a78bfa;background:#faf7ff}
+.acc-opt b{display:block;margin-bottom:4px}
+.acc-opt small{color:var(--muted);font-size:12px}
+.photo-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+.photo-compare h4{margin:0 0 8px}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:13px 18px;border-radius:12px;font-weight:700;font-size:14px;z-index:80;box-shadow:0 14px 30px rgba(15,23,42,.3);max-width:92vw}
+
+@media(max-width:1050px){
+  .c-hero-inner,.apply-wrap,.addr-cols,.dash-grid,.req-card,.job-grid,.avail-grid,.prof-grid,.tier-grid{grid-template-columns:1fr}
+  .benefit-grid{grid-template-columns:repeat(2,1fr)}
+  .how-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-band{grid-template-columns:repeat(2,1fr)}
+  .apply-aside,.verify-card{position:static}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:860px){
+  .home-nav-links a:not(.nav-pill){display:none}
+  .home-nav{padding:0 4%}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;height:auto;padding:14px}
+  .side-nav{display:flex;overflow-x:auto;gap:4px}
+  .side-nav button{white-space:nowrap;width:auto}
+  .side-foot{display:none}
+  .topbar,.content{padding-left:16px;padding-right:16px}
+  .c-hero h1{font-size:38px}
+  .benefit-grid,.how-grid,.form-grid,.info-grid,.stats4{grid-template-columns:1fr 1fr}
+  .tasker-card,.bk-card,.next-job{grid-template-columns:1fr}
+  .action-card,.home-bottom-cta{flex-direction:column;align-items:flex-start}
+  .phase-label{font-size:10px}
+  .phase-step{min-width:0;width:auto;flex:none}
+  .phase-line{min-width:8px}
+  .action-card .green-btn{width:100%}
+  body{overflow-x:hidden}
+}
+/* ===== v2 additions: per-service rates, pets, schedule, start-time slider, one-page job ===== */
+.rate-row{display:grid;grid-template-columns:1fr 170px 46px;gap:10px;align-items:start;margin-bottom:12px}
+.rate-row .rm{grid-column:3}
+.rate-hint{grid-column:1/-1;font-size:11.5px;color:var(--muted);margin-top:-3px}
+.rate-row.err .input{border-color:#e11d48;background:#fff1f2}
+.amt{position:relative}
+.amt .b{position:absolute;left:14px;top:14px;font-weight:900;color:#64748b}
+.amt .input{padding-left:30px;padding-right:56px}
+.amt small{position:absolute;right:12px;top:17px;font-size:12px;color:var(--muted);font-weight:700;pointer-events:none}
+.rm{border:1.5px solid #e2e8f0;background:#fff;border-radius:10px;height:50px;font-size:15px;color:#94a3b8}
+.rm:hover:not(:disabled){color:#b91c1c;border-color:#fecaca;background:#fff5f5}
+.rm:disabled{opacity:.4;cursor:not-allowed}
+.add-row{width:100%;border:1.5px dashed #a98ae7;background:#faf7ff;color:var(--p);border-radius:10px;padding:12px 14px;font-weight:800;margin-top:2px}
+.add-row:hover:not(:disabled){background:#f3e8ff}
+.add-row:disabled{opacity:.5;cursor:not-allowed}
+.tasker-price .from{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+/* pets */
+.pet-card{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fff;margin-bottom:16px}
+.pet-card h3{margin:0 0 4px;font-size:17px}
+.yn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.yn button{border:1.5px solid #cbd5e1;background:#fff;border-radius:12px;padding:14px;text-align:left;font-weight:800;font-size:14px;color:#273449}
+.yn button small{display:block;font-weight:600;color:var(--muted);font-size:12px;margin-top:3px}
+.yn button:hover{border-color:#a78bfa}
+.yn button.sel{border-color:var(--p);background:#f6f0ff;color:#5b21b6;box-shadow:0 0 0 3px rgba(111,60,195,.10)}
+.req{color:#e11d48}
+/* start-time slider */
+.ts{background:#faf7ff;border:1px solid #ece4fa;border-radius:14px;padding:16px}
+.ts-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.ts-time{font-size:32px;font-weight:900;color:var(--p);letter-spacing:-1px;line-height:1.1}
+.ts-part{display:inline-block;margin-top:4px;font-size:11.5px;font-weight:900;color:#0b6555;background:#e7faf5;border-radius:999px;padding:4px 10px}
+.tchip{display:inline-flex;align-items:center;gap:8px;padding:8px 8px 8px 14px}
+.tchip button{border:0;background:#e9d8fd;color:#5b21b6;width:22px;height:22px;border-radius:50%;font-size:14px;line-height:1;font-weight:900;padding:0}
+.tchip button:hover{background:#e11d48;color:#fff}
+/* calendar (schedule) */
+.cal2{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal2-h{font-size:10px;font-weight:900;color:#8a94a3;text-align:center;margin-bottom:2px}
+.cd{border:1.5px solid #e2e8f0;background:#fff;border-radius:10px;min-height:56px;padding:6px 2px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-weight:900;font-size:13px;color:#1f2937}
+.cd small{font-size:9px;color:var(--muted);font-weight:800;line-height:1;margin-top:-2px}
+.cd:hover{border-color:var(--green);background:#f3fcf9}
+.cd.today{outline:2px solid var(--p);outline-offset:1px}
+.cd.edited{border-color:#a98ae7;background:#faf7ff}
+.cd.out{background:none;border-color:transparent;color:#cbd5e1;cursor:default;font-weight:700}
+.dots{display:flex;gap:3px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#dfe3e8}
+.dot.on{background:var(--green)}
+.dot.full{background:#f59e0b}
+.dot.off{background:#dfe3e8}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:800;color:#475569;margin-bottom:12px;align-items:center}
+.legend .dot{margin-right:5px;vertical-align:-1px}
+.legend .lg-dots{color:var(--muted);font-weight:600;font-size:11.5px}
+.dm-row{display:grid;grid-template-columns:1fr auto 132px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #eef0f3}
+.dm-row b{display:block;font-size:15px}
+.dm-row small{color:var(--muted);font-size:12px}
+.dm-row .slot{min-width:0;width:100%}
+.dm-row .slot:disabled{opacity:.55;cursor:not-allowed}
+.dm-cap{font-size:12px;font-weight:900;border-radius:999px;padding:5px 10px;background:#f1f5f9;color:#475569;white-space:nowrap}
+.dm-cap.full{background:#fef3c7;color:#92400e}
+.info.slotinfo{background:#e7faf5}
+.info.slotinfo.full{background:#fef3c7;color:#92400e}
+/* one-page job */
+.stage-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.sbtn{display:flex;align-items:center;gap:12px;text-align:left;border:2px solid #e2e8f0;background:#fff;border-radius:14px;padding:14px 16px;color:#94a3b8;font-weight:900;font-size:15px}
+.sbtn .sn{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#f1f5f9;font-size:18px}
+.sbtn b{display:block;font-size:16px}
+.sbtn small{display:block;font-weight:600;color:var(--muted);font-size:12px;margin-top:2px;line-height:1.35}
+.sbtn:disabled{cursor:not-allowed;opacity:.65}
+.sbtn.next{color:#4c1d95;border-color:var(--p);background:linear-gradient(90deg,#f3e8ff,#fce7f3);box-shadow:0 6px 16px rgba(111,60,195,.18)}
+.sbtn.next .sn{background:#fff}
+.sbtn.next:hover{transform:translateY(-1px)}
+.sbtn.done{color:#0b6555;border-color:var(--green);background:#e7faf5;opacity:1}
+.sbtn.done .sn{background:var(--green);color:#fff;font-size:16px}
+.stage-note{margin:14px 0 0;padding:10px 14px;border-radius:10px;background:#faf7ff;border:1px solid #ece4fa;color:#4c3a78;font-size:13.5px}
+.thumb-wrap{position:relative}
+.thumb-x{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(15,23,42,.72);color:#fff;font-size:11px;line-height:1;padding:0}
+.thumb-x:hover{background:#e11d48}
+.work-bar{flex-wrap:wrap;margin-top:18px}
+.reqs{display:flex;gap:8px;flex-wrap:wrap}
+.rq{font-size:12px;font-weight:800;border-radius:999px;padding:6px 11px;background:rgba(255,255,255,.12);color:#cbd5e1}
+.rq.ok{background:rgba(34,197,94,.22);color:#86efac}
+.work-bar .green-btn{padding:13px 24px;font-size:15px}
+.work-bar .green-btn:disabled{background:#4b5563;color:#9ca3af}
+@media(max-width:860px){
+  .stage-btns{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .rate-row{grid-template-columns:1fr 46px}
+  .rate-row .amt{grid-column:1/-1;grid-row:2}
+  .rate-row .rm{grid-column:2;grid-row:1}
+  .yn{grid-template-columns:1fr}
+  .dm-row{grid-template-columns:1fr 112px}
+  .dm-row .dm-cap{grid-column:1;grid-row:2;justify-self:start}
+  .dm-row .slot{grid-column:2;grid-row:1/3}
+  .work-bar{justify-content:center}
+}
+
+/* ===== v3: clean landing, time wheel, tidy rates ===== */
+.mock-card.rating{top:-16px;right:30px}
+.c-hero{padding-bottom:60px}
+.c-hero h1{font-size:54px;letter-spacing:-2px}
+.facts{max-width:1060px;margin:58px auto 0;display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.05)}
+.fact{padding:24px 28px;border-right:1px solid var(--line)}
+.fact:last-child{border-right:0}
+.fact strong{display:block;font-size:28px;letter-spacing:-.6px;color:var(--p);margin-bottom:4px}
+.fact span{font-size:13px;color:var(--muted);line-height:1.5;display:block}
+.benefit-grid .benefit .ic{background:#f3ecff;margin-bottom:16px}
+.benefit .ic svg{width:22px;height:22px;stroke:var(--p);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.grow-wrap{background:linear-gradient(135deg,#f8f4ff 0%,#fff5fa 52%,#f2fffb 100%)}
+.path{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.path-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:8px}
+.path-card.hl{border-color:#7dd3c0;box-shadow:0 14px 32px rgba(11,131,105,.10)}
+.path-step{font-size:11.5px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:var(--p)}
+.path-card h3{margin:0;font-size:21px}
+.path-card p{margin:0 0 10px;color:var(--muted);font-size:14px;line-height:1.65;flex:1}
+.path-tag{align-self:flex-start;font-size:12px;font-weight:800;color:#5b21b6;background:#f3e8ff;border-radius:999px;padding:6px 12px}
+.path-card.hl .path-tag{color:#0b6555;background:#e7faf5}
+.tier li{align-items:flex-start}
+.tier li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--green);margin:8px 6px 0 2px}
+.tier-note{margin-top:18px}
+/* services & rates: clean rows */
+.rate-head{display:grid;grid-template-columns:1fr 170px 46px;gap:10px;margin-bottom:8px;font-size:12px;font-weight:800;color:#64748b;letter-spacing:.2px}
+.rate-row{margin-bottom:12px}
+.amt.nob .b{display:none}
+.amt.nob .input{padding-left:14px;padding-right:62px}
+.add-row{width:auto;border:0;background:none;color:var(--p);padding:6px 0;margin-top:2px;font-size:14px}
+.add-row:hover:not(:disabled){background:none;text-decoration:underline}
+.narrow{max-width:240px}
+/* time wheel (iOS-style) */
+.tp{max-width:360px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 16px 16px;box-shadow:0 10px 30px rgba(15,23,42,.07)}
+.wheel{position:relative;display:grid;grid-template-columns:1fr 1fr 1fr;height:190px;-webkit-mask-image:linear-gradient(transparent 0,#000 28%,#000 72%,transparent 100%);mask-image:linear-gradient(transparent 0,#000 28%,#000 72%,transparent 100%)}
+.wband{position:absolute;left:0;right:0;top:76px;height:38px;background:#eef0f4;border-radius:10px;pointer-events:none}
+.wcol{position:relative;overflow-y:auto;scroll-snap-type:y mandatory;padding:76px 0;scrollbar-width:none;cursor:grab;touch-action:pan-y;overscroll-behavior:contain}
+.wcol::-webkit-scrollbar{display:none}
+.wcol:active{cursor:grabbing}
+.wi{height:38px;line-height:38px;scroll-snap-align:center;font-size:21px;color:#8b94a3;user-select:none;-webkit-user-select:none}
+.wi.on{color:#111827;font-weight:600}
+.wcol[data-k="h"]{text-align:right;padding-right:26px}
+.wcol[data-k="m"]{text-align:center}
+.wcol[data-k="a"]{text-align:left;padding-left:26px}
+.tp-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:10px}
+.tp-read b{display:block;font-size:20px;color:var(--ink)}
+.tp-read span{font-size:12px;color:var(--muted);font-weight:700}
+.limit-meter{display:inline-block;font-weight:900}
+@media(max-width:860px){
+  .facts{grid-template-columns:1fr 1fr}
+  .fact:nth-child(2){border-right:0}
+  .fact:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .path{grid-template-columns:1fr}
+  .c-hero h1{font-size:40px}
+}
+@media(max-width:620px){
+  .rate-head{display:none}
+}
+
+</style>
+</head>
+<body>
+
+<!-- ================= PUBLIC NAV ================= -->
+<nav class="home-nav" id="publicNav">
+  <div><span class="logo" onclick="showView('landing')">Mochi<span>Maid</span></span><span class="logo-tag">FOR CLEANERS</span></div>
+  <div class="home-nav-links">
+    <a href="#why">Benefits</a>
+    <a href="#grow">Grow with us</a>
+    <a href="#tiers">Verification</a>
+    <a href="#how">How it works</a>
+    <a href="#cfaq">FAQ</a>
+    <a href="index.html">Book a cleaner</a>
+    <a href="javascript:void(0)" class="nav-pill" onclick="openLogin()">Log in</a>
+    <a href="javascript:void(0)" class="nav-pill solid" onclick="startApply()">Join as a Cleaner</a>
+  </div>
+</nav>
+
+<!-- ================= 1. LANDING: Become a cleaner ================= -->
+<div id="landing">
+  <section class="c-hero">
+    <div class="c-hero-inner">
+      <div>
+        <span class="section-kicker">MochiMaid for cleaners</span>
+        <h1>Clean on your terms.<br><span>Earn more as you grow.</span></h1>
+        <p>Get booking requests from customers near your home. Set your own rates and hours, keep your transport fee, and unlock bonuses as your ratings grow.</p>
+        <div class="hero-actions">
+          <button class="primary big" onclick="startApply()">Join as a Cleaner</button>
+          <button class="secondary big" onclick="openLogin()">Log in</button>
+        </div>
+      </div>
+      <div class="hero-mock">
+        <div class="mock-card notif">
+          <div class="mock-head"><b>New job request</b><span>2 min ago</span></div>
+          <h4>Regular Home Cleaning</h4>
+          <div class="meta">Thu, Oct 8 · 12:30 PM · 2 hours<br>1.8 km away · 2-bedroom condo<br>Add-on: Inside fridge</div>
+          <div class="mock-earn"><span>You earn</span><strong>฿527</strong></div>
+          <div class="mock-btns"><span class="d">Decline</span><span class="a">Accept job</span></div>
+        </div>
+        <div class="mock-card small rating">★ <b>4.9</b> · 186 reviews</div>
+        <div class="mock-card small earn"><b>This week</b><br><span style="color:var(--green);font-weight:900;font-size:18px">฿2,080</span>
+          <div class="mini-bars"><i style="height:40%"></i><i style="height:65%"></i><i style="height:52%"></i><i style="height:90%"></i><i style="height:70%"></i><i style="height:45%"></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact"><strong>10 jobs</strong><span>before verification is required</span></div>
+      <div class="fact"><strong>100%</strong><span>of the transport fee goes to you</span></div>
+      <div class="fact"><strong>฿0</strong><span>to join. Commission on completed jobs only</span></div>
+      <div class="fact"><strong>Bonuses</strong><span>for consistent, highly rated cleaners</span></div>
+    </div>
+  </section>
+
+  <section id="why" class="c-section">
+    <div class="center-title">
+      <span class="section-kicker">Why MochiMaid</span>
+      <h2>Everything you need to build steady work</h2>
+      <p class="sub">MochiMaid is a marketplace for independent cleaners. You choose your prices, your area and your hours.</p>
+    </div>
+    <div class="benefit-grid">
+      <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div><b>Bonuses for great work</b><p>Complete jobs regularly and keep strong ratings to qualify for bonuses and extra benefits.</p></div>
+      <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><b>Transport paid separately</b><p>A distance-based transport fee is added to the customer's bill and paid to you in full.</p></div>
+      <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div><b>Your own rates</b><p>Set a different hourly price for each service. You see your exact earnings before you accept.</p></div>
+      <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><b>Jobs near you</b><p>Receive requests only within the travel distance you choose from your home.</p></div>
+      <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><b>A flexible schedule</b><p>Open up to a month ahead, set your regular time slots and edit any date. Each slot takes up to two jobs.</p></div>
+      <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><b>Protected by photo proof</b><p>Before and after photos show the work you did and protect you if a booking is ever questioned.</p></div>
+    </div>
+  </section>
+
+  <section id="grow" class="grow-wrap">
+    <div class="c-section">
+      <div class="center-title">
+        <span class="section-kicker">Grow with us</span>
+        <h2>The more you work, the more you unlock</h2>
+        <p class="sub">Start right away, verify when you are ready, and get rewarded for doing great work.</p>
+      </div>
+      <div class="path">
+        <div class="path-card">
+          <span class="path-step">Step 1</span>
+          <h3>Get started</h3>
+          <p>Create a free profile with your basic details and start accepting jobs straight away. No documents needed.</p>
+          <span class="path-tag">Up to 10 jobs</span>
+        </div>
+        <div class="path-card">
+          <span class="path-step">Step 2</span>
+          <h3>Get verified</h3>
+          <p>Confirm your identity to remove the job limit, take on Office and Move-In / Move-Out cleaning, and earn higher rates on premium services.</p>
+          <span class="path-tag">More services, higher pay</span>
+        </div>
+        <div class="path-card hl">
+          <span class="path-step">Step 3</span>
+          <h3>Get rewarded</h3>
+          <p>Cleaners who keep getting jobs and earn great ratings qualify for bonuses, better visibility and the Top Rated badge.</p>
+          <span class="path-tag">Bonuses and Top Rated</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tiers" class="c-section">
+    <div class="center-title">
+      <span class="section-kicker">Verification</span>
+      <h2>Start unverified. Upgrade when you are ready.</h2>
+      <p class="sub">Verification takes a few minutes from your profile and is reviewed in 1 to 3 working days. You can keep working while you wait.</p>
+    </div>
+    <div class="tier-grid">
+      <div class="tier">
+        <span class="status-pill unv">Unverified cleaner</span>
+        <h3>Start today</h3>
+        <div class="when">Default for every new cleaner</div>
+        <h4>Included</h4>
+        <ul>
+          <li>Up to 10 completed jobs</li>
+          <li>Regular, Deep, Condo and Custom cleaning</li>
+          <li>Your own rate for each service</li>
+          <li>Listed with a "New cleaner" label</li>
+        </ul>
+        <h4>To sign up</h4>
+        <ul>
+          <li>Name, phone number and email</li>
+          <li>Home address, for distance and transport fee</li>
+          <li>Services, rates and availability</li>
+        </ul>
+      </div>
+      <div class="tier v">
+        <span class="status-pill ver">Verified cleaner</span>
+        <h3>Upgrade anytime</h3>
+        <div class="when">From the Verify button in your profile</div>
+        <h4>Included</h4>
+        <ul>
+          <li>No job limit</li>
+          <li>Office and Move-In / Move-Out cleaning at higher rates</li>
+          <li>Verified badge and higher search ranking</li>
+          <li>Eligible for bonuses and Top Rated</li>
+        </ul>
+        <h4>To verify</h4>
+        <ul>
+          <li>Thai ID card or passport</li>
+          <li>Selfie holding your ID</li>
+          <li>Background-check consent</li>
+          <li>CV or references (optional)</li>
+        </ul>
+      </div>
+    </div>
+    
+  </section>
+
+  <section id="how" class="c-section" style="padding-top:20px">
+    <div class="center-title">
+      <span class="section-kicker">How it works</span>
+      <h2>From sign-up to your first payout</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-card"><div class="how-num">1</div><b>Create your profile</b><p>Personal details, home address, services and rates, pets and availability. About 5 minutes.</p></div>
+      <div class="how-card"><div class="how-num">2</div><b>Receive nearby requests</b><p>See the job, distance and your exact earnings before you decide.</p></div>
+      <div class="how-card"><div class="how-num">3</div><b>Clean with photo proof</b><p>Travel, arrive, then tick the checklist and upload before and after photos on one page.</p></div>
+      <div class="how-card"><div class="how-num">4</div><b>Get paid and reviewed</b><p>Earnings are released after completion and the customer leaves a verified review.</p></div>
+    </div>
+  </section>
+
+  <section id="cfaq" class="faq-section">
+    <div class="center-title">
+      <span class="section-kicker">FAQ</span>
+      <h2>Questions cleaners may have</h2>
+    </div>
+    <div class="faq-list">
+      <details><summary>What bonuses can I earn?</summary><p>Bonuses reward cleaners who complete jobs regularly and keep high ratings. Amounts and criteria are not finalised for this project.</p></details>
+      <details><summary>Why do I need to verify after 10 jobs?</summary><p>Customers trust verified cleaners, and verification unlocks more services and higher rates. It takes 1 to 3 working days, and you can keep working while it is reviewed.</p></details>
+      <details><summary>Why do you need my home address?</summary><p>We use it to calculate the distance between you and each customer, which decides which requests you receive and the transport fee. Customers only see the distance, never your address.</p></details>
+      <details><summary>How is the transport fee calculated?</summary><p>It is based on distance bands (for example 0–2 km free, 2–5 km ฿30, 5–10 km ฿60). It is paid to you in full. The final method will be confirmed later.</p></details>
+      <details><summary>How much does MochiMaid charge?</summary><p>MochiMaid takes a commission only on completed bookings. The exact rate is not finalised. The rate shown is 15% on the cleaning fee and add-ons.</p></details>
+      <details><summary>Can I decline a request?</summary><p>Yes. You choose which jobs to accept. Declining does not affect your rating, but cancelling after accepting affects your reliability score.</p></details>
+    </div>
+  </section>
+
+  <section class="home-bottom-cta">
+    <div><h2>Ready to start cleaning with MochiMaid?</h2><p>Create your free profile in about five minutes.</p></div>
+    <button class="primary big" onclick="startApply()">Join as a Cleaner</button>
+  </section>
+  
+  <footer>MochiMaid cleaner portal</footer>
+</div>
+
+<!-- ================= 2. APPLICATION (profile building) ================= -->
+<div id="apply" class="hide">
+  <header class="apply-top">
+    <span class="logo" onclick="showView('landing')">Mochi<span>Maid</span></span>
+    <span class="apply-title">Cleaner application</span>
+    <button class="link-btn" onclick="showView('landing')">Save & exit</button>
+  </header>
+
+  <div class="apply-wrap">
+    <aside class="apply-aside">
+      <div class="apply-intro"><div class="intro-ic">📝</div><h2 id="applyHello">Hi there, let's walk you through your application.</h2></div>
+      <div id="applySteps"></div>
+      <div class="apply-side-note">⏱ Takes about 5 minutes. No CV or documents needed — you start as an <b>unverified cleaner</b> and can verify later from your profile.</div>
+      <button class="link-btn" onclick="fillSample()">✨ Fill saved details</button>
+    </aside>
+
+    <main class="form-panel">
+      <!-- Step 1 -->
+      <section id="st1">
+        <span class="section-kicker">Step 1 of 5</span>
+        <h2>Personal information</h2>
+        <p class="sub">Customers will only see your first name and last initial (e.g. "Malee W.").</p>
+
+        <div class="form-grid">
+          <div class="field"><label>Full name <span class="req">*</span></label><input id="fName" class="input" placeholder="e.g. Malee Wongsa" oninput="updateHello()"></div>
+          <div class="field"><label>Phone number <span class="req">*</span></label><input id="fPhone" class="input" placeholder="08X XXX XXXX"></div>
+          <div class="field"><label>Email</label><input id="fEmail" class="input" type="email" placeholder="you@example.com"></div>
+          <div class="field"><label>Password</label><input id="fPass" class="input" type="password" placeholder="At least 8 characters"></div>
+        </div>
+        <div class="field">
+          <label>Profile photo</label>
+          <div class="av-pick" id="avPick"></div>
+          <small class="sub">Choose an avatar or upload a photo.</small>
+        </div>
+        <div class="field">
+          <label>Languages you speak</label>
+          <div class="chips" id="langChips">
+            <button type="button" class="chip selected" onclick="toggleChip(this)">Thai</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">English</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">Burmese</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">Chinese</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">Lao</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2 -->
+      <section id="st2" class="hide">
+        <span class="section-kicker">Step 2 of 5</span>
+        <h2>Home address & service area</h2>
+        <p class="sub">Your address is used to match you with nearby customers and to calculate the transport fee. It is never shown to customers.</p>
+        <div class="addr-cols">
+          <div>
+            <div class="addr-box">
+              <div class="addr-row"><label>Country / region</label><select disabled><option>Thailand - TH</option></select></div>
+              <div class="addr-row"><label>House / plot no. (if applicable)</label><input id="fHouse" placeholder="e.g. 99/12"></div>
+              <div class="addr-row"><label>Building / condo name (if applicable)</label><input id="fBuilding" placeholder="e.g. The Base Condo"></div>
+              <div class="addr-row"><label>Street / soi <span class="req">*</span></label><input id="fStreet" placeholder="e.g. Phahonyothin Rd, Soi 5"></div>
+              <div class="addr-row"><label>Tambon / khwaeng</label><input id="fTambon" placeholder="e.g. Khlong Nueng"></div>
+              <div class="addr-row"><label>Amphoe / khet (district) <span class="req">*</span></label><input id="fAmphoe" placeholder="e.g. Khlong Luang"></div>
+              <div class="addr-row"><label>Province <span class="req">*</span></label>
+                <select id="fProvince"><option value="">Select province</option><option>Bangkok</option><option>Pathum Thani</option><option>Nonthaburi</option><option>Samut Prakan</option><option>Nakhon Pathom</option></select></div>
+              <div class="addr-row"><label>Postal code</label><input id="fPostal" placeholder="e.g. 12120" maxlength="5"></div>
+            </div>
+            <button type="button" class="loc-btn" onclick="useLocation()">📍 Use my current location</button>
+            <div class="coord-txt" id="coordTxt"></div>
+          </div>
+          <div>
+            <div id="mapApply"></div>
+            <div class="field" style="margin:16px 0 0">
+              <label>How far are you willing to travel?</label>
+              <input type="range" min="2" max="20" value="8" class="range" id="radiusApply" oninput="setRadius(this.value)">
+              <div class="range-row"><span>2 km</span><span id="radiusVal">8 km</span><span>20 km</span></div>
+            </div>
+            <div class="fee-table">
+              <div><span>Distance to customer</span><span>Transport fee</span></div>
+              <div><span>0 – 2 km</span><b>฿0</b></div>
+              <div><span>2 – 5 km</span><b>฿30</b></div>
+              <div><span>5 – 10 km</span><b>฿60</b></div>
+              <div><span>10 km +</span><b>฿90</b></div>
+            </div>
+            <div class="privacy">🔒 Customers see only "1.8 km away". Your full address stays private. The customer's address is shown to you only after you accept a job.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3 -->
+      <section id="st3" class="hide">
+        <span class="section-kicker">Step 3 of 5</span>
+        <h2>Services & rates</h2>
+        <p class="sub">Choose the services you offer and set an hourly rate for each.</p>
+        <div class="field">
+          <div id="ratesApply"></div>
+        </div>
+        <div class="field narrow"><label>Years of experience</label>
+          <div class="amt nob"><input id="fExp" class="input" type="number" inputmode="decimal" min="0" max="50" step="0.5" placeholder="e.g. 2"><small>years</small></div></div>
+        <div class="field"><label>About you and your specialties</label>
+          <textarea id="fSpec" class="input" style="min-height:110px" placeholder="What are you good at? For example: condo kitchens and bathrooms, oven and limescale cleaning, laundry folding."></textarea></div>
+      </section>
+
+      <!-- Step 4 -->
+      <section id="st4" class="hide">
+        <span class="section-kicker">Step 4 of 5</span>
+        <h2>Pets & allergies</h2>
+        <p class="sub">This helps us match you with the right homes.</p>
+        <div id="petApply"></div>
+      </section>
+
+      <!-- Step 5 -->
+      <section id="st5" class="hide">
+        <span class="section-kicker">Step 5 of 5</span>
+        <h2>Availability</h2>
+        <p class="sub">Set how long your schedule runs and the time blocks you usually work. You can edit individual dates in the calendar later.</p>
+        <div class="field"><label>Schedule length</label><div id="spanApply"></div></div>
+        <div class="field">
+          <label>Regular time slots (repeats every week)</label>
+          <div class="preset-row">
+            <button type="button" onclick="preset('weekdays')">Weekdays (day)</button>
+            <button type="button" onclick="preset('weekends')">Weekends</button>
+            <button type="button" onclick="preset('all')">Every day</button>
+            <button type="button" onclick="preset('clear')">Clear all</button>
+          </div>
+          <div id="wkApply"></div>
+          <div class="avail-sum"></div>
+          <p class="sub" style="margin:10px 0 0;font-size:13px">Each block takes up to 2 jobs. Once 2 are accepted, the block closes automatically.</p>
+        </div>
+        <div class="field">
+          <label>Start times customers can choose</label>
+          <div id="timesApply"></div>
+        </div>
+      </section>
+
+      <div class="form-actions">
+        <button class="secondary" id="backBtn" onclick="prevStep()">← Back</button>
+        <button class="primary" id="nextBtn" onclick="nextStep()">Continue</button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ================= 3. CLEANER APP (after sign-up / login) ================= -->
+<div id="app" class="hide shell">
+  <aside class="side">
+    <div class="logo" onclick="setPage('dashboard')">Mochi<span>Maid</span></div>
+    <div class="me" id="meBox"></div>
+    <nav class="side-nav" id="sideNav"></nav>
+    <div class="side-foot">
+      <label class="online">
+        <span><b>Accepting jobs</b><small id="onlineTxt">Visible to customers</small></span>
+        <input type="checkbox" id="onlineChk" checked onchange="toggleOnline(this.checked)"><i class="sw"></i>
+      </label>
+      <a class="side-link" href="index.html">↗ Customer website</a>
+      <button class="side-link" onclick="showView('landing')">⎋ Log out</button>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <h1 id="pageTitle"></h1>
+      <div class="top-actions">
+        <button class="icon-btn" title="Help" onclick="toast('Help centre — coming in the full version')">?</button>
+        <button class="icon-btn" title="Notifications" onclick="setPage('requests')">🔔<i id="bellDot"></i></button>
+        <div class="av sm" id="topAv"></div>
+      </div>
+    </div>
+    <div class="content" id="content"></div>
+  </main>
+</div>
+
+<div id="modal" class="modal hide" onclick="if(event.target===this)closeModal()"><div class="modalbox" id="modalBox"></div></div>
+<div id="toast" class="toast hide"></div>
+
+<script>
+/* ===================== CONSTANTS ===================== */
+const COMMISSION = 0.15; // sample rate — not finalised in the proposal
+const AVATARS = ['👩🏻','👩🏽','👩🏻‍🦱','🧑🏽','👨🏻','👨🏽'];
+const SERVICES = ['Regular Home Cleaning','Deep Cleaning','Condo Cleaning','Move-In / Move-Out','Office Cleaning','Custom Cleaning'];
+const VERIFIED_ONLY = ['Move-In / Move-Out','Office Cleaning'];
+const MARKET = {'Regular Home Cleaning':[200,280],'Deep Cleaning':[260,380],'Condo Cleaning':[220,300],'Move-In / Move-Out':[280,400],'Office Cleaning':[240,330],'Custom Cleaning':[200,320]}; // sample ranges
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const PARTS = [{k:'morning',l:'Morning',t:'8am–12pm'},{k:'afternoon',l:'Afternoon',t:'12pm–5pm'},{k:'evening',l:'Evening',t:'5pm–9pm'}];
+const CAP = 2;                       // max jobs per time slot
+const TODAY = new Date(2026,9,7);    // demo "today": Wed, Oct 7 2026
+const SPANS = [[7,'1 week'],[14,'2 weeks'],[21,'3 weeks'],[30,'1 month (max)']];
+const FREE_JOBS = 10;                // jobs an unverified cleaner can take before verifying
+const ROW = 38;                      // height of one row in the time wheel
+const HOURS = [1,2,3,4,5,6,7,8,9,10,11,12], MINS = Array.from({length:60},(_,i)=>i), APS = ['AM','PM'];
+const PET_ITEMS = ['Pet-safe cleaning products','Pet-hair roller / rubber broom','Enzyme stain & odour remover','Vacuum with pet-hair attachment'];
+const NAV = [['dashboard','🏠','Dashboard'],['requests','📥','Job requests'],['bookings','📅','My bookings'],['availability','🕒','Availability'],['history','🧾','History & earnings'],['profile','👤','Profile & verification']];
+const TITLES = {dashboard:'🏠 Dashboard',requests:'📥 Job requests',bookings:'📅 My bookings',job:'🧽 Booking',availability:'🕒 Availability',history:'🧾 History & earnings',profile:'👤 Profile & verification'};
+const STAGES = ['Confirmed','Travelling','On the way','Arrived'];
+const STEPS = [['🚗','Travelling','Leave home and head to the customer'],['🛣','On the way','Customer can follow your ETA'],['📍','Arrived','Tell the customer you are at the door']];
+
+/* ===================== STATE ===================== */
+const S = {
+  profile:null, status:'unverified', online:true, page:'dashboard', jobId:null,
+  avail:{},            // regular weekly pattern  { Mon:{morning,afternoon,evening}, ... }
+  over:{},             // specific-date edits     { '2026-10-12':{morning,afternoon,evening} }
+  span:14,             // schedule length in days (7 / 14 / 21 / 30)
+  times:[540,600,750,840], tp:{hI:8,mI:0,aI:0},   // start times (minutes after midnight) + wheel position (9:00 AM)
+  radius:8, requests:[], bookings:[], history:[], weekly:[0,0,0,0,0,0], histFilter:'All', bkTab:'upcoming',
+  verif:{id:'',selfie:'',consent:false,refs:''}, draftAv:'👩🏻', draftAvImg:null, coords:null
+};
+DAYS.forEach((d,i)=>{S.avail[d]={morning:i<5,afternoon:i<5,evening:false}});
+const A = {step:1,done:[false,false,false,false,false]};
+let RR = [{svc:'Regular Home Cleaning',amt:''}];                 // service-rate rows being edited
+let P  = {allergy:false,allergyText:'',friendly:false,items:[]};  // pet / allergy draft
+let CTX = 'apply';                                                // 'apply' (wizard) or 'app' (signed in: edits save instantly)
+
+/* ===================== HELPERS ===================== */
+const $ = id => document.getElementById(id);
+const money = n => '฿' + Math.round(n).toLocaleString();
+function toast(msg){const t=$('toast');t.innerHTML=msg;t.classList.remove('hide');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.add('hide'),3000)}
+function openModal(html,wide){$('modalBox').className='modalbox'+(wide?' wide':'');$('modalBox').innerHTML=html;$('modal').classList.remove('hide')}
+function closeModal(){$('modal').classList.add('hide')}
+function toggleChip(el){el.classList.toggle('selected')}
+function pickOne(el){[...el.parentElement.children].forEach(c=>c.classList.remove('selected'));el.classList.add('selected')}
+function selectedChips(id){return [...document.querySelectorAll('#'+id+' .chip.selected')].map(c=>c.dataset.v||c.textContent.trim())}
+function avatarHTML(p){return p&&p.avImg?`<img src="${p.avImg}" alt="">`:(p?p.av:'👤')}
+function stars(n){return '★'.repeat(n)+'☆'.repeat(5-n)}
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+const isoOf = d => `2026-10-${pad(d)}`;                                   // seed jobs are all in October
+const isoDate = dt => `${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())}`;
+const dateOf = iso => {const [y,m,d]=iso.split('-').map(Number);return new Date(y,m-1,d)};
+const dayName = dt => DAYS[(dt.getDay()+6)%7];
+const fmtD = dt => MON[dt.getMonth()]+' '+dt.getDate();
+function fmtT(m){const h=Math.floor(m/60),mm=m%60;return `${h%12||12}:${pad(mm)} ${h>=12?'PM':'AM'}`}
+function parseT(s){const [t,ap]=s.split(' ');let [h,m]=t.split(':').map(Number);if(ap==='PM'&&h<12)h+=12;if(ap==='AM'&&h===12)h=0;return h*60+m}
+function partOfMin(m){return m<720?'morning':m<1020?'afternoon':'evening'}
+function partName(m){return PARTS.find(p=>p.k===partOfMin(m)).l+' slot'}
+function slotKey(timeStr){return partOfMin(parseT(timeStr))}
+function winDates(){return Array.from({length:S.span},(_,i)=>new Date(2026,9,7+i))}
+function slotOn(dt,k){const o=S.over[isoDate(dt)];return o?!!o[k]:!!S.avail[dayName(dt)][k]}
+function jobsIn(iso,k){return S.bookings.filter(b=>isoOf(b.d)===iso&&slotKey(b.time)===k).length}
+function slotState(dt,k){if(!slotOn(dt,k))return 'off';return jobsIn(isoDate(dt),k)>=CAP?'full':'on'}
+function countSlots(){return DAYS.reduce((s,d)=>s+PARTS.filter(p=>S.avail[d][p.k]).length,0)}
+function first(){return S.profile.display.split(' ')[0]}
+function jobsUsed(){return S.profile.jobs+S.bookings.length}
+function limitReached(){return S.status==='unverified'&&jobsUsed()>=FREE_JOBS}
+function fmtExp(e){return e===''||e==null?'Not set':`${e} year${+e===1?'':'s'}`}
+/* per-service pricing */
+function rateFor(svc){const r=S.profile.rates;return r[svc]!=null?r[svc]:Math.round((MARKET[svc][0]+MARKET[svc][1])/2)}
+function offers(svc){return S.profile.rates[svc]!=null}
+function minRate(p){return Math.min(...Object.values(p.rates))}
+function svcLocked(s){return VERIFIED_ONLY.includes(s)&&S.status!=='verified'}
+function myReqs(){return S.requests.filter(r=>offers(r.service)||svcLocked(r.service))}   // only jobs matching services you offer (+ locked teasers)
+function earning(job){
+  const rate=rateFor(job.service), cleaning=rate*job.hours, add=job.addons.reduce((s,a)=>s+a.p,0);
+  const fee=Math.round((cleaning+add)*COMMISSION), pays=cleaning+add+job.transport;
+  return {rate,cleaning,add,fee,transport:job.transport,pays,earn:pays-fee};
+}
+
+/* ===================== VIEWS ===================== */
+/* ===================== VIEWS ===================== */
+function showView(v){
+  ['landing','apply','app'].forEach(x=>$(x).classList.toggle('hide',x!==v));
+  $('publicNav').classList.toggle('hide',v!=='landing');
+  closeModal(); window.scrollTo(0,0);
+}
+/* ===================== APPLICATION WIZARD ===================== */
+const STEP_META=[
+  {t:'Personal information',d:'Name, contact details and profile photo.'},
+  {t:'Home address & service area',d:'Used to match nearby jobs and calculate transport fees.'},
+  {t:'Services & rates',d:'Choose your services and hourly rates.'},
+  {t:'Pets & allergies',d:'Are you pet friendly? Any allergies we should know?'},
+  {t:'Availability',d:'Schedule length, regular time slots and start times.'}
+];
+function startApply(){
+  A.step=1;A.done=[false,false,false,false,false];CTX='apply';S.status='unverified';S.over={};S.span=14;
+  RR=[{svc:'Regular Home Cleaning',amt:''}];P={allergy:false,allergyText:'',friendly:false,items:[]};
+  showView('apply');renderAvatarPick();renderApply();renderRates();renderPet();
+  $('spanApply').innerHTML=spanHTML();renderWeek('wkApply');renderTimes('timesApply');renderMap('mapApply');updateSummary();
+}
+function renderApply(){
+  $('applySteps').innerHTML=STEP_META.map((m,i)=>{
+    const n=i+1, unlocked=A.done.slice(0,i).every(Boolean);
+    const cls=n===A.step?'active':A.done[i]?'done':unlocked?'':'locked';
+    const right=cls==='locked'?'🔒':n===A.step?'›':'';
+    return `<div class="app-step ${cls}" onclick="gotoStep(${n})"><div class="n">${A.done[i]&&n!==A.step?'✓':n}</div><div><b>${m.t}</b><small>${m.d}</small></div><div class="lock">${right}</div></div>`;
+  }).join('');
+  [1,2,3,4,5].forEach(n=>$('st'+n).classList.toggle('hide',n!==A.step));
+  $('backBtn').style.visibility=A.step===1?'hidden':'visible';
+  $('nextBtn').textContent=A.step===5?'Create my profile ✓':'Continue →';
+  syncWheels();
+}
+function gotoStep(n){
+  if(!A.done.slice(0,n-1).every(Boolean)){toast('🔒 Finish the previous step first');return}
+  A.step=n;renderApply();window.scrollTo(0,0);
+}
+function prevStep(){if(A.step>1){A.step--;renderApply();window.scrollTo(0,0)}}
+function nextStep(){
+  if(!validate(A.step))return;
+  A.done[A.step-1]=true;
+  if(A.step<5){A.step++;renderApply();window.scrollTo(0,0)}else createProfile();
+}
+function validate(step){
+  const req={1:['fName','fPhone'],2:['fStreet','fAmphoe','fProvince'],3:[],4:[],5:[]}[step];
+  let ok=true;
+  req.forEach(id=>{const el=$(id),bad=!el.value.trim(),box=el.closest('.addr-row')||el.closest('.field');box.classList.toggle('err',bad);if(bad)ok=false});
+  if(!ok){toast('Please fill in the highlighted fields');return false}
+  if(step===3){
+    let bad=false;RR.forEach((r,i)=>{const miss=!r.svc||!(+r.amt>0);if($('rr'+i))$('rr'+i).classList.toggle('err',miss);if(miss)bad=true});
+    if(bad){toast('Choose a service and type an hourly amount in every row');return false}
+  }
+  if(step===4){
+    if(P.allergy&&!P.allergyText.trim()){toast('Please write which allergies you have');return false}
+    if(P.friendly&&!P.items.length){toast('Pet friendly cleaners need at least one pet cleaning item');return false}
+  }
+  if(step===5){
+    if(!countSlots()){toast('Choose at least one regular time block');return false}
+    if(!S.times.length){toast('Add at least one start time');return false}
+  }
+  return true;
+}
+function updateHello(){
+  const n=$('fName').value.trim().split(/\s+/)[0];
+  $('applyHello').textContent=`Hi ${n||'there'}, let's walk you through your application.`;
+}
+function renderAvatarPick(){
+  $('avPick').innerHTML=AVATARS.map(a=>`<button type="button" class="av-opt ${!S.draftAvImg&&S.draftAv===a?'selected':''}" onclick="S.draftAv='${a}';S.draftAvImg=null;renderAvatarPick()">${a}</button>`).join('')
+   +(S.draftAvImg?`<button type="button" class="av-opt selected"><img src="${S.draftAvImg}" alt=""></button>`:'')
+   +`<label class="upload-av">📷 Upload photo<input type="file" accept="image/*" hidden onchange="if(this.files[0]){S.draftAvImg=URL.createObjectURL(this.files[0]);renderAvatarPick()}"></label>`;
+}
+/* ---------- Services & rates editor (dropdown + typed amount per service) ---------- */
+function rateRowsHTML(){
+  const used=RR.map(r=>r.svc);
+  const rows=RR.map((r,i)=>{
+    const opts=`<option value="">Select a service</option>`+SERVICES.map(s=>{
+      const lock=svcLocked(s), dup=used.includes(s)&&r.svc!==s;
+      return `<option value="${s}" ${r.svc===s?'selected':''} ${lock||dup?'disabled':''}>${s}${lock?' (verified only)':''}</option>`;
+    }).join('');
+    return `<div class="rate-row" id="rr${i}">
+      <select class="input" onchange="setRateSvc(${i},this.value)">${opts}</select>
+      <div class="amt"><span class="b">฿</span><input class="input" type="number" inputmode="numeric" min="50" max="2000" placeholder="0" value="${esc(r.amt)}" oninput="setRateAmt(${i},this.value)" onchange="commitRates(true)"><small>/ hour</small></div>
+      <button type="button" class="rm" title="Remove" ${RR.length<2?'disabled':''} onclick="rmRate(${i})">✕</button></div>`;
+  }).join('');
+  const free=SERVICES.filter(s=>!svcLocked(s)&&!used.includes(s)).length;
+  return `<div class="rate-head"><span>Service</span><span>Hourly rate</span><span></span></div>`+rows+`<button type="button" class="add-row" ${free?'':'disabled'} onclick="addRate()">+ Add service</button>`;
+}
+function renderRates(){['ratesApply','ratesPage'].forEach(t=>{if($(t))$(t).innerHTML=rateRowsHTML()})}
+function setRateSvc(i,v){RR[i].svc=v;renderRates();commitRates(false)}
+function setRateAmt(i,v){RR[i].amt=v}
+function addRate(){RR.push({svc:'',amt:''});renderRates()}
+function rmRate(i){RR.splice(i,1);renderRates();commitRates(true)}
+function ratesObj(){return Object.fromEntries(RR.filter(r=>r.svc&&+r.amt>0).map(r=>[r.svc,Math.round(+r.amt)]))}
+function commitRates(say){
+  if(CTX!=='app'||!S.profile)return;
+  const o=ratesObj(); if(!Object.keys(o).length)return;
+  S.profile.rates=o; if(say)toast('Services & rates saved');
+}
+
+/* ---------- Pets & allergies editor ---------- */
+function petHTML(){
+  const yn=(key,yesT,yesS,noT,noS)=>`<div class="yn"><button type="button" class="${P[key]?'sel':''}" onclick="setPet('${key}',true)">${yesT}${yesS?`<small>${yesS}</small>`:''}</button><button type="button" class="${!P[key]?'sel':''}" onclick="setPet('${key}',false)">${noT}${noS?`<small>${noS}</small>`:''}</button></div>`;
+  return `<div class="pet-card"><h3>🤧 Allergies</h3><p class="sub" style="margin:2px 0 12px">We avoid sending you to homes that could trigger them.</p>
+      ${yn('allergy','Yes, I have allergies','','No allergies','')}
+      ${P.allergy?`<div class="field" style="margin:14px 0 0"><label>Which allergies do you have?</label><input class="input" placeholder="e.g. Cat fur, dust, strong fragrance" value="${esc(P.allergyText)}" oninput="P.allergyText=this.value" onchange="commitPet(true)"></div>`:''}
+    </div>
+    <div class="pet-card"><h3>🐾 Pet friendly</h3><p class="sub" style="margin:2px 0 12px">Comfortable cleaning homes with pets? Pet friendly cleaners are matched with customers who have pets and bring pet-specific cleaning items.</p>
+      ${yn('friendly','Yes, I am pet friendly','',"No, not pet friendly","")}
+      ${P.friendly?`<label class="f-label" style="margin-top:16px">Pet cleaning items you bring</label>
+        ${PET_ITEMS.map((it,i)=>`<label class="check-item"><input type="checkbox" ${P.items.includes(it)?'checked':''} onchange="togglePetItem(${i},this.checked)">${it}</label>`).join('')}`:''}
+    </div>`;
+}
+function renderPet(){['petApply','petPage'].forEach(t=>{if($(t))$(t).innerHTML=petHTML()})}
+function setPet(k,v){P[k]=v;if(k==='allergy'&&!v)P.allergyText='';if(k==='friendly'&&!v)P.items=[];renderPet();commitPet(false)}
+function togglePetItem(i,c){const it=PET_ITEMS[i];P.items=c?[...new Set([...P.items,it])]:P.items.filter(x=>x!==it);commitPet(false)}
+function commitPet(say){
+  if(CTX!=='app'||!S.profile)return;
+  S.profile.pet={allergy:P.allergy,allergyText:P.allergyText.trim(),friendly:P.friendly,items:[...P.items]};
+  if(say)toast('✅ Pets & allergies saved');
+}
+
+function useLocation(){
+  const set=(la,lo,demo)=>{S.coords=[la,lo];$('coordTxt').textContent=`📌 Pinned at ${la.toFixed(4)}° N, ${lo.toFixed(4)}° E${demo?'':''}`};
+  toast('📍 Finding your location…');
+  if(navigator.geolocation){navigator.geolocation.getCurrentPosition(p=>set(p.coords.latitude,p.coords.longitude),()=>set(14.0786,100.6123,true),{timeout:4000})}
+  else set(14.0786,100.6123,true);
+}
+function fillSample(){
+  $('fName').value='Malee Wongsa';$('fPhone').value='081 234 5678';$('fEmail').value='malee.w@example.com';$('fPass').value='demo1234';
+  $('fHouse').value='99/12';$('fBuilding').value='';$('fStreet').value='Phahonyothin Rd, Soi 5';$('fTambon').value='Khlong Nueng';
+  $('fAmphoe').value='Khlong Luang';$('fProvince').value='Pathum Thani';$('fPostal').value='12120';
+  RR=[{svc:'Regular Home Cleaning',amt:'240'},{svc:'Deep Cleaning',amt:'300'},{svc:'Condo Cleaning',amt:'260'}];renderRates();
+  $('fExp').value='2';
+  $('fSpec').value="I'm fast and careful with condo kitchens and bathrooms, good at removing limescale and oven grease, and happy to fold laundry. I use eco-friendly products and always arrive on time.";
+  P={allergy:false,allergyText:'',friendly:true,items:[PET_ITEMS[0],PET_ITEMS[1]]};renderPet();
+  document.querySelectorAll('#langChips .chip').forEach((c,i)=>c.classList.toggle('selected',i<2));
+  document.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
+  S.coords=[14.0786,100.6123];$('coordTxt').textContent='📌 Pinned at 14.0786° N, 100.6123° E';
+  preset('weekdays');updateHello();toast('✨ Details filled — click Continue through each step');
+}
+
+/* ---------- Availability widgets (shared by the wizard and the Availability page) ---------- */
+function spanHTML(){
+  return `<div class="chips">${SPANS.map(([n,l])=>`<button type="button" class="chip ${S.span===n?'selected':''}" onclick="setSpan(${n})">${l}</button>`).join('')}</div>
+    <p class="sub" style="margin:10px 0 0;font-size:13px">Schedule period: <b class="span-range"></b></p>`;
+}
+function setSpan(n){S.span=n;['spanApply','spanPage'].forEach(t=>{if($(t))$(t).innerHTML=spanHTML()});updateSummary();if($('calPage'))renderCal()}
+function updateSummary(){
+  const win=winDates(), per=countSlots(), tot=win.reduce((s,dt)=>s+PARTS.filter(p=>slotOn(dt,p.k)).length,0);
+  document.querySelectorAll('.avail-sum').forEach(x=>x.textContent=`${per} regular blocks per week · ${tot} open blocks in your schedule · up to ${CAP} jobs per block`);
+  document.querySelectorAll('.span-range').forEach(x=>x.textContent=`${fmtD(win[0])} – ${fmtD(win[win.length-1])}, 2026`);
+}
+function refreshAvail(){renderWeek('wkApply');renderWeek('wkPage');updateSummary();if($('calPage'))renderCal()}
+function renderWeek(target){
+  const el=$(target); if(!el)return;
+  el.innerHTML=`<div class="wk"><div></div>${PARTS.map(p=>`<div class="wk-h">${p.l}<small>${p.t}</small></div>`).join('')}
+   ${DAYS.map(d=>`<div class="wk-d">${d}</div>${PARTS.map(p=>`<button type="button" class="slot ${S.avail[d][p.k]?'on':''}" onclick="toggleSlot('${d}','${p.k}')">${S.avail[d][p.k]?'✓ Available':'—'}</button>`).join('')}`).join('')}</div>`;
+}
+function toggleSlot(d,k){S.avail[d][k]=!S.avail[d][k];refreshAvail()}
+function preset(kind){
+  DAYS.forEach((d,i)=>PARTS.forEach(p=>{S.avail[d][p.k]=kind==='clear'?false:kind==='weekdays'?(i<5&&p.k!=='evening'):kind==='weekends'?i>=5:true}));
+  refreshAvail();
+}
+/* start-time wheel (iOS-style): scroll hour, minute and AM/PM, then add */
+const TPK={h:'hI',m:'mI',a:'aI'};
+function tpMinutes(){const h=HOURS[S.tp.hI]%12+(S.tp.aI?12:0);return h*60+S.tp.mI}
+function wheelCol(k,items,fmt){return `<div class="wcol" data-k="${k}" onscroll="onWheel(this)">${items.map((v,i)=>`<div class="wi ${i===S.tp[TPK[k]]?'on':''}" onclick="pickWheel('${k}',${i})">${fmt(v)}</div>`).join('')}</div>`}
+function renderTimes(target){
+  const el=$(target); if(!el)return; const m=tpMinutes();
+  el.innerHTML=`<div class="tp"><div class="wheel"><div class="wband"></div>${wheelCol('h',HOURS,String)}${wheelCol('m',MINS,pad)}${wheelCol('a',APS,String)}</div>
+    <div class="tp-foot"><div class="tp-read"><b class="tv-label">${fmtT(m)}</b><span class="tv-part">${partName(m)}</span></div><button type="button" class="primary" onclick="addTime()">Add start time</button></div></div>
+    <div class="chips" style="margin-top:14px">${S.times.length?S.times.map(t=>`<span class="chip selected tchip">${fmtT(t)}<button type="button" aria-label="Remove ${fmtT(t)}" onclick="rmTime(${t})">×</button></span>`).join(''):'<span class="sub">No start times yet. Scroll the wheel and tap Add.</span>'}</div>`;
+  syncWheels();
+}
+function syncWheels(){
+  requestAnimationFrame(()=>document.querySelectorAll('.wcol').forEach(c=>{
+    if(c.offsetParent===null)return;
+    const i=S.tp[TPK[c.dataset.k]]; c.scrollTop=i*ROW;
+    [...c.children].forEach((x,j)=>x.classList.toggle('on',j===i));
+  }));
+}
+function onWheel(col){
+  clearTimeout(col._t);
+  col._t=setTimeout(()=>{
+    const i=Math.max(0,Math.min(col.children.length-1,Math.round(col.scrollTop/ROW)));
+    setWheel(col.dataset.k,i);
+  },90);
+}
+function setWheel(k,i){
+  const key=TPK[k]; if(S.tp[key]===i)return;
+  S.tp[key]=i;
+  document.querySelectorAll(`.wcol[data-k="${k}"]`).forEach(c=>{
+    [...c.children].forEach((x,j)=>x.classList.toggle('on',j===i));
+    if(c.offsetParent!==null&&Math.abs(c.scrollTop-i*ROW)>1)c.scrollTop=i*ROW;
+  });
+  const m=tpMinutes();
+  document.querySelectorAll('.tv-label').forEach(x=>x.textContent=fmtT(m));
+  document.querySelectorAll('.tv-part').forEach(x=>x.textContent=partName(m));
+}
+let wheelDrag=null, wheelClickBlock=false;
+function pickWheel(k,i){
+  if(wheelClickBlock)return;
+  document.querySelectorAll(`.wcol[data-k="${k}"]`).forEach(c=>{if(c.offsetParent!==null)c.scrollTo({top:i*ROW,behavior:'smooth'})});
+}
+document.addEventListener('pointerdown',e=>{
+  const c=e.target.closest&&e.target.closest('.wcol'); if(!c||e.pointerType!=='mouse')return;
+  wheelDrag={c,y:e.clientY,s:c.scrollTop,moved:false}; c.style.scrollSnapType='none';
+});
+document.addEventListener('pointermove',e=>{
+  if(!wheelDrag)return; const dy=e.clientY-wheelDrag.y; if(Math.abs(dy)>4)wheelDrag.moved=true;
+  if(wheelDrag.moved)wheelDrag.c.scrollTop=wheelDrag.s-dy;
+});
+document.addEventListener('pointerup',()=>{
+  if(!wheelDrag)return; const {c,moved}=wheelDrag; wheelDrag=null; c.style.scrollSnapType='';
+  if(moved){wheelClickBlock=true;setTimeout(()=>wheelClickBlock=false,80);c.scrollTo({top:Math.round(c.scrollTop/ROW)*ROW,behavior:'smooth'})}
+});
+function addTime(){
+  const m=tpMinutes();
+  if(S.times.includes(m)){toast('That start time is already added');return}
+  S.times=[...S.times,m].sort((a,b)=>a-b);['timesApply','timesPage'].forEach(renderTimes);toast(`${fmtT(m)} added`);
+}
+function rmTime(t){S.times=S.times.filter(x=>x!==t);['timesApply','timesPage'].forEach(renderTimes)}
+function renderMap(target){
+  const el=$(target); if(!el)return;
+  const r=S.radius, d=Math.round(30+r*11);
+  const dots=[[28,30],[64,36],[57,68],[22,66],[84,56],[40,18],[76,82]];
+  let inCount=0;
+  const dotHTML=dots.map(([x,y])=>{const km=Math.hypot(x-50,y-50)*0.4,inR=km<=r;if(inR)inCount++;return `<i class="map-dot ${inR?'in':''}" style="left:${x}%;top:${y}%"></i>`}).join('');
+  el.innerHTML=`<div class="map-box"><div class="map-radius" style="width:${d}px;height:${d}px"></div>${dotHTML}<div class="map-pin">📍</div><span class="map-label">Travel radius: ${r} km · <span style="color:var(--pink)">●</span> ${inCount} recent customer requests in range</span></div>`;
+}
+function setRadius(v){S.radius=+v;['radiusVal','radiusVal2'].forEach(id=>{if($(id))$(id).textContent=v+' km'});renderMap('mapApply');renderMap('mapPage')}
+/* ===================== CREATE PROFILE / LOGIN ===================== */
+function createProfile(){
+  const name=$('fName').value.trim(), parts=name.split(/\s+/);
+  S.profile={
+    name, display:parts[0]+(parts[1]?' '+parts[1][0]+'.':''), phone:$('fPhone').value, email:$('fEmail').value,
+    av:S.draftAv, avImg:S.draftAvImg, langs:selectedChips('langChips'),
+    addr:{house:$('fHouse').value,building:$('fBuilding').value,street:$('fStreet').value,tambon:$('fTambon').value,amphoe:$('fAmphoe').value,province:$('fProvince').value,postal:$('fPostal').value},
+    rates:ratesObj(), exp:$('fExp').value===''?'':+$('fExp').value, specialties:$('fSpec').value.trim(),
+    pet:{allergy:P.allergy,allergyText:P.allergyText.trim(),friendly:P.friendly,items:[...P.items]},
+    rating:null, reviews:0, jobs:0, on:null, cancel:null, repeat:null, since:'Oct 2026'
+  };
+  S.status='unverified';
+  S.requests=seedRequests(); S.bookings=[]; S.history=[]; S.weekly=[0,0,0,0,0,0];
+  S.verif={id:'',selfie:'',consent:false,refs:''};
+  enterApp();
+  openModal(`<div class="m-center"><div class="m-ic">🎉</div><h2>Your profile is live!</h2>
+    <p>You're now an <b>unverified cleaner</b>. Customers nearby can find you with a <span class="new-badge">NEW CLEANER</span> label and book the services you listed. You can complete up to <b>10 jobs</b> before verification.</p>
+    <div class="m-tip">✓ Get verified anytime from <b>Profile & verification</b> to remove the job limit, unlock Office and Move-In / Move-Out jobs and earn higher rates.</div>
+    <div class="m-actions"><button class="secondary" onclick="closeModal()">Go to dashboard</button><button class="primary" onclick="closeModal();setPage('profile')">Verify now</button></div></div>`);
+}
+function openLogin(){
+  openModal(`<h2>Log in</h2><p>Choose a cleaner account:</p>
+    <button class="acc-opt" onclick="demoLogin('verified')"><div class="av">👩🏻</div><div><b>May S. <span class="status-pill ver">✓ Verified</span></b><small>284 jobs · ★ 4.9 · has bookings, history and earnings</small></div></button>
+    <button class="acc-opt" onclick="demoLogin('unverified')"><div class="av">👩🏻‍🦱</div><div><b>Fah K. <span class="status-pill unv">Unverified</span></b><small>New cleaner · 3 jobs · shows the verify flow and locked jobs</small></div></button>
+    <p style="font-size:12px;margin-top:14px">New here? <button class="link-btn" onclick="closeModal();startApply()">Create a cleaner profile →</button></p>`);
+}
+function demoLogin(kind){
+  if(kind==='verified'){
+    S.profile={name:'May Srisuk',display:'May S.',phone:'089 555 0101',email:'may.s@example.com',av:'👩🏻',avImg:null,langs:['Thai','English'],
+      addr:{house:'45/7',building:'',street:'Soi Phahonyothin 87',tambon:'Khlong Nueng',amphoe:'Khlong Luang',province:'Pathum Thani',postal:'12120'},
+      rates:{'Regular Home Cleaning':260,'Deep Cleaning':320,'Condo Cleaning':280,'Move-In / Move-Out':340,'Office Cleaning':300},exp:4,
+      specialties:'Reliable home and condo cleaning. Strong with deep kitchen and bathroom scrubbing, move-out cleans and small offices. I use eco-friendly products and I am great with pets.',
+      pet:{allergy:false,allergyText:'',friendly:true,items:['Pet-safe cleaning products','Pet-hair roller / rubber broom','Enzyme stain & odour remover']},
+      rating:4.9,reviews:186,jobs:284,on:98,cancel:1,repeat:41,since:'Jan 2025'};
+    S.status='verified'; S.bookings=seedBookings(); S.history=seedHistory(); S.weekly=[1450,2210,1890,2600,2080,1320];
+    S.span=21; S.over={'2026-10-12':{morning:false,afternoon:false,evening:false}};
+  }else{
+    S.profile={name:'Fah Kanya',display:'Fah K.',phone:'062 111 2233',email:'fah.k@example.com',av:'👩🏻‍🦱',avImg:null,langs:['Thai'],
+      addr:{house:'12',building:'Kave Town Space',street:'Khlong Luang Rd',tambon:'Khlong Nueng',amphoe:'Khlong Luang',province:'Pathum Thani',postal:'12120'},
+      rates:{'Regular Home Cleaning':220,'Deep Cleaning':260,'Condo Cleaning':240},exp:1,
+      specialties:'Student and part-time cleaner. Careful, quick and friendly — condo units are my speciality. I can also fold laundry.',
+      pet:{allergy:true,allergyText:'Cat fur',friendly:false,items:[]},
+      rating:5.0,reviews:2,jobs:3,on:100,cancel:0,repeat:33,since:'Sep 2026'};
+    S.status='unverified'; S.bookings=[]; S.history=[
+      {id:'MM-1012',date:'Oct 4, 2026',customer:'Anya P.',service:'Condo Cleaning',status:'Completed',earned:374,rating:5,review:'Quick and very tidy. Great for a new cleaner!',before:ph('before',['Kitchen','Bathroom']),after:ph('after',['Kitchen','Bathroom'])},
+      {id:'MM-1004',date:'Oct 1, 2026',customer:'Ken S.',service:'Regular Home Cleaning',status:'Completed',earned:440,rating:5,review:'Friendly and on time.',before:ph('before',['Living room']),after:ph('after',['Living room'])},
+      {id:'MM-0996',date:'Sep 29, 2026',customer:'Ploy K.',service:'Regular Home Cleaning',status:'Completed',earned:374,rating:null,before:ph('before',['Bedroom']),after:ph('after',['Bedroom'])}];
+    S.weekly=[0,0,0,0,814,374]; S.span=14; S.over={};
+  }
+  S.requests=seedRequests(); S.verif={id:'',selfie:'',consent:false,refs:''};
+  closeModal(); enterApp(); toast(`👋 Logged in as ${S.profile.display}`);
+}
+function enterApp(){CTX='app';showView('app');$('onlineChk').checked=S.online;setPage('dashboard')}
+
+/* ===================== SAMPLE DATA ===================== */
+function ph(kind,areas){return areas.map(a=>({ph:(kind==='before'?'Before · ':'After · ')+a,kind}))}
+function seedRequests(){return [
+  {id:'r1',customer:'Anya P.',cAv:'👩🏻',cNote:'Customer since 2026 · 6 bookings',service:'Regular Home Cleaning',date:'Thu, Oct 8',d:8,w:'Thu',time:'12:30 PM',hours:2,property:'2-bedroom Condo',baths:2,size:'50–100 m²',area:'Khlong Nueng, Pathum Thani',address:'88/41 The Base Condo, Phahonyothin Rd, Khlong Nueng, Khlong Luang, Pathum Thani 12120',access:'Meet at lobby, room 1204',dist:1.8,transport:0,areas:['Kitchen','Bathrooms','Bedrooms','Living room'],addons:[{n:'Inside fridge',p:100}],pets:'No',home:'Yes',instructions:'Please focus on the kitchen counters and bathroom mirrors. I will be working from home.',expires:'1h 42m'},
+  {id:'r4',customer:'Pim S.',cAv:'👩🏽',cNote:'Customer since 2026 · 2 bookings',service:'Regular Home Cleaning',date:'Thu, Oct 8',d:8,w:'Thu',time:'2:30 PM',hours:2,property:'1-bedroom Condo',baths:1,size:'Under 50 m²',area:'Khlong Nueng, Pathum Thani',address:'Room 312, Kave Condo B, Khlong Nueng, Khlong Luang, Pathum Thani 12120',access:'Key card at reception',dist:2.4,transport:30,areas:['Kitchen','Bathrooms','Living room'],addons:[],pets:'No',home:'No',instructions:'Please wipe the balcony glass door as well.',expires:'3h 20m'},
+  {id:'r2',customer:'Narin T.',cAv:'👨🏽',cNote:'New customer · 1st booking',service:'Deep Cleaning',date:'Fri, Oct 9',d:9,w:'Fri',time:'9:00 AM',hours:4,property:'3-bedroom House',baths:2,size:'100–150 m²',area:'Prachathipat, Pathum Thani',address:'27/3 Moo 2, Soi Rangsit-Nakhon Nayok 14, Prachathipat, Thanyaburi, Pathum Thani 12130',access:'Key with neighbour at house 27/5',dist:3.6,transport:30,areas:['Kitchen','Bathrooms','Bedrooms','Living room','Balcony'],addons:[{n:'Inside oven',p:120},{n:'Windows',p:150}],pets:'Yes — dog',home:'No',instructions:'Friendly golden retriever in the garden. Nobody will be home, so please upload clear before and after photos.',expires:'5h 10m'},
+  {id:'r3',customer:'Mina R.',cAv:'👩🏽',cNote:'Landlord · 14 bookings',service:'Move-In / Move-Out',date:'Sun, Oct 11',d:11,w:'Sun',time:'10:00 AM',hours:5,property:'1-bedroom Condo',baths:1,size:'Under 50 m²',area:'Lak Hok, Pathum Thani',address:'Unit 7/215 Plum Condo, Lak Hok, Mueang Pathum Thani 12000',access:'Juristic office opens the unit',dist:5.4,transport:60,areas:['Kitchen','Bathrooms','Bedrooms','Living room','Balcony'],addons:[{n:'Cabinets',p:100},{n:'Inside fridge',p:100}],pets:'No',home:'No',instructions:'Tenant has moved out. The unit must be ready for a new tenant on Monday.',expires:'11h 05m'}
+]}
+function seedBookings(){return [
+  {id:'b1',bookingId:'MM-1021',customer:'Ploy K.',cAv:'👩🏻',cNote:'Repeat customer · 9 bookings with you',service:'Regular Home Cleaning',date:'Today, Oct 7',d:7,w:'Wed',time:'4:00 PM',hours:2,property:'1-bedroom Condo',baths:1,size:'Under 50 m²',area:'Khlong Nueng',address:'Room 508, Kave Condo, Khlong Nueng, Khlong Luang, Pathum Thani 12120',access:'Door code 2045',dist:0.9,transport:0,areas:['Kitchen','Bathrooms','Bedrooms','Living room'],addons:[],pets:'Yes — cat',home:'No',instructions:'My cat is shy — please keep the balcony door closed.',stage:0,before:[],after:[],checked:{}},
+  {id:'b2',bookingId:'MM-1022',customer:'Ken S.',cAv:'👨🏻',cNote:'Repeat customer · 3 bookings with you',service:'Condo Cleaning',date:'Thu, Oct 8',d:8,w:'Thu',time:'3:00 PM',hours:2,property:'1-bedroom Condo',baths:1,size:'Under 50 m²',area:'Khlong Nueng',address:'Unit 1203, The Base Condo, Khlong Nueng, Khlong Luang, Pathum Thani 12120',access:'Meet at lobby',dist:1.6,transport:0,areas:['Kitchen','Bathrooms','Living room'],addons:[],pets:'No',home:'No',instructions:'Same as last time, thanks!',stage:0,before:[],after:[],checked:{}}
+]}
+function seedHistory(){return [
+  {id:'MM-1009',date:'Oct 5, 2026',customer:'Ken S.',service:'Deep Cleaning',status:'Completed',earned:1016,rating:5,review:'Very thorough, even cleaned behind the fridge. Will book again!',before:ph('before',['Kitchen','Bathroom','Bedroom']),after:ph('after',['Kitchen','Bathroom','Bedroom'])},
+  {id:'MM-1003',date:'Oct 3, 2026',customer:'Ploy K.',service:'Regular Home Cleaning',status:'Completed',earned:442,rating:5,review:'Always on time and careful with my cat.',before:ph('before',['Kitchen','Bathroom']),after:ph('after',['Kitchen','Bathroom'])},
+  {id:'MM-0997',date:'Sep 30, 2026',customer:'Daniel L.',service:'Office Cleaning',status:'Completed',earned:723,rating:4,review:'Good job. Arrived 10 minutes late but called ahead.',before:ph('before',['Meeting room']),after:ph('after',['Meeting room'])},
+  {id:'MM-0990',date:'Sep 28, 2026',customer:'Narin T.',service:'Condo Cleaning',status:'Cancelled',note:'Cancelled by customer (24h+ notice)',earned:0,rating:null,before:[],after:[]},
+  {id:'MM-0984',date:'Sep 26, 2026',customer:'Mina R.',service:'Move-In / Move-Out',status:'Completed',earned:1165,rating:5,review:'The photos made it easy to check the unit remotely. Spotless.',before:ph('before',['Kitchen','Living room']),after:ph('after',['Kitchen','Living room'])}
+]}
+/* ===================== APP SHELL ===================== */
+function statusPill(){return {unverified:'<span class="status-pill unv">Unverified</span>',pending:'<span class="status-pill pen">Verification pending</span>',verified:'<span class="status-pill ver">✓ Verified</span>'}[S.status]}
+function renderShell(){
+  $('meBox').innerHTML=`<div class="av">${avatarHTML(S.profile)}</div><div><b>${S.profile.display}</b>${statusPill()}</div>`;
+  $('topAv').innerHTML=avatarHTML(S.profile);
+  const active=S.page==='job'?'bookings':S.page, nReq=myReqs().length;
+  $('sideNav').innerHTML=NAV.map(([k,ic,l])=>{
+    const badge=k==='requests'&&nReq&&S.online?`<span class="badge">${nReq}</span>`:k==='bookings'&&S.bookings.length?`<span class="badge" style="background:var(--green)">${S.bookings.length}</span>`:'';
+    return `<button class="${active===k?'active':''}" onclick="setPage('${k}')"><span class="ic">${ic}</span>${l}${badge}</button>`;
+  }).join('');
+  $('bellDot').classList.toggle('hide',!(nReq&&S.online));
+}
+function banner(){
+  if(S.status==='unverified')return `<div class="verify-banner"><span>You're an <b>unverified cleaner</b> · <b>${Math.min(jobsUsed(),FREE_JOBS)} of ${FREE_JOBS}</b> jobs used. Verify to remove the limit, unlock more services and earn higher rates.</span><button onclick="setPage('profile')">Get verified</button></div>`;
+  if(S.status==='pending')return `<div class="verify-banner pending"><span>Your verification is <b>under review</b> (usually 1–3 working days). You can keep accepting jobs meanwhile.</span><button onclick="setPage('profile')">View status</button></div>`;
+  return '';
+}
+function setPage(p,jobId){
+  S.page=p; if(jobId)S.jobId=jobId;
+  renderShell();
+  $('pageTitle').textContent=TITLES[p];
+  const R={dashboard:pDashboard,requests:pRequests,bookings:pBookings,job:pJob,availability:pAvailability,history:pHistory,profile:pProfile};
+  if(p==='profile'){RR=Object.entries(S.profile.rates).map(([svc,amt])=>({svc,amt}));P=JSON.parse(JSON.stringify(S.profile.pet))}
+  $('content').innerHTML=banner()+R[p]();
+  if(p==='availability'){$('spanPage').innerHTML=spanHTML();renderWeek('wkPage');renderTimes('timesPage');renderMap('mapPage');renderCal();updateSummary()}
+  if(p==='profile'){renderRates();renderPet()}
+  window.scrollTo(0,0);
+}
+function toggleOnline(v){
+  S.online=v;$('onlineTxt').textContent=v?'Visible to customers':'Hidden — no new requests';
+  toast(v?'🟢 You are accepting jobs':'⏸ You are offline — customers can\'t send you requests');
+  setPage(S.page);
+}
+/* ---------- Dashboard ---------- */
+function pDashboard(){
+  const p=S.profile, next=S.bookings[0];
+  const items=[['Personal information',true],['Home address',true],['Services & rates',Object.keys(p.rates).length>0],['Pets & allergies',!!p.pet],['Availability',countSlots()>0],['Specialties',!!p.specialties],['Identity verification',S.status==='verified']];
+  const pct=Math.round(items.filter(x=>x[1]).length/items.length*100);
+  const reqPreview=S.online?myReqs().slice(0,2).map(r=>{const e=earning(r);return `<div class="mini-req"><div><b>${r.service}</b><small>${r.date} · ${r.time} · ${r.hours}h · 📍 ${r.dist} km · ${r.customer}</small></div><div class="earn-tag">${money(e.earn)}<small>you earn</small></div></div>`}).join(''):'';
+  return `
+  <div class="greet"><div><h2>Good evening, ${first()} 👋</h2><p class="sub">Here's your cleaning work for Wednesday, Oct 7.</p></div><button class="primary" onclick="setPage('availability')">Update availability</button></div>
+  <div class="kpis">
+    <div class="kpi"><div class="k-ic">📥</div><strong>${S.online?myReqs().length:0}</strong><span>New job requests</span></div>
+    <div class="kpi"><div class="k-ic">📅</div><strong>${S.bookings.length}</strong><span>Upcoming bookings</span></div>
+    <div class="kpi"><div class="k-ic">💰</div><strong>${money(S.weekly[5])}</strong><span>Earned this week</span></div>
+    <div class="kpi"><div class="k-ic">⭐</div><strong>${p.rating?p.rating.toFixed(1):'New'}</strong><span>${p.rating?p.reviews+' reviews':'No reviews yet'}</span></div>
+  </div>
+  <div class="dash-grid">
+    <div>
+      <div class="card"><div class="card-head"><div><h3>Next job</h3></div>${next?`<span class="stage-pill s${next.stage}">${STAGES[next.stage]}</span>`:''}</div>
+        ${next?`<div class="next-job"><div class="date-block">${next.w}<b>${next.d}</b>Oct</div><div><b style="font-size:17px">${next.service}</b><div class="bk-meta">${next.time} · ${next.hours} hours · ${next.property}<br>📍 ${next.dist} km · ${next.customer}</div></div><button class="green-btn" onclick="setPage('job','${next.id}')">Open job →</button></div>`
+        :`<div class="empty"><div class="e-ic">📅</div><b>No upcoming jobs yet</b><p>Accept a job request and it will appear here.</p><button class="secondary" onclick="setPage('requests')">See job requests</button></div>`}
+      </div>
+      <div class="card"><div class="card-head"><div><h3>New requests near you</h3><p class="sub">Within your ${S.radius} km travel radius</p></div><button class="link-btn" onclick="setPage('requests')">View all →</button></div>
+        ${S.online?(reqPreview||'<p class="sub">No new requests right now.</p>'):'<p class="sub">You are offline. Turn on "Accepting jobs" in the sidebar to receive requests.</p>'}
+      </div>
+    </div>
+    <div>
+      <div class="card"><h3>Profile strength</h3><p class="sub" style="margin:2px 0 0">A complete profile gets more bookings.</p>
+        <div class="strength-bar"><i style="width:${pct}%"></i></div>
+        ${items.map(([l,ok])=>`<div class="check-line"><span>${l}</span><span class="${ok?'ok':'no'}">${ok?'✓':'○'}</span></div>`).join('')}
+        ${S.status!=='verified'?`<button class="primary" style="width:100%;margin-top:12px" onclick="setPage('profile')">${S.status==='pending'?'View verification status':'Get verified'}</button>`:''}
+      </div>
+      <div class="card"><h3>Performance</h3><p class="sub" style="margin:2px 0 12px">Customers see these numbers on your profile.</p>
+        ${p.jobs>=5?[['On-time arrivals',p.on],['Repeat customers',p.repeat],['Cancellation rate',p.cancel]].map(([l,v])=>`<div class="perf-row"><span>${l}</span><span>${v}%</span></div><div class="perf-bar"><i style="width:${l==='Cancellation rate'?Math.max(v,2):v}%;${l==='Cancellation rate'?'background:#fca5a5':''}"></i></div>`).join('')
+        :`<div class="hint-box">🌱 You're a new cleaner. Performance stats appear on your profile after <b>5 completed jobs</b> (${p.jobs}/5 so far).</div>`}
+      </div>
+    </div>
+  </div>`;
+}
+/* ---------- Job requests (accept page) ---------- */
+function pRequests(){
+  if(!S.online)return `<div class="card offline"><div style="font-size:40px">⏸</div><div><h3>You're offline</h3><p class="sub" style="margin:4px 0 12px">Customers can't send you new requests while "Accepting jobs" is off.</p><button class="green-btn" onclick="$('onlineChk').checked=true;toggleOnline(true)">Go online</button></div></div>`;
+  const list=myReqs();
+  if(!list.length)return `<div class="empty"><div class="e-ic">📭</div><b>No new requests</b><p>New requests that match your services, within ${S.radius} km, will appear here.</p></div>`;
+  return `<p class="sub" style="margin:0 0 14px">${list.length} customers want to book you. Only jobs that match the services you offer are shown. Check the details and your earnings, then accept or decline before the request expires. Each time slot takes at most ${CAP} jobs.</p>`+list.map(reqCard).join('');
+}
+function reqCard(r){
+  const e=earning(r), locked=svcLocked(r.service), k=slotKey(r.time), n=jobsIn(isoOf(r.d),k), full=n>=CAP, pl=PARTS.find(p=>p.k===k).l;
+  return `<article class="card req-card">
+    <div>
+      <div class="req-top"><div class="cust"><div class="av sm">${r.cAv}</div><div><b>${r.customer}</b><small>${r.cNote}</small></div></div><span class="expire">⏳ Respond within ${r.expires}</span></div>
+      <h3 class="req-title">${r.service}</h3>
+      <div class="info-grid">
+        <div class="info"><small>Date & time</small>${r.date} · ${r.time}</div>
+        <div class="info"><small>Duration</small>${r.hours} hours</div>
+        <div class="info"><small>Distance</small>📍 ${r.dist} km · ${r.area}</div>
+        <div class="info"><small>Property</small>${r.property} · ${r.baths} bath · ${r.size}</div>
+        <div class="info"><small>Pets / someone home</small>${r.pets} · ${r.home==='Yes'?'Home':'Not home'}</div>
+        <div class="info slotinfo ${full?'full':''}"><small>Your ${pl} slot · ${r.w}, Oct ${r.d}</small>${n}/${CAP} jobs booked${full?' — FULL':''}</div>
+      </div>
+      <span class="lbl">Areas to clean</span><div class="tags">${r.areas.map(a=>`<span class="tag">${a}</span>`).join('')}</div>
+      ${r.addons.length?`<span class="lbl">Add-ons</span><div class="tags">${r.addons.map(a=>`<span class="tag pink">${a.n} +฿${a.p}</span>`).join('')}</div>`:''}
+      <div class="quote">“${r.instructions}”</div>
+    </div>
+    <aside class="pay-box">
+      <span class="overline">Your earnings</span>
+      <div class="price-line"><span>Cleaning (${money(e.rate)} × ${r.hours}h${offers(r.service)?'':', typical'})</span><strong>${money(e.cleaning)}</strong></div>
+      <div class="price-line"><span>Add-ons</span><strong>${money(e.add)}</strong></div>
+      <div class="price-line"><span>Transport (${r.dist} km)</span><strong>${money(e.transport)}</strong></div>
+      <div class="price-line minus"><span>Platform fee (${COMMISSION*100}%)</span><strong>−${money(e.fee)}</strong></div>
+      <div class="you-earn"><span>You earn</span><strong>${money(e.earn)}</strong></div>
+      <span class="pay-note">Customer pays ${money(e.pays)} in total. Full address is shown after you accept.</span>
+      ${locked?`<div class="locked-box"><b>🔒 Verified cleaners only</b>Office and Move-In / Move-Out jobs need ID verification.<button class="primary" onclick="setPage('profile')">Get verified</button></div>`
+      :limitReached()?`<div class="locked-box"><b>Verification required</b>You have used all ${FREE_JOBS} jobs available before verification.<button class="primary" onclick="setPage('profile')">Get verified</button></div>`
+      :full?`<div class="locked-box"><b>🚫 Slot full (${n}/${CAP})</b>You already have ${CAP} jobs in your ${pl} slot on ${r.w}, Oct ${r.d}. A slot cannot take more than ${CAP} jobs.<button class="secondary" onclick="declineReq('${r.id}')">Decline</button></div>`
+      :`<div class="btn-stack"><button class="green-btn" onclick="acceptReq('${r.id}')">Accept job</button><button class="secondary" onclick="declineReq('${r.id}')">Decline</button></div>`}
+    </aside>
+  </article>`;
+}
+function acceptReq(id){
+  const r=S.requests.find(x=>x.id===id), k=slotKey(r.time), pl=PARTS.find(p=>p.k===k).l;
+  if(limitReached()){toast('Verify your account to accept more jobs');setPage('requests');return}
+  if(jobsIn(isoOf(r.d),k)>=CAP){toast(`🚫 Your ${pl} slot on ${r.w}, Oct ${r.d} is already full (${CAP}/${CAP})`);setPage('requests');return}
+  S.requests=S.requests.filter(x=>x.id!==id);
+  const b={...r,id:'b'+Date.now(),bookingId:'MM-'+(1030+S.bookings.length+S.history.length),stage:0,before:[],after:[],checked:{}};
+  S.bookings.push(b); S.bookings.sort((a,c)=>a.d-c.d); setPage('requests');
+  const n=jobsIn(isoOf(r.d),k);
+  openModal(`<div class="m-center"><div class="m-ic">✅</div><h2>Job accepted!</h2><p><b>${r.customer}</b> has been notified. ${r.service} on <b>${r.date} at ${r.time}</b> is now in your bookings.</p>
+   <div class="m-tip">🗓 Your <b>${pl}</b> slot on ${r.w}, Oct ${r.d} is now <b>${n}/${CAP}</b> jobs${n>=CAP?' — <b>full</b>, so no more jobs can be accepted for it':''}.<br>📍 The full address and access information are now unlocked on the booking page.</div>
+   <div class="m-actions"><button class="secondary" onclick="closeModal()">Back to requests</button><button class="green-btn" onclick="closeModal();setPage('job','${b.id}')">Open booking →</button></div></div>`);
+}
+function declineReq(id){
+  const r=S.requests.find(x=>x.id===id);
+  openModal(`<h2>Decline this request?</h2><p>${r.service} · ${r.date} · ${r.customer}. Declining does not affect your rating.</p>
+   <label class="f-label">Reason (optional)</label>
+   <div class="chips" id="declineChips">${['Not available at this time','Too far away','Job too large','Other'].map(x=>`<button type="button" class="chip" onclick="pickOne(this)">${x}</button>`).join('')}</div>
+   <div class="m-actions" style="justify-content:flex-end"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" onclick="confirmDecline('${id}')">Decline request</button></div>`);
+}
+function confirmDecline(id){
+  const r=S.requests.find(x=>x.id===id), reason=selectedChips('declineChips')[0]||'No reason given';
+  S.requests=S.requests.filter(x=>x.id!==id);
+  S.history.unshift({id:'REQ-'+id.toUpperCase(),date:r.date.replace(/^\w+, /,'')+', 2026',customer:r.customer,service:r.service,status:'Declined',note:reason,earned:0,rating:null,before:[],after:[]});
+  closeModal(); setPage('requests'); toast('Request declined');
+}
+
+/* ---------- My bookings ---------- */
+function pBookings(){
+  const up=S.bookings.filter(b=>b.stage===0), prog=S.bookings.filter(b=>b.stage>0);
+  const list=S.bkTab==='upcoming'?up:prog;
+  return `<div class="tabs"><button class="tab ${S.bkTab==='upcoming'?'active':''}" onclick="S.bkTab='upcoming';setPage('bookings')">Upcoming (${up.length})</button><button class="tab ${S.bkTab==='progress'?'active':''}" onclick="S.bkTab='progress';setPage('bookings')">In progress (${prog.length})</button><button class="tab" onclick="setPage('history')">Completed → History</button></div>`
+  +(list.length?list.map(b=>`<div class="card bk-card"><div class="date-block">${b.w}<b>${b.d}</b>Oct</div>
+     <div><h3>${b.service}</h3><div class="bk-meta">🕒 ${b.time} · ${b.hours} hours &nbsp; 🏠 ${b.property}<br>📍 ${b.dist} km · ${b.area} &nbsp; 👤 ${b.customer}</div></div>
+     <div style="text-align:right"><span class="stage-pill s${b.stage}">${STAGES[b.stage]}</span><br><button class="green-btn" style="margin-top:10px" onclick="setPage('job','${b.id}')">Open job →</button></div></div>`).join('')
+   :`<div class="empty"><div class="e-ic">📅</div><b>${S.bkTab==='upcoming'?'No upcoming bookings':'Nothing in progress'}</b><p>${S.bkTab==='upcoming'?'Accept a job request to see it here.':'Start a job from your upcoming bookings.'}</p><button class="secondary" onclick="setPage('requests')">See job requests</button></div>`);
+}
+/* ---------- Booking detail: ONE page — stage buttons on top, checklist + before/after photos + Complete together ---------- */
+function curJob(){return S.bookings.find(x=>x.id===S.jobId)}
+function checklist(b){return [...b.areas,...b.addons.map(a=>a.n)]}
+function pJob(){
+  const b=curJob(); if(!b){S.page='bookings';return pBookings()}
+  const e=earning(b), items=checklist(b), doneN=items.filter((_,i)=>b.checked[i]).length, allDone=doneN===items.length;
+  const nb=b.before.length, na=b.after.length, arrived=b.stage>=3, eta=Math.max(5,Math.round(b.dist*6));
+  const stageBtns=STEPS.map(([ic,t,d],i)=>{
+    const done=b.stage>i, next=b.stage===i;
+    return `<button type="button" class="sbtn ${done?'done':next?'next':''}" ${next?'onclick="advance()"':'disabled'}><span class="sn">${done?'✓':ic}</span><span><b>${t}</b><small>${done?'Done · customer notified':d}</small></span></button>`;
+  }).join('');
+  const photoBlock=(kind,label,hint)=>{const arr=b[kind];return `<div class="photo-sec"><div class="photo-sec-head"><b>${label}</b><span class="count-pill ${arr.length?'okc':''}">${arr.length} photo${arr.length===1?'':'s'}</span></div>
+     <label class="photo-drop">📷 Tap to upload ${kind} photos<small>${hint} · JPG or PNG · select several at once</small><input type="file" accept="image/*" multiple hidden onchange="addPhotos('${kind}',this.files)"></label>
+     <button class="sample-link" onclick="addSample('${kind}')">+ add photo</button>
+     ${arr.length?`<div class="thumbs">${arr.map((x,i)=>`<div class="thumb-wrap">${thumb(x)}<button type="button" class="thumb-x" title="Remove photo" onclick="rmPhoto('${kind}',${i})">✕</button></div>`).join('')}</div>`:''}</div>`};
+  const reqs=[['Arrived',arrived],[`Checklist ${doneN}/${items.length}`,allDone],[`Before photos (${nb})`,nb>0],[`After photos (${na})`,na>0]];
+  const ready=reqs.every(r=>r[1]);
+  return `
+  <button class="link-btn" onclick="setPage('bookings')">← Back to my bookings</button>
+  <div class="card" style="margin-top:10px">
+    <div class="job-head"><div><span class="overline">Booking #${b.bookingId}</span><h2>${b.service}</h2><p class="sub">${b.date} · ${b.time} · ${b.hours} hours · ${b.property}</p></div><span class="stage-pill s${b.stage}">${STAGES[b.stage]}</span></div>
+    <div class="stage-btns">${stageBtns}</div>
+    <p class="sub stage-note">${b.stage===0?'Tap <b>Travelling</b> when you leave home so the customer knows you are coming.':b.stage===1?'Tap <b>On the way</b> once you are on the road.':b.stage===2?`📍 ${b.dist} km · about ${eta} min away. Tap <b>Arrived</b> when you reach the door.`:'✅ You have arrived. Do the cleaning, tick the checklist, add your photos, then complete the task below.'}</p>
+  </div>
+  <div class="job-grid">
+    <div>
+      <div class="card"><h3>Job details</h3>
+        <div class="info-grid" style="grid-template-columns:1fr 1fr;margin-top:12px">
+          <div class="info" style="grid-column:1/-1"><small>Address</small>📍 ${b.address}</div>
+          <div class="info"><small>Access</small>🔑 ${b.access}</div>
+          <div class="info"><small>Distance</small>${b.dist} km from your home</div>
+          <div class="info"><small>Pets</small>${b.pets}</div>
+          <div class="info"><small>Someone home?</small>${b.home}</div>
+        </div>
+        <div class="cust-row"><div class="cust"><div class="av sm">${b.cAv}</div><div><b>${b.customer}</b><small>${b.cNote}</small></div></div>
+          <div class="cust-actions"><button onclick="toast('💬 In-app chat — coming in the full version')">💬 Chat</button><button onclick="toast('📞 Calls go through a masked number')">📞 Call</button></div></div>
+        <div class="quote">“${b.instructions}”</div>
+      </div>
+      <div class="card"><div class="card-head"><div><h3>✅ Cleaning checklist</h3><p class="sub">From the customer's booking · ${doneN}/${items.length} done</p></div></div>
+        ${items.map((it,i)=>`<label class="check-item"><input type="checkbox" ${b.checked[i]?'checked':''} onchange="checkItem(${i},this.checked)">${it}<small>${i>=b.areas.length?'add-on':''}</small></label>`).join('')}
+      </div>
+    </div>
+    <div>
+      <div class="card"><h3>📸 Before & after photos</h3><p class="sub" style="margin:2px 0 14px">Upload as many as you need for each. The customer sees them when the job is complete.</p>
+        ${photoBlock('before','Before cleaning','Take these when you arrive')}
+        ${photoBlock('after','After cleaning','Take these when you finish')}
+      </div>
+      <div class="card"><h3>Earnings for this job</h3>
+        <div class="price-line"><span>Cleaning (${money(e.rate)} × ${b.hours}h) + add-ons</span><strong>${money(e.cleaning+e.add)}</strong></div>
+        <div class="price-line"><span>Transport</span><strong>${money(e.transport)}</strong></div>
+        <div class="price-line minus"><span>Platform fee</span><strong>−${money(e.fee)}</strong></div>
+        <div class="you-earn"><span>You earn</span><strong>${money(e.earn)}</strong></div>
+        <button class="secondary" style="width:100%;margin-top:14px" onclick="reportProblem()">⚠ Report a problem</button>
+      </div>
+    </div>
+  </div>
+  <div class="save-bar work-bar"><div class="reqs">${reqs.map(([l,ok])=>`<span class="rq ${ok?'ok':''}">${ok?'✓':'○'} ${l}</span>`).join('')}</div>
+    <button class="green-btn" ${ready?'':'disabled'} onclick="completeJob()">✅ Complete task</button></div>`;
+}
+function thumb(x){return x.src?`<img src="${x.src}" alt="">`:`<div class="thumb-ph ${x.kind}">${x.ph}</div>`}
+function refreshJob(){const y=window.scrollY;$('content').innerHTML=banner()+pJob();renderShell();window.scrollTo(0,y)}
+function advance(){const b=curJob();b.stage++;toast(['','🚗 Customer notified: you are travelling','🛣 Customer can see you are on the way','📍 Arrived — customer notified'][b.stage]);refreshJob()}
+function addPhotos(kind,files){const b=curJob();[...files].forEach(f=>b[kind].push({src:URL.createObjectURL(f),kind}));refreshJob()}
+function addSample(kind){const b=curJob(),area=checklist(b)[b[kind].length%checklist(b).length];b[kind].push({ph:(kind==='before'?'Before · ':'After · ')+area,kind});refreshJob()}
+function rmPhoto(kind,i){curJob()[kind].splice(i,1);refreshJob()}
+function checkItem(i,v){curJob().checked[i]=v;refreshJob()}
+function reportProblem(){
+  openModal(`<h2>Report a problem</h2><p>Tell the customer and MochiMaid about damage, missing supplies or anything unusual. Add a photo if you can.</p>
+   <div class="chips" style="margin-bottom:12px">${['Damage found','Can\'t access property','Missing supplies','Safety concern'].map(x=>`<button type="button" class="chip" onclick="pickOne(this)">${x}</button>`).join('')}</div>
+   <textarea class="input" placeholder="Describe what happened…"></textarea>
+   <label class="upload-av" style="display:inline-block;margin-top:10px">📷 Add photo<input type="file" accept="image/*" hidden></label>
+   <div class="m-actions" style="justify-content:flex-end"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" onclick="closeModal();toast('⚠ Report sent to the customer and MochiMaid support')">Send report</button></div>`);
+}
+function completeJob(){
+  const b=curJob(), e=earning(b);
+  const h={id:b.bookingId,date:b.date.replace('Today, ','').replace(/^\w+, /,'')+', 2026',customer:b.customer,service:b.service,status:'Completed',earned:e.earn,rating:null,before:b.before,after:b.after};
+  S.history.unshift(h); S.bookings=S.bookings.filter(x=>x!==b); S.profile.jobs++; S.weekly[5]+=e.earn;
+  setPage('bookings');
+  openModal(`<div class="m-center"><div class="m-ic">🎉</div><h2>Job complete!</h2><p>You earned <b>${money(e.earn)}</b>. ${b.customer} has been sent your ${b.before.length} before and ${b.after.length} after photos and asked to confirm and review.</p>
+   <div class="m-tip">💸 Payment is released when the customer confirms, or automatically after 24 hours (proposed rule).<br>🗓 Your slot on ${b.w}, Oct ${b.d} has room for another job.</div>
+   <div class="m-actions"><button class="secondary" onclick="closeModal()">Close</button><button class="green-btn" onclick="closeModal();setPage('history')">View history →</button></div></div>`);
+  setTimeout(()=>{h.rating=5;h.review='Great job — the before and after photos were really helpful!';S.profile.reviews++;toast(`⭐ ${b.customer} rated you 5 stars`);if(['history','profile','dashboard'].includes(S.page)&&$('modal').classList.contains('hide'))setPage(S.page)},6000);
+}
+
+/* ---------- Availability page ---------- */
+function pAvailability(){
+  return `<div class="avail-grid">
+    <div>
+      <div class="card"><h3>1 · Schedule length</h3><p class="sub" style="margin:2px 0 12px">How far ahead can customers book you? Choose 1, 2 or 3 weeks, or 1 month at most.</p><div id="spanPage"></div></div>
+      <div class="card"><div class="card-head"><div><h3>2 · Regular time slots</h3><p class="sub">The blocks you usually work. This pattern repeats every week of your schedule. Each block takes at most <b>${CAP} jobs</b> — once ${CAP} are accepted it closes automatically.</p></div></div>
+        <div class="preset-row"><button onclick="preset('weekdays')">Weekdays (day)</button><button onclick="preset('weekends')">Weekends</button><button onclick="preset('all')">Every day</button><button onclick="preset('clear')">Clear all</button></div>
+        <div id="wkPage"></div><div class="avail-sum"></div></div>
+      <div class="card"><h3>3 · Start times customers can choose</h3><p class="sub" style="margin:2px 0 12px">Drag the slider to a time, then add it. You can add as many start times as you like.</p><div id="timesPage"></div></div>
+    </div>
+    <div>
+      <div class="card"><h3>Calendar · edit specific days</h3><p class="sub" style="margin:2px 0 12px">Need a day off or different hours on one date? Tap the date and change just that day. Everything else keeps your regular pattern.</p>
+        <div class="legend"><span><i class="dot on"></i> Open</span><span><i class="dot full"></i> Full (${CAP}/${CAP})</span><span><i class="dot off"></i> Off</span><span class="lg-dots">● ● ● = morning · afternoon · evening</span></div>
+        <div class="cal2" id="calPage"></div></div>
+      <div class="card"><h3>Service area</h3><p class="sub" style="margin:2px 0 12px">From ${S.profile.addr.amphoe}, ${S.profile.addr.province}</p>
+        <div id="mapPage"></div>
+        <input type="range" min="2" max="20" value="${S.radius}" class="range" style="margin-top:14px" oninput="setRadius(this.value)">
+        <div class="range-row"><span>2 km</span><span id="radiusVal2">${S.radius} km</span><span>20 km</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="save-bar"><span>Changes apply to new requests immediately.</span><button class="green-btn" onclick="toast('✅ Availability saved — customers will only see these times')">Save availability</button></div>`;
+}
+function renderCal(){
+  const el=$('calPage'); if(!el)return;
+  const win=winDates(), end=win[win.length-1], start=new Date(2026,9,5);   // grid starts Monday Oct 5
+  const days=Math.ceil(((end-start)/86400000+1)/7)*7;
+  let html=DAYS.map(d=>`<div class="cal2-h">${d.slice(0,3).toUpperCase()}</div>`).join('');
+  for(let i=0;i<days;i++){
+    const dt=new Date(2026,9,5+i), inWin=dt>=TODAY&&dt<=end, num=dt.getDate();
+    if(!inWin){html+=`<div class="cd out"><span>${num}</span></div>`;continue}
+    const iso=isoDate(dt), st=PARTS.map(p=>slotState(dt,p.k)), lab=(num===1||isoDate(dt)===isoDate(TODAY))?`<small>${MON[dt.getMonth()]}</small>`:'';
+    html+=`<button type="button" class="cd ${iso===isoDate(TODAY)?'today':''} ${S.over[iso]?'edited':''}" title="Edit ${fmtD(dt)}" onclick="openDay('${iso}')"><span>${num}</span>${lab}<div class="dots">${st.map(s=>`<i class="dot ${s}"></i>`).join('')}</div></button>`;
+  }
+  el.innerHTML=html;
+}
+function openDay(iso){
+  const dt=dateOf(iso), name=dayName(dt);
+  const rows=PARTS.map(p=>{
+    const on=slotOn(dt,p.k), n=jobsIn(iso,p.k);
+    return `<div class="dm-row"><div><b>${p.l}</b><small>${p.t}</small></div><div class="dm-cap ${n>=CAP?'full':''}">${n}/${CAP} jobs${n>=CAP?' · full':''}</div>
+      <button type="button" class="slot ${on?'on':''}" ${n>0&&on?'disabled title="This slot has a booking"':''} onclick="toggleDaySlot('${iso}','${p.k}')">${on?'✓ Available':'Off'}</button></div>`;
+  }).join('');
+  openModal(`<h2>${name}, ${fmtD(dt)}</h2><p>Change only this date. Your regular ${name} pattern stays the same for the other weeks. A slot that already has a booking can't be switched off.</p>${rows}
+    <div class="m-actions" style="justify-content:flex-end"><button class="secondary" onclick="blockDay('${iso}')">Block whole day</button>${S.over[iso]?`<button class="secondary" onclick="resetDay('${iso}')">Reset to regular</button>`:''}<button class="primary" onclick="closeModal()">Done</button></div>`);
+}
+function toggleDaySlot(iso,k){
+  const dt=dateOf(iso), base=Object.fromEntries(PARTS.map(p=>[p.k,slotOn(dt,p.k)]));
+  const o=S.over[iso]?{...S.over[iso]}:base; o[k]=!o[k];
+  const same=PARTS.every(p=>o[p.k]===!!S.avail[dayName(dt)][p.k]);
+  if(same)delete S.over[iso]; else S.over[iso]=o;
+  openDay(iso);renderCal();updateSummary();
+}
+function blockDay(iso){
+  if(PARTS.some(p=>jobsIn(iso,p.k)>0)){toast('⚠ You already have a job on this day — it can not be blocked');return}
+  S.over[iso]={morning:false,afternoon:false,evening:false};openDay(iso);renderCal();updateSummary();
+}
+function resetDay(iso){delete S.over[iso];openDay(iso);renderCal();updateSummary()}
+
+/* ---------- History & earnings ---------- */
+function pHistory(){
+  const done=S.history.filter(h=>h.status==='Completed'), rated=done.filter(h=>h.rating);
+  const total=done.reduce((s,h)=>s+h.earned,0), avg=rated.length?(rated.reduce((s,h)=>s+h.rating,0)/rated.length).toFixed(1):'—';
+  const max=Math.max(...S.weekly,1), labels=['Sep 1','Sep 8','Sep 15','Sep 22','Sep 29','This week'];
+  const list=S.histFilter==='All'?S.history:S.history.filter(h=>h.status===S.histFilter);
+  return `
+  <div class="kpis">
+    <div class="kpi"><div class="k-ic">💰</div><strong>${money(total)}</strong><span>Earned (listed jobs)</span></div>
+    <div class="kpi"><div class="k-ic">✅</div><strong>${done.length}</strong><span>Completed jobs</span></div>
+    <div class="kpi"><div class="k-ic">⭐</div><strong>${avg}</strong><span>Average rating</span></div>
+    <div class="kpi"><div class="k-ic">↩</div><strong>${S.history.length-done.length}</strong><span>Cancelled / declined</span></div>
+  </div>
+  <div class="card"><div class="card-head"><div><h3>Weekly earnings</h3><p class="sub">After platform fee · transport included</p></div><button class="secondary" onclick="toast('🏦 Payouts go to your bank account every Monday')">Payout settings</button></div>
+    ${S.weekly.some(Boolean)?`<div class="chart">${S.weekly.map((v,i)=>`<div class="col"><span class="v">${v?money(v):''}</span><div class="bar" style="height:${Math.round(v/max*120)}px"></div><small>${labels[i]}</small></div>`).join('')}</div>`
+    :`<div class="empty"><div class="e-ic">📈</div><b>No earnings yet</b><p>Complete your first job to see your weekly earnings here.</p></div>`}
+  </div>
+  <div class="card"><div class="card-head"><h3>Booking history</h3></div>
+    <div class="tabs">${['All','Completed','Cancelled','Declined'].map(f=>`<button class="tab ${S.histFilter===f?'active':''}" onclick="S.histFilter='${f}';setPage('history')">${f}</button>`).join('')}</div>
+    ${list.length?`<div class="table-wrap"><table class="hist"><thead><tr><th>Date</th><th>Customer</th><th>Service</th><th>Status</th><th>Earned</th><th>Rating</th><th>Photos</th></tr></thead><tbody>
+      ${list.map((h,i)=>`<tr><td>${h.date}<small>#${h.id}</small></td><td>${h.customer}</td><td>${h.service}</td><td><span class="st ${h.status}">${h.status}</span>${h.note?`<small>${h.note}</small>`:''}</td>
+        <td><b>${h.earned?money(h.earned):'—'}</b></td><td>${h.rating?`<span class="stars">${stars(h.rating)}</span>`:(h.status==='Completed'?'<small>Awaiting review</small>':'—')}</td>
+        <td>${h.before.length||h.after.length?`<button class="mini-btn" onclick="showPhotos(${S.history.indexOf(h)})">View ${h.before.length+h.after.length}</button>`:'—'}</td></tr>`).join('')}
+      </tbody></table></div>`:`<div class="empty"><div class="e-ic">🧾</div><b>Nothing here yet</b><p>Your ${S.histFilter==='All'?'':S.histFilter.toLowerCase()+' '}jobs will be listed here.</p></div>`}
+  </div>`;
+}
+function showPhotos(i){
+  const h=S.history[i];
+  openModal(`<h2>Photos · ${h.service}</h2><p>${h.customer} · ${h.date} · #${h.id}</p>
+   <div class="photo-compare"><div><h4>Before</h4><div class="thumbs" style="grid-template-columns:1fr 1fr">${h.before.map(thumb).join('')||'<p class="sub">None</p>'}</div></div>
+   <div><h4>After</h4><div class="thumbs" style="grid-template-columns:1fr 1fr">${h.after.map(thumb).join('')||'<p class="sub">None</p>'}</div></div></div>
+   ${h.review?`<div class="m-tip">⭐ ${stars(h.rating)} “${h.review}”</div>`:''}
+   <div class="m-actions" style="justify-content:flex-end"><button class="secondary" onclick="closeModal()">Close</button></div>`,true);
+}
+/* ---------- Profile & verification ---------- */
+function pProfile(){
+  const p=S.profile, isV=S.status==='verified', top=p.rating>=4.8&&p.jobs>=100;
+  const reviews=S.history.filter(h=>h.review);
+  return `<div class="prof-grid">
+    <div>
+      <div class="card"><div class="card-head"><div><h3>How customers see you</h3><p class="sub">This is your card on the "Choose your cleaner" page.</p></div><button class="secondary" onclick="editProfile()">Edit profile</button></div>
+        <div class="tasker-card">
+          <div class="tasker-left"><div class="tasker-photo">${avatarHTML(p)}</div><div class="fake-select">Select Cleaner</div></div>
+          <div>
+            <div class="tasker-title-row"><div><h3>${p.display}</h3><div class="tasker-badges">
+              ${isV?'<span class="ver-badge">✓ VERIFIED</span>':'<span class="unv-badge">UNVERIFIED</span>'}
+              ${top?'<span class="elite-badge">★ TOP RATED</span>':''}${p.jobs<10?'<span class="new-badge">NEW CLEANER</span>':''}
+              <span class="minimum-badge">AVAILABLE</span></div></div>
+              <div class="tasker-price"><small class="from">from</small>${money(minRate(p))}<span>/hr</span></div></div>
+            <div class="tasker-rating">★ ${p.rating?p.rating.toFixed(1):'New'} <span>(${p.reviews} reviews)</span></div>
+            <div class="tasker-completed">✓ ${p.jobs} cleaning jobs completed</div>
+            <div class="tasker-distance">📍 Distance shown per customer · ${p.on!=null&&p.jobs>=5?p.on+'% on-time':'on-time rate after 5 jobs'}</div>
+            <div class="help-box"><strong>How I can help:</strong><p>${p.specialties?esc(p.specialties):'<i>Add your specialties so customers know what you are good at.</i>'}</p><div class="tags">${Object.entries(p.rates).map(([s,r])=>`<span class="tag">${s} · ${money(r)}/hr</span>`).join('')}${p.pet.friendly?'<span class="tag pink">🐾 Pet friendly</span>':''}</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card"><h3>Performance</h3>
+        <div class="stats4" style="margin-top:12px">
+          <div class="stat"><strong>${p.jobs}</strong><small>Jobs completed</small></div>
+          <div class="stat"><strong>${p.jobs>=5?p.on+'%':'—'}</strong><small>On-time</small></div>
+          <div class="stat"><strong>${p.jobs>=5?p.cancel+'%':'—'}</strong><small>Cancellation</small></div>
+          <div class="stat"><strong>${p.jobs>=5?p.repeat+'%':'—'}</strong><small>Repeat customers</small></div>
+        </div></div>
+      <div class="card"><h3>💰 Services & rates</h3><p class="sub" style="margin:2px 0 14px">Pick a service from the list and type your hourly price. Changes save automatically.</p><div id="ratesPage"></div></div>
+      <div class="card"><h3>🐾 Pets & allergies</h3><p class="sub" style="margin:2px 0 14px">Changes save automatically.</p><div id="petPage"></div></div>
+      <div class="card"><h3>Profile details</h3>
+        <div class="detail-row"><span>Full name</span><div>${p.name}</div></div>
+        <div class="detail-row"><span>Phone / email</span><div>${p.phone}${p.email?' · '+p.email:''}</div></div>
+        <div class="detail-row"><span>Home area</span><div>${[p.addr.tambon,p.addr.amphoe,p.addr.province].filter(Boolean).join(', ')}<br><small class="sub">🔒 Full address is private</small></div></div>
+        <div class="detail-row"><span>Experience</span><div>${fmtExp(p.exp)}</div></div>
+        <div class="detail-row"><span>Allergies</span><div>${p.pet.allergy?esc(p.pet.allergyText||'Yes'):'None'} <small class="sub">· private, not shown to customers</small></div></div>
+        <div class="detail-row"><span>Languages</span><div>${p.langs.join(', ')||'—'}</div></div>
+        <div class="detail-row"><span>Member since</span><div>${p.since}</div></div>
+      </div>
+      <div class="card"><h3>Reviews (${reviews.length})</h3>
+        ${reviews.length?reviews.map(h=>`<div class="review-item"><span class="stars">${stars(h.rating)}</span> “${h.review}”<small>${h.customer} · ${h.service} · ${h.date} · verified booking</small></div>`).join('')
+        :'<p class="sub">No reviews yet. Reviews can only be written by customers after a completed booking.</p>'}
+      </div>
+    </div>
+    <div><div class="card verify-card">${verifyCard()}</div></div>
+  </div>`;
+}
+function verifyCard(){
+  if(S.status==='verified')return `<div class="verify-hero"><div class="big-ic" style="background:#dcfce7">✅</div><h3>You're verified</h3><p class="sub">Verified since ${S.profile.since}. Your badge is shown to every customer.</p></div>
+    <ul class="benefits"><li><i>✓</i>No job limit</li><li><i>✓</i>Verified badge and higher ranking</li><li><i>✓</i>Office and Move-In / Move-Out jobs unlocked, with higher rates</li><li><i>✓</i>Eligible for bonuses and Top Rated</li></ul>
+    <div class="hint-box">🪪 ID card · 🤳 Selfie · 🛡 Background check — all approved.</div>`;
+  if(S.status==='pending')return `<div class="verify-hero"><div class="big-ic" style="background:#fef9c3">⏳</div><h3>Verification under review</h3><p class="sub">Usually 1–3 working days. You can keep working as an unverified cleaner meanwhile.</p></div>
+    <ul class="timeline"><li class="ok"><i>✓</i>Documents submitted<small>Oct 7, 2026</small></li><li class="now"><i>•</i>ID & selfie check<small>In progress</small></li><li><i></i>Background check<small>Waiting</small></li><li><i></i>Verified badge added</li></ul>
+    <button class="green-btn" style="width:100%" onclick="approveVerification()">Simulate admin approval</button>`;
+  const v=S.verif, ready=v.id&&v.selfie&&v.consent;
+  const step=(n,done,title,desc,body,opt)=>`<div class="v-step ${done?'done':''}"><div class="v-step-head"><div class="n">${done?'✓':n}</div><div><b>${title}${opt?'<span class="opt">OPTIONAL</span>':''}</b><small>${desc}</small></div></div>${body}</div>`;
+  const up=(key,label)=>v[key]?`<span class="v-file">📎 ${v[key]}</span>`:`<label class="v-upload">${label}<input type="file" accept="image/*,.pdf" hidden onchange="if(this.files[0]){S.verif.${key}=this.files[0].name;setPage('profile')}"></label>`;
+  return `<div class="verify-hero"><div class="big-ic">🛡</div><h3>Get verified</h3><p class="sub">Verified cleaners get more bookings and access to all job types.</p></div>
+    <ul class="benefits"><li><i>✓</i>Remove the 10-job limit</li><li><i>✓</i>Unlock Office and Move-In / Move-Out jobs at higher rates</li><li><i>✓</i>Verified badge and higher search ranking</li></ul>
+    ${step(1,!!v.id,'Thai ID card or passport','Clear photo of the front side',up('id','📷 Upload ID'))}
+    ${step(2,!!v.selfie,'Selfie holding your ID','Your face and ID must be visible',up('selfie','🤳 Upload selfie'))}
+    ${step(3,v.consent,'Background-check consent','Required for all verified cleaners',`<label class="v-consent"><input type="checkbox" ${v.consent?'checked':''} onchange="S.verif.consent=this.checked;setPage('profile')">I agree that MochiMaid may run an identity and criminal background check.</label>`)}
+    ${step(4,!!v.refs,'Work references or CV','Previous employers or customers who can recommend you',up('refs','📎 Upload CV / references'),true)}
+    <button class="primary" style="width:100%;margin-top:6px" ${ready?'':'disabled'} onclick="submitVerification()">Submit for verification</button>
+    <button class="sample-link" style="display:block;margin:8px auto 0" onclick="S.verif={id:'thai_id_front.jpg',selfie:'selfie_with_id.jpg',consent:true,refs:''};setPage('profile')">+ fill saved documents</button>`;
+}
+function submitVerification(){S.status='pending';setPage('profile');toast('📨 Documents submitted — we will review them in 1–3 working days')}
+function approveVerification(){S.status='verified';setPage('profile');toast('🎉 You are now a Verified cleaner!')}
+function editProfile(){
+  const p=S.profile;
+  openModal(`<h2>Edit profile</h2>
+   <div class="field narrow"><label>Years of experience</label><div class="amt nob"><input class="input" id="eExp" type="number" inputmode="decimal" min="0" max="50" step="0.5" value="${p.exp===''?'':p.exp}"><small>years</small></div></div>
+   <div class="field"><label>About you and your specialties</label><textarea class="input" id="eSpec">${esc(p.specialties)}</textarea></div>
+   
+   <div class="m-actions" style="justify-content:flex-end"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" onclick="S.profile.exp=$('eExp').value===''?'':+$('eExp').value;S.profile.specialties=$('eSpec').value.trim();closeModal();setPage('profile');toast('✅ Profile updated')">Save changes</button></div>`);
+}
+</script>
+</body>
+</html>
